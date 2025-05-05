@@ -1,3 +1,7 @@
-ps:
-  short: PS
-  long: Phase Separation
+llps:
+  short: LLPS
+  long: Liquid-Liquid Phase Separation
+
+idrs:
+  short: IDRs 
+  long: Intrinsically Disordered Regions
