@@ -11,6 +11,16 @@ def block_decomposition(
 
 
 def map_sequence(sequence: str, mapping: dict) -> np.ndarray:
+    """
+    Returns the mapped sequence.
+
+    :param sequence: Amino Acid sequence.
+    :type sequence: str
+    :param mapping: Mapping for the Amin Acid sequence.
+    :type mapping: dict
+    :return: Array containing the mapped sequence.
+    :rtype: np.ndarray
+    """
     return np.array([mapping.get(char) for char in sequence])
 
 
@@ -22,7 +32,17 @@ def create_dict_list(sequence: str, block_length: int):
     pass
 
 
-def get_balance(factor_left: dict, factor_right: dict):
+def get_balance(factor_left: dict, factor_right: dict) -> int:
+    """
+    Returns the balance of two factors.
+
+    :param factor_left: Occurences of each letter of the left factor.
+    :type factor_left: dict
+    :param factor_right: Occurences of each letter of the right factor.
+    :type factor_right: dict
+    :return: Balance of two factors.
+    :rtype: int
+    """
     max_balance = 0
     for key, value in factor_left.items():
         balance = abs(value - factor_right.get(key, 0))
