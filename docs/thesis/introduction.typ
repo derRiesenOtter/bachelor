@@ -54,21 +54,23 @@ difficult and resource consuming, a tool to predict @llps helps to do so in an
 efficient manner. In recent years many tools were developed with this task in
 mind. In the following section we will highlight the functionality of some
 representative @llps predictors:
-@liang_molphase_2024
 
-PSPer
-@orlando_computational_2019
+- in-silico screening of proteomes
+- often machine learning models used (the newer ones)
+@hou_machine_2024
 
-FuzDrop
-@hatos_fuzdrop_2022
-
-PSPredictor
-@chu_prediction_2022
-
-Molphase
-@liang_molphase_2024
+PSAP
+based solely on amino acid content of the proteins. Uses Random Forest.
+Important features were Fraction of AS C and L, percentage of IDRs and Low
+Complexity scores.
+@mierlo_predicting_2021
 
 PSPire
+As current models were biased towards proteins that contained @idrs this model
+also included structural information to better estimate proteins lacking @idrs.
+Previous models only relied on the amino acid sequence. This model outperformed
+the other models significantly for proteins without @idrs and yielded comparable
+results for proteins containing no @idrs. Uses XGBoost model.
 @hou_machine_2024
 
 == Block Decomposition of Protein Sequences
