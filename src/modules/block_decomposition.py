@@ -28,8 +28,21 @@ def check_block(sequence: str, balance: int, min_block_size: int):
     pass
 
 
-def create_dict_list(sequence: str, block_length: int):
-    pass
+def create_dict_list(sequence: np.ndarray, block_length: int) -> list:
+    block_dict_list = []
+    block_dict = {}
+    for char in sequence:
+        block_dict[int(char)] = block_dict.get(int(char), 0)
+    for char in sequence[:block_length]:
+        block_dict[int(char)] = block_dict.get(int(char), 0) + 1
+    block_dict_list.append(block_dict.copy())
+    for i in range(1, len(sequence) - block_length):
+        prev_char = int(sequence[i - 1])
+        next_char = int(sequence[i + block_length])
+        block_dict[prev_char] = block_dict.get(prev_char, 0) - 1
+        block_dict[next_char] = block_dict.get(next_char, 0) + 1
+        block_dict_list.append(block_dict.copy())
+    return block_dict_list
 
 
 def get_balance(factor_left: dict, factor_right: dict) -> int:
@@ -67,7 +80,10 @@ class TestCheckBlock(unittest.TestCase):
 
 
 class TestCreateDictList(unittest.TestCase):
-    pass
+    def test_one(self):
+        result = create_dict_list(np.array([0, 0, 1, 1, 2]), 3)
+        expected = [{0: 2, 1: 1, 2: 0}, {0: 1, 1: 2, 2: 0}, {0: 0, 1: 2, 2: 1}]
+        self.assertEqual(result, expected)
 
 
 class TestGetBalance(unittest.TestCase):
