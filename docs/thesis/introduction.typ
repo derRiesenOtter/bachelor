@@ -59,10 +59,18 @@ representative @llps predictors:
 - often machine learning models used (the newer ones)
 @hou_machine_2024
 
+PhaSePred
+Study points out that other predictors fail to predict Partner Dependent PS
+Proteins and add features to make it better.
+- has interesting data set containing a classification for self PS and Partner
+  Dependent PS
+@chen_screening_2022
+
 PSAP
 based solely on amino acid content of the proteins. Uses Random Forest.
 Important features were Fraction of AS C and L, percentage of IDRs and Low
 Complexity scores.
+- interesting data set containing a classification for PS with IDR and without
 @mierlo_predicting_2021
 
 PSPire
