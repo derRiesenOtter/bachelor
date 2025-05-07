@@ -59,27 +59,55 @@ representative @llps predictors:
 - often machine learning models used (the newer ones)
 @hou_machine_2024
 
-PhaSePred
+=== PhaSePred
 Study points out that other predictors fail to predict Partner Dependent PS
 Proteins and add features to make it better.
 - has interesting data set containing a classification for self PS and Partner
   Dependent PS
 @chen_screening_2022
 
-PSAP
+=== PSAP
 based solely on amino acid content of the proteins. Uses Random Forest.
 Important features were Fraction of AS C and L, percentage of IDRs and Low
 Complexity scores.
 - interesting data set containing a classification for PS with IDR and without
 @mierlo_predicting_2021
 
-PSPire
+=== PSPire
 As current models were biased towards proteins that contained @idrs this model
 also included structural information to better estimate proteins lacking @idrs.
 Previous models only relied on the amino acid sequence. This model outperformed
 the other models significantly for proteins without @idrs and yielded comparable
 results for proteins containing no @idrs. Uses XGBoost model.
 @hou_machine_2024
+
+== Artificial Intelligence in Bioinformatics
+Artificial Intelligence has brought new revolutionizing approaches to biological
+questions. Applications like @ml, deep learning, or natural language processing
+are already widely used and have helped to develop powerful bioinformatic tools.
+These tools are used in a variety of bioinformatic domains such as genome
+sequencing, protein structure prediction, drug discovery, systems biology,
+personalized medicine, imaging, signal processing and text mining.
+@jamialahmadi_artificial_2024
+
+For example, the grounbraking tool AlphaFold, a @ml model developed by google is
+able to predict the structure of proteins with almost experimental precision.
+@jumper_highly_2021
+
+=== Convolutional Neural Networks
+@cnn belong to the @dl models. Along with Recurrent Neural Networks, Generative
+Networks and Transformers they excel in tasks like image recognition or natural
+language processing. They are mainly known for their success in computer vision,
+yet they can also be used in other domains like natural language processing.
+@ersavas_novel_2024
+
+=== Long short-term memory
+@lstm are able to identify patterns over longer distances.
+
+=== Transformers
+Transformers have emerged as a novel @dl model that is great at working with
+time series data or sequences. It is able to capture long-term relations.
+@ersavas_novel_2024
 
 == Block Decomposition of Protein Sequences
 

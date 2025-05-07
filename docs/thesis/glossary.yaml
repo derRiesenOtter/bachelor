@@ -5,3 +5,19 @@ llps:
 idrs:
   short: IDRs 
   long: Intrinsically Disordered Regions
+
+ml: 
+  short: ML 
+  long: Machine Learning 
+
+dl: 
+  short: DL 
+  long: Deep Learning 
+   
+cnn: 
+  short: CNN 
+  long: Convolutional Neural Network
+
+lstm: 
+  short: LSTM  
+  long: Long Short-Term Memory
