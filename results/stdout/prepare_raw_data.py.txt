@@ -1,0 +1,6 @@
+Size of the whole data set: 2876 proteins.
+Size of the filtered data set: 2863 proteins.
+Positive Samples:
+755
+Negative Samples:
+2121
