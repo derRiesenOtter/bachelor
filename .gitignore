@@ -1,3 +1,4 @@
 src/modules/Words/*
+src/modules/__pycache__
 
 !src/modules/Words/Mappings.py
