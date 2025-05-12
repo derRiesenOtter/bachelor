@@ -33,5 +33,39 @@ It contains over 600 sequences of phase separating proteins and over 2000
 proteins of non phase separating proteins.
 Source: [llpsdatasets](https://llpsdatasets.ppmclab.com)
 
-The file `datasets.tsv` was downloaded and moved and renamed to
+The file `datasets.tsv` was downloaded and moved to
 `./data/raw_data/llps_data_ppmclab.tsv`.
+
+---
+
+The Words module (containing the block decomposition algorithm) was copied into
+the folder `./src/modules/` folder: `./src/modules/Words/`.
+
+Additional mappings (beside the APNAMApping - Aliphatic, Positive, Negative,
+Aromatic) were added to the file `./src/modules/Words/Mappings.py`:
+- Amino Acids associated with IDRs (IDRMapping) [article](https://pmc.ncbi.nlm.nih.gov/articles/PMC2676888/)
+- Most meaningful grouping with five groups (MM5Mapping) [article](https://www.academia.edu/14913388/Simplifying_amino_acid_alphabets_by_means_of_a_branch_and_bound_algorithm_and_substitution_matrices)
+- PiPi interactions per group (PIPIGMapping) and per frequency (PIPIFMapping) [article](https://elifesciences.org/articles/31486)
+- RG Motifs (RGMapping)
+
+---
+
+The script `./src/scripts/prepare_raw_data.py` was created and run with: 
+```sh 
+python src/scripts/prepare_raw_data.py
+```
+Creating:
+`./data/intermediate_data/llps_data_ppmclab.pkl`
+
+This script read the `.csv` file and filtered out sequences containing letters
+that are not in the mapped amino acid alphabet (X and U). It saved the data as a
+pickle.
+
+---
+
+The script `./src/scripts/run_block_decomposition.py` was created and run using:
+```sh 
+python src/scripts/run_block_decomposition.py
+```
+Creating:
+`./data/intermediate_data/llps_data_ppmclab_bd.pkl`
