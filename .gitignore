@@ -1,0 +1,3 @@
+src/modules/Words/*
+
+!src/modules/Words/Mappings.py
