@@ -22,7 +22,7 @@ def get_block_seq(
     a part of the sequence with its label.
     :rtype: np.ndarray
     """
-    block_seq = np.zeros(len(sequence))
+    block_seq = np.repeat(-1, len(sequence))
     mapped_sequence = map_sequence(sequence, mapping)
     for block in block_list:
         block_start = block[0]
@@ -52,10 +52,7 @@ def get_label(block: np.ndarray) -> int:
     second_most_common_key = counts.most_common(2)[1][0]
     second_most_common_key_value = counts.most_common(2)[1][1]
     if (most_common_key_value + second_most_common_key_value) / length > 0.66:
-        if most_common_key < second_most_common_key:
-            return int(f"{most_common_key}{second_most_common_key}")
-        else:
-            return int(f"{second_most_common_key}{most_common_key}")
+        return int(f"{most_common_key}{second_most_common_key}")
     else:
         return 9
 
@@ -82,7 +79,7 @@ class TestGetLabel(unittest.TestCase):
 
     def test_two_labels(self):
         result = get_label(np.array([5, 5, 3, 5, 3, 3, 5]))
-        expected = 35
+        expected = 53
         self.assertEqual(result, expected)
 
     def test_else_label(self):
