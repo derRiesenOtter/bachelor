@@ -33,7 +33,6 @@ class APNAMapping(Mapping):
     Backward = {0: "Ali", 1: "Neg", 2: "Pos", 3: "Aro"}
 
 
-# YNFD
 class RGMapping(Mapping):
     Forward = {
         "A": 0,
@@ -60,6 +59,34 @@ class RGMapping(Mapping):
         "RG": 1,
     }
     Backward = {0: "Other", 1: "RG"}
+
+
+class RG2Mapping(Mapping):
+    Forward = {
+        "A": 0,
+        "C": 0,
+        "D": 1,
+        "E": 1,
+        "F": 1,
+        "G": 1,
+        "H": 0,
+        "I": 1,
+        "K": 1,
+        "L": 0,
+        "M": 1,
+        "N": 1,
+        "P": 0,
+        "Q": 0,
+        "R": 1,
+        "S": 0,
+        "T": 0,
+        "V": 0,
+        "W": 0,
+        "Y": 1,
+        "Other": 0,
+        "RG_PS_supporting": 1,
+    }
+    Backward = {0: "Other", 1: "RG_PS_supporting"}
 
 
 class IDRMapping(Mapping):

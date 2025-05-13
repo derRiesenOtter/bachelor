@@ -1,4 +1,6 @@
+import os
 import pickle
+import sys
 from functools import partial
 from multiprocessing import Pool, freeze_support
 
@@ -10,11 +12,14 @@ from src.modules.Words.Mappings import (
     MM5Mapping,
     PIPIFMapping,
     PIPIGMapping,
+    RG2Mapping,
     RGMapping,
 )
 
 
-def create_block_list(sequence: str, balance_threshold: int, mapping):
+def create_block_list(
+    sequence: str, balance_threshold: int, mapping
+) -> list[tuple[int, int]]:
     w = Words.Word.MappableWord([_ for _ in sequence], mapping)
     block_list = w.find_balanced_subwords(balance_threshold)
     return block_list
@@ -26,6 +31,7 @@ def main():
     mappings = [
         APNAMapping,
         RGMapping,
+        RG2Mapping,
         PIPIFMapping,
         PIPIGMapping,
         MM5Mapping,
@@ -68,4 +74,6 @@ def main():
 
 if __name__ == "__main__":
     freeze_support()
+    filename = os.path.basename(__file__)
+    sys.stdout = open(f"./results/stdout/{filename}.txt", "wt")
     main()

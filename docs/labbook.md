@@ -58,8 +58,9 @@ Creating:
 `./data/intermediate_data/llps_data_ppmclab.pkl`
 
 This script read the `.csv` file and filtered out sequences containing letters
-that are not in the mapped amino acid alphabet (X and U). It saved the data as a
-pickle.
+that are not in the mapped amino acid alphabet (X and U). It also added one
+column named `PS` that contains a `0` as negative label and a `1` as positive
+label. It saved the data as a pickle.
 
 ---
 
@@ -69,3 +70,27 @@ python src/scripts/run_block_decomposition.py
 ```
 Creating:
 `./data/intermediate_data/llps_data_ppmclab_bd.pkl`
+
+This script ran the block decomposition algorithm with all mappings a
+
+## 2025-05-13 
+
+Added another Mapping to `./src/modules/Words/Mappings.py`:
+
+- Mapping that shows enriched amino acids in proteins containing the RG-Motif
+and take part in PS
+
+---
+
+The script `./src/scripts/run_block_decomposition.py` was run again with the new
+mapping:
+```sh 
+python src/scripts/run_block_decomposition.py
+```
+Creating:
+`./data/intermediate_data/llps_data_ppmclab_bd.pkl`
+
+---
+
+Created a file `./src/scripts/prepare_raw_data.py` and started to implement a
+1dcnn
