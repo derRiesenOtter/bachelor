@@ -8,8 +8,8 @@ import pandas as pd
 def main():
     df = pd.read_csv("./data/raw_data/llps_data_ppmclab.tsv", delimiter="\t")
 
-    df.loc[~df["Datasets"].isin(["NP", "ND"]), "PS"] = 0
-    df.loc[df["Datasets"].isin(["NP", "ND"]), "PS"] = 1
+    df.loc[~df["Datasets"].isin(["NP", "ND"]), "PS"] = 1
+    df.loc[df["Datasets"].isin(["NP", "ND"]), "PS"] = 0
 
     filtered_df = df[~df["Full.seq"].str.contains("X|U", na=False)]
 
