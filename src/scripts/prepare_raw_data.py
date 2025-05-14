@@ -7,6 +7,7 @@ import pandas as pd
 
 def main():
     df = pd.read_csv("./data/raw_data/llps_data_ppmclab.tsv", delimiter="\t")
+    df = df[df["Full.seq"].apply(len) <= 2000].copy()
 
     df.loc[~df["Datasets"].isin(["NP", "ND"]), "PS"] = 1
     df.loc[df["Datasets"].isin(["NP", "ND"]), "PS"] = 0

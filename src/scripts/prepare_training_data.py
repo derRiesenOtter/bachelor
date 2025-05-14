@@ -1,3 +1,4 @@
+import math
 import pickle
 
 import matplotlib.pyplot as plt
@@ -87,6 +88,8 @@ class NeuralNetwork(nn.Module):
         kernel_size,
         num_classes,
         dropout=0.3,
+        nhead=4,
+        num_layers=1,
     ):
         super().__init__()
         self.embeddings = nn.ModuleList(
@@ -100,6 +103,15 @@ class NeuralNetwork(nn.Module):
             out_channels=conv_out_channels,
             kernel_size=kernel_size,
         )
+        # self.transformer = nn.TransformerEncoder(
+        #     nn.TransformerEncoderLayer(
+        #         d_model=conv_out_channels,
+        #         nhead=nhead,
+        #         dropout=dropout,
+        #         batch_first=True,
+        #     ),
+        #     num_layers=num_layers,
+        # )
         self.relu = nn.ReLU()
         self.global_pool = nn.AdaptiveAvgPool1d(1)
         self.dropout = nn.Dropout(dropout)
@@ -115,6 +127,9 @@ class NeuralNetwork(nn.Module):
         x_emb = x_emb.permute(0, 2, 1)
         x = self.conv(x_emb)
         x = self.relu(x)
+        # x = x.permute(0, 2, 1)
+        # x = self.transformer(x)
+        # x = x.permute(0, 2, 1)
         x = self.global_pool(x)
         x = x.squeeze(-1)
         x = self.dropout(x)
