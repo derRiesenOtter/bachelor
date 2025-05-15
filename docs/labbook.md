@@ -92,5 +92,16 @@ Creating:
 
 ---
 
-Created a file `./src/scripts/prepare_raw_data.py` and started to implement a
-1dcnn
+Created a file `./src/scripts/prepare_training_data.py` and started to implement
+a model. The max length of a sequence was limited to 2700, as this is the length
+of the largest possible sequence that can be analyzed with PSPire. This improved
+the performance of the model slightly.
+The model was run several times with varying parameters, just to get a feeling
+if any of them change the result a lot. 
+
+```sh
+python ./src/scripts/prepare_training_data.py
+```
+
+The performance of the model was okay. It plateaued after just a few epochs.
+AUROC was around 0.84 and PRAUC around 0.7.
