@@ -2,4 +2,4 @@ outs:
 - md5: c7789031258cca534ca00b522198241d
   size: 1293525
   hash: md5
-  path: llps_data_ppmclab.pkl
+  path: ppmclab.pkl

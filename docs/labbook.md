@@ -104,4 +104,20 @@ python ./src/scripts/prepare_training_data.py
 ```
 
 The performance of the model was okay. It plateaued after just a few epochs.
-AUROC was around 0.84 and PRAUC around 0.7.
+AUROC was around 0.84 and PRAUC around 0.7. Only using the balance threshold of
+4 instead of 3 and 4 did not impact the balance.
+
+## 2025-05-15
+
+Renamed the following files to keep things clean:
+```sh 
+mv data/raw_data/llps_data_ppmclab.tsv data/raw_data/ppmclab.tsv
+mv data/raw_data/ps_pire_data.csv data/raw_data/pspire.csv
+mv data/intermediate_data/llps_data_ppmclab.pkl data/intermediate_data/ppmclab.pkl
+mv data/intermediate_data/llps_data_ppmclab_bd.pkl data/intermediate_data/ppmclab_bd.pkl
+mv src/scripts/prepare_raw_data.py src/scripts/prepare_ppmclab.py
+mv src/scripts/get_ps_pire_sequences.py src/scripts/prepare_pspire.py
+mv src/scripts/run_block_decomposition.py src/scripts/run_bd_ppmclab.py
+mv src/scripts/prepare_training_data.py src/scripts/run_cnn_ppmclab.py
+
+```
