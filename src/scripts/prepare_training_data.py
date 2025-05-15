@@ -29,7 +29,7 @@ with open("./data/intermediate_data/llps_data_ppmclab_bd.pkl", "rb") as f:
 class ODCNNDataSet(Dataset):
     def __init__(self, df, label_col):
         self.df = df.reset_index(drop=True)
-        self.feature_columns = [col for col in self.df.columns if "vec" in col]
+        self.feature_columns = [col for col in self.df.columns if "4_vec" in col]
         self.label = self.df[label_col].astype(int)
         self.max_len = self.get_max_len()
 
@@ -42,7 +42,7 @@ class ODCNNDataSet(Dataset):
         :rtype: int
         """
         arrays = [
-            torch.tensor(x) for col in df.columns if "vec" in col for x in df[col]
+            torch.tensor(x) for col in df.columns if "4_vec" in col for x in df[col]
         ]
         return max(arr.shape[0] for arr in arrays)
 
@@ -92,62 +92,86 @@ class NeuralNetwork(nn.Module):
         num_layers=1,
     ):
         super().__init__()
+        # Embedding layers
         self.embeddings = nn.ModuleList(
             [
                 nn.Embedding(num_categories, embedding_dim)
                 for num_categories in num_categories_per_channel
             ]
         )
-        self.conv = nn.Conv1d(
+
+        # First convolutional block
+        self.conv1 = nn.Conv1d(
             in_channels=embedding_dim * num_channels,
             out_channels=conv_out_channels,
             kernel_size=kernel_size,
+            padding=kernel_size // 2,  # Maintains sequence length
         )
-        # self.transformer = nn.TransformerEncoder(
-        #     nn.TransformerEncoderLayer(
-        #         d_model=conv_out_channels,
-        #         nhead=nhead,
-        #         dropout=dropout,
-        #         batch_first=True,
-        #     ),
-        #     num_layers=num_layers,
-        # )
+        self.pool1 = nn.MaxPool1d(kernel_size=2, stride=2)
+
+        # Second convolutional block
+        self.conv2 = nn.Conv1d(
+            in_channels=conv_out_channels,
+            out_channels=conv_out_channels * 2,  # Double channels
+            kernel_size=kernel_size,
+            padding=kernel_size // 2,
+        )
+        self.pool2 = nn.MaxPool1d(kernel_size=2, stride=2)
+
         self.relu = nn.ReLU()
         self.global_pool = nn.AdaptiveAvgPool1d(1)
         self.dropout = nn.Dropout(dropout)
-        self.fc = nn.Linear(conv_out_channels, num_classes)
+
+        # Enhanced classifier
+        self.fc1 = nn.Linear(conv_out_channels * 2, 128)  # Additional hidden layer
+        self.fc2 = nn.Linear(128, num_classes)
 
     def forward(self, x):
         batch_size, num_channels, seq_length = x.size()
+
+        # Embedding
         embedded_channels = []
         for i in range(num_channels):
             emb = self.embeddings[i](x[:, i])
             embedded_channels.append(emb)
         x_emb = torch.cat(embedded_channels, dim=-1)
         x_emb = x_emb.permute(0, 2, 1)
-        x = self.conv(x_emb)
+
+        # First conv block
+        x = self.conv1(x_emb)
         x = self.relu(x)
-        # x = x.permute(0, 2, 1)
-        # x = self.transformer(x)
-        # x = x.permute(0, 2, 1)
+        x = self.pool1(x)
+
+        # Second conv block
+        x = self.conv2(x)
+        x = self.relu(x)
+        x = self.pool2(x)
+
+        # Global pooling and classification
         x = self.global_pool(x)
         x = x.squeeze(-1)
         x = self.dropout(x)
-        x = self.fc(x)
+
+        # Enhanced classifier
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+        x = self.fc2(x)
+
         return x
 
 
 # Create the model
 num_categories_per_channel = [
-    df[mapping].explode().nunique() + 1 for mapping in df.columns if "vec" in mapping
+    df[mapping].explode().nunique() + 1 for mapping in df.columns if "4_vec" in mapping
 ]
 
 model = NeuralNetwork(
     num_channels=len(num_categories_per_channel),
     num_categories_per_channel=num_categories_per_channel,
-    embedding_dim=10,
-    conv_out_channels=32,
-    kernel_size=15,
+    embedding_dim=20,
+    conv_out_channels=64,
+    kernel_size=10,
     num_classes=2,
 )
 
