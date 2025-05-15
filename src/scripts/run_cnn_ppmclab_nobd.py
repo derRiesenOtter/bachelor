@@ -2,6 +2,7 @@ import pickle
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 from sklearn.metrics import (
@@ -16,19 +17,54 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader, Dataset
 
-# Opening the data containing the block decomposition
-
-with open("./data/intermediate_data/llps_data_ppmclab_bd.pkl", "rb") as f:
+with open("./data/intermediate_data/ppmclab.pkl", "rb") as f:
     df = pickle.load(f)
 
-# Creating a Dataset class that will be used to yield one sample (a tensor of
-# shape num_of_features * max_len_of_seq)
+
+def map_sequence(sequence: str, mapping: dict) -> np.ndarray:
+    """
+    Returns the mapped sequence.
+
+    :param sequence: Amino Acid sequence.
+    :type sequence: str
+    :param mapping: Mapping for the Amino Acid sequence.
+    :type mapping: dict
+    :return: Array containing the mapped sequence.
+    :rtype: np.ndarray
+    """
+    return np.array([mapping.get(char) for char in sequence])
+
+
+AAMapping = {
+    "A": 0,
+    "C": 1,
+    "D": 2,
+    "E": 3,
+    "F": 4,
+    "G": 5,
+    "H": 6,
+    "I": 7,
+    "K": 8,
+    "L": 9,
+    "M": 10,
+    "N": 11,
+    "P": 12,
+    "Q": 13,
+    "R": 14,
+    "S": 15,
+    "T": 16,
+    "V": 17,
+    "W": 18,
+    "Y": 19,
+}
+
+df["mapped_seq"] = [map_sequence(seq, AAMapping) for seq in df["Full.seq"]]
 
 
 class ODCNNDataSet(Dataset):
     def __init__(self, df, label_col):
         self.df = df.reset_index(drop=True)
-        self.feature_columns = [col for col in self.df.columns if "4_vec" in col]
+        self.feature_column = "mapped_seq"
         self.label = self.df[label_col].astype(int)
         self.max_len = self.get_max_len()
 
@@ -40,17 +76,14 @@ class ODCNNDataSet(Dataset):
         :return: Max Sequence Length.
         :rtype: int
         """
-        arrays = [
-            torch.tensor(x) for col in df.columns if "4_vec" in col for x in df[col]
-        ]
+        arrays = [torch.tensor(x) for x in df[self.feature_column]]
         return max(arr.shape[0] for arr in arrays)
 
     def create_tensor(self, idx):
-        channels = [self.df[channel][idx] for channel in self.feature_columns]
-        length = len(channels[0])
+        channel = self.df[self.feature_column][idx]
+        length = len(channel)
         padded_channels = [
-            torch.tensor(np.append(channel, np.repeat(-2, self.max_len - length)))
-            for channel in channels
+            torch.tensor(np.append(channel, np.repeat(-1, self.max_len - length)))
         ]
         return torch.stack(padded_channels)
 
@@ -87,11 +120,10 @@ class NeuralNetwork(nn.Module):
         kernel_size,
         num_classes,
         dropout=0.3,
-        nhead=4,
-        num_layers=1,
+        lstm_hidden_size=64,
+        lstm_layers=1,
     ):
         super().__init__()
-        # Embedding layers
         self.embeddings = nn.ModuleList(
             [
                 nn.Embedding(num_categories, embedding_dim)
@@ -99,19 +131,27 @@ class NeuralNetwork(nn.Module):
             ]
         )
 
-        # First convolutional block
+        # BiLSTM
+        self.lstm = nn.LSTM(
+            input_size=embedding_dim * num_channels,
+            hidden_size=lstm_hidden_size,
+            num_layers=lstm_layers,
+            bidirectional=True,
+            batch_first=True,
+        )
+
+        # CNN blocks (input channels = 2 * lstm_hidden_size due to bidirectional LSTM)
         self.conv1 = nn.Conv1d(
-            in_channels=embedding_dim * num_channels,
+            in_channels=2 * lstm_hidden_size,
             out_channels=conv_out_channels,
             kernel_size=kernel_size,
-            padding=kernel_size // 2,  # Maintains sequence length
+            padding=kernel_size // 2,
         )
         self.pool1 = nn.MaxPool1d(kernel_size=2, stride=2)
 
-        # Second convolutional block
         self.conv2 = nn.Conv1d(
             in_channels=conv_out_channels,
-            out_channels=conv_out_channels * 2,  # Double channels
+            out_channels=conv_out_channels * 2,
             kernel_size=kernel_size,
             padding=kernel_size // 2,
         )
@@ -121,8 +161,7 @@ class NeuralNetwork(nn.Module):
         self.global_pool = nn.AdaptiveAvgPool1d(1)
         self.dropout = nn.Dropout(dropout)
 
-        # Enhanced classifier
-        self.fc1 = nn.Linear(conv_out_channels * 2, 128)  # Additional hidden layer
+        self.fc1 = nn.Linear(conv_out_channels * 2, 128)
         self.fc2 = nn.Linear(128, num_classes)
 
     def forward(self, x):
@@ -131,27 +170,29 @@ class NeuralNetwork(nn.Module):
         # Embedding
         embedded_channels = []
         for i in range(num_channels):
-            emb = self.embeddings[i](x[:, i])
+            emb = self.embeddings[i](x[:, i])  # (batch, seq_len, emb_dim)
             embedded_channels.append(emb)
-        x_emb = torch.cat(embedded_channels, dim=-1)
-        x_emb = x_emb.permute(0, 2, 1)
 
-        # First conv block
-        x = self.conv1(x_emb)
+        x_emb = torch.cat(embedded_channels, dim=-1)  # (batch, seq_len, total_emb_dim)
+
+        # BiLSTM
+        lstm_out, _ = self.lstm(x_emb)  # (batch, seq_len, 2 * hidden_size)
+
+        # CNN expects (batch, channels, seq_len)
+        x = lstm_out.permute(0, 2, 1)
+
+        x = self.conv1(x)
         x = self.relu(x)
         x = self.pool1(x)
 
-        # Second conv block
         x = self.conv2(x)
         x = self.relu(x)
         x = self.pool2(x)
 
-        # Global pooling and classification
         x = self.global_pool(x)
         x = x.squeeze(-1)
         x = self.dropout(x)
 
-        # Enhanced classifier
         x = self.fc1(x)
         x = self.relu(x)
         x = self.dropout(x)
@@ -162,15 +203,17 @@ class NeuralNetwork(nn.Module):
 
 # Create the model
 num_categories_per_channel = [
-    df[mapping].explode().nunique() + 1 for mapping in df.columns if "4_vec" in mapping
+    df[mapping].explode().nunique() + 1
+    for mapping in df.columns
+    if "mapped_seq" in mapping
 ]
 
 model = NeuralNetwork(
     num_channels=len(num_categories_per_channel),
     num_categories_per_channel=num_categories_per_channel,
-    embedding_dim=20,
-    conv_out_channels=64,
-    kernel_size=10,
+    embedding_dim=40,
+    conv_out_channels=32,
+    kernel_size=5,
     num_classes=2,
 )
 
