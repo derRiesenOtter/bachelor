@@ -1,0 +1,6 @@
+This data set contains 10801 entries
+After filtering out sequences that are longer than 2700 or shorter than 10 10748 entries were kept
+Of these filtered proteins 10231 were negatives
+Of these filtered proteins 517 were positives
+Of these filtered proteins 389 were positives with an idr
+Of these filtered proteins 128 were positives with an idr

@@ -5,7 +5,7 @@ from functools import partial
 from multiprocessing import Pool, freeze_support
 
 from src.modules import Words
-from src.modules.block_decomposition_modifier import get_block_seq
+from src.modules.bd_tools import get_block_seq
 from src.modules.Words.Mappings import (
     APNAMapping,
     IDRMapping,

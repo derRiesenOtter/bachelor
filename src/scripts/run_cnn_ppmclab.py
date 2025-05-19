@@ -16,49 +16,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader, Dataset
 
+from src.modules.bd_sequence_dataset import BDSequenceDataSet
+
 # Opening the data containing the block decomposition
 
 with open("./data/intermediate_data/llps_data_ppmclab_bd.pkl", "rb") as f:
     df = pickle.load(f)
-
-# Creating a Dataset class that will be used to yield one sample (a tensor of
-# shape num_of_features * max_len_of_seq)
-
-
-class ODCNNDataSet(Dataset):
-    def __init__(self, df, label_col):
-        self.df = df.reset_index(drop=True)
-        self.feature_columns = [col for col in self.df.columns if "4_vec" in col]
-        self.label = self.df[label_col].astype(int)
-        self.max_len = self.get_max_len()
-
-    def get_max_len(self) -> int:
-        """
-        Returns the max length of all sequences. This length will be used for
-        padding.
-
-        :return: Max Sequence Length.
-        :rtype: int
-        """
-        arrays = [
-            torch.tensor(x) for col in df.columns if "4_vec" in col for x in df[col]
-        ]
-        return max(arr.shape[0] for arr in arrays)
-
-    def create_tensor(self, idx):
-        channels = [self.df[channel][idx] for channel in self.feature_columns]
-        length = len(channels[0])
-        padded_channels = [
-            torch.tensor(np.append(channel, np.repeat(-2, self.max_len - length)))
-            for channel in channels
-        ]
-        return torch.stack(padded_channels)
-
-    def __len__(self):
-        return len(self.df)
-
-    def __getitem__(self, idx):
-        return self.create_tensor(idx), (self.label[idx])
 
 
 # Split data into training data and validation data. Create DataLoaders that are
@@ -69,9 +32,9 @@ train_df, val_df = train_test_split(
     df, test_size=0.2, stratify=df["PS"], random_state=42
 )
 
-train_data_set = ODCNNDataSet(train_df, "PS")
+train_data_set = BDSequenceDataSet(train_df, "PS")
 train_loader = DataLoader(train_data_set, batch_size=32, shuffle=True)
-val_data_set = ODCNNDataSet(val_df, "PS")
+val_data_set = BDSequenceDataSet(val_df, "PS")
 val_loader = DataLoader(val_data_set, batch_size=32, shuffle=False)
 
 # Create a model class

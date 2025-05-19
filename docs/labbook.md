@@ -5,6 +5,9 @@
   - [Before](#before)
   - [2025-05-11](#2025-05-11)
   - [2025-05-12](#2025-05-12)
+  - [2025-05-13](#2025-05-13)
+  - [2025-05-15](#2025-05-15)
+  - [2025-05-19](#2025-05-19)
 <!--toc:end-->
 
 
@@ -121,3 +124,35 @@ mv src/scripts/run_block_decomposition.py src/scripts/run_bd_ppmclab.py
 mv src/scripts/prepare_training_data.py src/scripts/run_cnn_ppmclab.py
 
 ```
+
+## 2025-05-19
+
+The data of the PS-Pire article was downloaded and saved as
+`./data/raw_data/pspire.csv`. A script was written to download the sequences
+for the proteins from UniProt and filter them as well as create some
+visualizations and also map the sequences. (`./src/scripts/prepare_pspire.py`)
+This script was run with: 
+
+```sh 
+python ./src/scripts/prepare_pspire.py
+```
+
+The script for preparing the ppmclab data set was also modified to yield some
+graphics (`./src/scripts/prepare_ppmclab.py`).
+
+```sh 
+python ./src/scripts/prepare_ppmclab.py
+```
+
+Started to modularize code. Datasets and models will now get a script each that
+resides in `./src/modules/`.
+Following files have been created there:
+`./src/modules/bd_cnn_1l.py`
+`./src/modules/bd_sequence_dataset.py`
+`./src/modules/sequence_dataset.py`
+`./src/modules/mappings.py`
+
+The module `./src/modules/block_decomposition_modifier.py` was renamed to
+`./src/modules/bd_tools.py`.
+
+

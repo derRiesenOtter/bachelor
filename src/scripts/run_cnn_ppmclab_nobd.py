@@ -21,46 +21,6 @@ with open("./data/intermediate_data/ppmclab.pkl", "rb") as f:
     df = pickle.load(f)
 
 
-def map_sequence(sequence: str, mapping: dict) -> np.ndarray:
-    """
-    Returns the mapped sequence.
-
-    :param sequence: Amino Acid sequence.
-    :type sequence: str
-    :param mapping: Mapping for the Amino Acid sequence.
-    :type mapping: dict
-    :return: Array containing the mapped sequence.
-    :rtype: np.ndarray
-    """
-    return np.array([mapping.get(char) for char in sequence])
-
-
-AAMapping = {
-    "A": 0,
-    "C": 1,
-    "D": 2,
-    "E": 3,
-    "F": 4,
-    "G": 5,
-    "H": 6,
-    "I": 7,
-    "K": 8,
-    "L": 9,
-    "M": 10,
-    "N": 11,
-    "P": 12,
-    "Q": 13,
-    "R": 14,
-    "S": 15,
-    "T": 16,
-    "V": 17,
-    "W": 18,
-    "Y": 19,
-}
-
-df["mapped_seq"] = [map_sequence(seq, AAMapping) for seq in df["Full.seq"]]
-
-
 class ODCNNDataSet(Dataset):
     def __init__(self, df, label_col):
         self.df = df.reset_index(drop=True)

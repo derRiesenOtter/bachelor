@@ -1,0 +1,14 @@
+Size of the whole data set: 2876 proteins.
+Size of the filtered data set: 2823 proteins.
+Positive Samples:
+746
+Negative Samples:
+2077
+Client exclusive proteins:
+358
+Driver exclusive proteins:
+334
+Driver and Client proteins:
+54
+Proteins containing IDRs:
+2254
