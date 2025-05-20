@@ -31,6 +31,8 @@ def main():
     df_with_seq = pd.concat([df_with_seq, df_slice])
     df_joined = pd.merge(df, df_with_seq, left_on="UniprotEntry", right_on="id")
     sns.kdeplot(np.array(df_joined["seq"].apply(len)))
+    plt.xlabel("Sequence Length in residues")
+    plt.ylabel("Density")
     plt.savefig("./results/plots/pspire_sequence_length_density.png")
     plt.show()
 

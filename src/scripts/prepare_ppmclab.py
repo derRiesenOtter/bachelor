@@ -18,7 +18,6 @@ def main():
 
     # visualize sequence length
     sns.kdeplot(np.array(df["Full.seq"].apply(len)))
-    plt.title("Density of the sequence length")
     plt.xlabel("Sequence Length in residues")
     plt.ylabel("Density")
     plt.savefig("./results/plots/ppmclab_sequence_length_density.png")

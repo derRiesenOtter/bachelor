@@ -1,6 +1,4 @@
-import os
 import pickle
-import sys
 from functools import partial
 from multiprocessing import Pool, freeze_support
 
@@ -18,7 +16,7 @@ from src.modules.Words.Mappings import (
 
 
 def main():
-    with open("./data/intermediate_data/ppmclab.pkl", "rb") as f:
+    with open("./data/intermediate_data/pspire.pkl", "rb") as f:
         data = pickle.load(f)
     mappings = [
         APNAMapping,
@@ -35,14 +33,12 @@ def main():
             func = partial(
                 create_block_list, balance_threshold=balance_threshold, mapping=mapping
             )
-            data[f"{mapping.__name__}_{balance_threshold}"] = p.map(
-                func, data["Full.seq"]
-            )
+            data[f"{mapping.__name__}_{balance_threshold}"] = p.map(func, data["seq"])
 
             data[f"{mapping.__name__}_{balance_threshold}_vec"] = [
                 get_block_seq(seq, blocks, mapping.Forward)
                 for seq, blocks in zip(
-                    data["Full.seq"], data[f"{mapping.__name__}_{balance_threshold}"]
+                    data["seq"], data[f"{mapping.__name__}_{balance_threshold}"]
                 )
             ]
 
@@ -50,17 +46,15 @@ def main():
             func = partial(
                 create_block_list, balance_threshold=balance_threshold, mapping=mapping
             )
-            data[f"{mapping.__name__}_{balance_threshold}"] = p.map(
-                func, data["Full.seq"]
-            )
+            data[f"{mapping.__name__}_{balance_threshold}"] = p.map(func, data["seq"])
             data[f"{mapping.__name__}_{balance_threshold}_vec"] = [
                 get_block_seq(seq, blocks, mapping.Forward)
                 for seq, blocks in zip(
-                    data["Full.seq"], data[f"{mapping.__name__}_{balance_threshold}"]
+                    data["seq"], data[f"{mapping.__name__}_{balance_threshold}"]
                 )
             ]
 
-    with open("./data/intermediate_data/ppmclab_bd.pkl", "bw") as f:
+    with open("./data/intermediate_data/pspire_bd.pkl", "bw") as f:
         pickle.dump(data, f)
 
 

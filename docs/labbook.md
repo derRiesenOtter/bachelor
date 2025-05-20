@@ -8,6 +8,7 @@
   - [2025-05-13](#2025-05-13)
   - [2025-05-15](#2025-05-15)
   - [2025-05-19](#2025-05-19)
+  - [2025-05-20](#2025-05-20)
 <!--toc:end-->
 
 
@@ -155,4 +156,18 @@ Following files have been created there:
 The module `./src/modules/block_decomposition_modifier.py` was renamed to
 `./src/modules/bd_tools.py`.
 
+## 2025-05-20
+
+Created the block decomposition for the pspire data set with:
+```sh 
+python ./src/scripts/run_bd_pspire.py
+```
+
+Continued to modularize and rewrite the model. Today the focus was on improving
+the training loop and creating additional graphics.
+
+The following was run:
+```sh 
+python ./src/scripts/run_cnn1l_bd_ppmclab.py
+```
 

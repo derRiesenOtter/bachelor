@@ -5,9 +5,9 @@ from torch.utils.data import Dataset
 
 
 class BDSequenceDataSet(Dataset):
-    def __init__(self, df: pd.DataFrame, label_col: str, max_len: int = 2700):
+    def __init__(self, df, label_col: str, max_len: int = 2700):
         self.df = df.reset_index(drop=True)
-        self.feature_columns = [col for col in self.df.columns if "feat" in col]
+        self.feature_columns = [col for col in self.df.columns if "vec" in col]
         self.label_col = label_col
         self.label = self.df[label_col].astype(int)
         self.max_len = max_len
