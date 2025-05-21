@@ -1,0 +1,5 @@
+outs:
+- md5: 1b0f82f629ed84add6ce8253627ce8be
+  size: 23177
+  hash: md5
+  path: cnn1l_bd_ppmclab_rocauc_idr.png

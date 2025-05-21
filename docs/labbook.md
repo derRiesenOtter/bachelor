@@ -171,3 +171,19 @@ The following was run:
 python ./src/scripts/run_cnn1l_bd_ppmclab.py
 ```
 
+## 2025-05-21 
+
+Ran and adjusted multiple models. Changed the optimizer to Adam as it is faster
+and tunes itself.
+All models were run today: 
+```sh 
+python ./src/scripts/run_cnn1l_ppmclab.py
+python ./src/scripts/run_cnn1l_bd_ppmclab.py
+python ./src/scripts/run_cnn1l_pspire.py
+python ./src/scripts/run_cnn1l_bd_pspire.py
+python ./src/scripts/run_cnn2l_ppmclab.py
+python ./src/scripts/run_cnn2l_bd_ppmclab.py
+python ./src/scripts/run_cnn2l_pspire.py
+python ./src/scripts/run_cnn2l_bd_pspire.py
+```
+The pspire data set seems to be a challange. For now the best model was the `cnn2l_pspire` model. 

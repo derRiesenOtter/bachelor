@@ -1,6 +1,6 @@
-import os
 import pickle
 import sys
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -153,6 +153,6 @@ def main():
 
 
 if __name__ == "__main__":
-    filename = os.path.basename(__file__)
+    filename = Path(__file__).stem
     sys.stdout = open(f"./results/stdout/{filename}.txt", "wt")
     main()

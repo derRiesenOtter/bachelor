@@ -1,32 +1,23 @@
-import torch
 import torch.nn as nn
 
 
-class BDCNN1L(nn.Module):
+class CNN1L(nn.Module):
     def __init__(
         self,
-        num_channels,
-        num_categories_per_channel,
+        num_categories,
         embedding_dim,
         conv1_out_channels,
         kernel_size,
         num_classes,
     ):
         super().__init__()
-        self.num_channels = num_channels
 
-        self.embeddings = nn.ModuleList(
-            [
-                nn.Embedding(
-                    num_embeddings=num_categories,
-                    embedding_dim=embedding_dim,
-                )
-                for num_categories in num_categories_per_channel
-            ]
+        self.embedding = nn.Embedding(
+            num_embeddings=num_categories, embedding_dim=embedding_dim
         )
 
         self.conv1 = nn.Conv1d(
-            in_channels=num_channels * embedding_dim,
+            in_channels=embedding_dim,
             out_channels=conv1_out_channels,
             kernel_size=kernel_size,
         )
@@ -41,10 +32,7 @@ class BDCNN1L(nn.Module):
 
     def forward(self, X):
         embedded_channels = []
-        for i in range(self.num_channels):
-            embedding = self.embeddings[i](X[:, i])
-            embedded_channels.append(embedding)
-        X = torch.cat(embedded_channels, dim=-1)
+        X = self.embedding(X[:,])
         # shape: (batch_size, seq_length, num_channels * embedding_dim)
         X = X.permute(0, 2, 1)
         # shape: (batch_size, num_channels * embedding_dim, seq_length)

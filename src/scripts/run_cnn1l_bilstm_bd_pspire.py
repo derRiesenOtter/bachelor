@@ -8,38 +8,46 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader
 
-from src.modules.cnn_1l import CNN1L
-from src.modules.sequence_dataset import SequenceDataSet
+from src.modules.bd_cnn_1l_bilstm import BDCNN1LBILSTM
+from src.modules.bd_sequence_dataset import BDSequenceDataSet
 from src.modules.train_eval import run_train_eval
 
-# Opening the data containing the mapped sequences
-with open("./data/intermediate_data/ppmclab.pkl", "rb") as f:
+# Opening the data containing the block decomposition
+with open("./data/intermediate_data/pspire_bd.pkl", "rb") as f:
     df = pickle.load(f)
+
+
+train_df = df.loc[df["Datasets"] == "Training"]
+val_df = df.loc[df["Datasets"] == "Testing"]
 
 # set a seed for reproducability
 torch.manual_seed(13)
 
 # Split data into training data and validation data.
-train_df, val_df = train_test_split(
-    df, test_size=0.2, stratify=df["ps_label"], random_state=13
-)
+# train_df, val_df = train_test_split(
+#     df, test_size=0.2, stratify=df["ps_label"], random_state=13
+# )
 
 # Create DataLoaders that are
 # responsible for feeding the data into the model
-train_data_set = SequenceDataSet(train_df, "mapped_seq", "ps_label")
-train_loader = DataLoader(train_data_set, batch_size=32, shuffle=True)
-val_data_set = SequenceDataSet(val_df, "mapped_seq", "ps_label")
+train_data_set = BDSequenceDataSet(train_df, "ps_label")
+train_loader = DataLoader(train_data_set, batch_size=64, shuffle=True)
+val_data_set = BDSequenceDataSet(val_df, "ps_label")
 val_loader = DataLoader(val_data_set, batch_size=32, shuffle=False)
 
-# get the number of categories
-num_categories = df["mapped_seq"].explode().nunique() + 1
+# get the number of categories per channel to later create the embeddings
+num_categories_per_channel = [
+    df[mapping].explode().nunique() + 1 for mapping in df.columns if "_vec" in mapping
+]
 
 # Create the model
-model = CNN1L(
-    num_categories=num_categories,
-    embedding_dim=10,
+model = BDCNN1LBILSTM(
+    num_channels=14,
+    num_categories_per_channel=num_categories_per_channel,
+    embedding_dim=3,
     conv1_out_channels=70,
     kernel_size=10,
+    lstm_hidden_dim=64,
     num_classes=2,
 )
 
@@ -58,9 +66,8 @@ loss_fn = nn.CrossEntropyLoss(weight=class_weights)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
 
 # get the model name and define the epochs
-model_name = Path(__file__).stem
-epochs = 20
-ps_pire = False
+model_name = Path(__file__).stem[4:]
+epochs = 10
 
 run_train_eval(
     model_name,

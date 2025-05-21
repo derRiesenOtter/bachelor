@@ -1,0 +1,5 @@
+outs:
+- md5: 3849f04fc8d939dc6b5bf5f2f001262b
+  size: 13906
+  hash: md5
+  path: cnn2l_bd_pspire_loss.png

@@ -13,16 +13,20 @@ from src.modules.sequence_dataset import SequenceDataSet
 from src.modules.train_eval import run_train_eval
 
 # Opening the data containing the mapped sequences
-with open("./data/intermediate_data/ppmclab.pkl", "rb") as f:
+with open("./data/intermediate_data/pspire.pkl", "rb") as f:
     df = pickle.load(f)
+
+
+train_df = df.loc[df["Datasets"] == "Training"]
+val_df = df.loc[df["Datasets"] == "Testing"]
 
 # set a seed for reproducability
 torch.manual_seed(13)
 
 # Split data into training data and validation data.
-train_df, val_df = train_test_split(
-    df, test_size=0.2, stratify=df["ps_label"], random_state=13
-)
+# train_df, val_df = train_test_split(
+#     df, test_size=0.2, stratify=df["ps_label"], random_state=13
+# )
 
 # Create DataLoaders that are
 # responsible for feeding the data into the model
@@ -60,8 +64,6 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
 # get the model name and define the epochs
 model_name = Path(__file__).stem
 epochs = 20
-ps_pire = False
-
 run_train_eval(
     model_name,
     model,

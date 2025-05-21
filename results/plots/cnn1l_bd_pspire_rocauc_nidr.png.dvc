@@ -1,0 +1,5 @@
+outs:
+- md5: 97e206e1bce5be45610e85593dcfa443
+  size: 23377
+  hash: md5
+  path: cnn1l_bd_pspire_rocauc_nidr.png

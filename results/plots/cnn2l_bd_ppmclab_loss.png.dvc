@@ -1,0 +1,5 @@
+outs:
+- md5: 2576c0839040878719adab190e689dc7
+  size: 14480
+  hash: md5
+  path: cnn2l_bd_ppmclab_loss.png

@@ -1,0 +1,5 @@
+outs:
+- md5: 32b9ef27a7d0cf1fe897a66a75b373c0
+  size: 16460
+  hash: md5
+  path: ppmclab_sample_dist.png

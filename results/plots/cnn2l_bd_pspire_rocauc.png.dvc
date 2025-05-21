@@ -1,0 +1,5 @@
+outs:
+- md5: 50bfed346bc7ba9d674e6d53152c3634
+  size: 25292
+  hash: md5
+  path: cnn2l_bd_pspire_rocauc.png

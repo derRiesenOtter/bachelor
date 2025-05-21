@@ -5,9 +5,7 @@ from torch.utils.data import Dataset
 
 
 class SequenceDataSet(Dataset):
-    def __init__(
-        self, df: pd.DataFrame, feature_col: str, label_col: str, max_len: int = 2700
-    ):
+    def __init__(self, df, feature_col: str, label_col: str, max_len: int = 2700):
         self.df = df.reset_index(drop=True)
         self.feature_column = feature_col
         self.label_col = label_col

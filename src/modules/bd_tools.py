@@ -1,7 +1,29 @@
+import itertools
 import unittest
 from collections import Counter
 
 import numpy as np
+
+
+def get_scalar_values(
+    sequence: str, block_list: list[tuple[int, int]], mapping: dict
+) -> list:
+    block_seq = get_block_seq(sequence, block_list, mapping)
+    dic = {}
+    for _, value in mapping.items():
+        dic[value] = 0
+    permutations = itertools.permutations(dic.keys(), 2)
+    for value in permutations:
+        new_key = int(str(value[0]) + str(value[1]))
+        dic[new_key] = 0
+    dic[9] = 0
+    dic[-1] = 0
+    for residue in block_seq:
+        dic[int(residue)] = dic[int(residue)] + 1
+    feature_list = []
+    for _, value in dic.items():
+        feature_list.append(value)
+    return feature_list
 
 
 def get_block_seq(
@@ -98,15 +120,24 @@ class TestMapSequence(unittest.TestCase):
 class TestGetBlockSeq(unittest.TestCase):
     def test_one_block(self):
         result = get_block_seq("ABCDDDCBA", [(3, 6)], {"A": 3, "B": 1, "C": 2, "D": 3})
-        expected = np.array([0, 0, 0, 3, 3, 3, 0, 0, 0])
-        np.array_equal(result, expected)
+        expected = np.array([-1, -1, -1, 3, 3, 3, -1, -1, -1])
+        self.assertTrue(np.array_equal(result, expected))
 
     def test_two_blocks(self):
         result = get_block_seq(
             "ABCDDDCBABAB", [(3, 6), (8, 12)], {"A": 3, "B": 1, "C": 2, "D": 3}
         )
-        expected = np.array([0, 0, 0, 3, 3, 3, 0, 0, 12, 12, 12, 12, 12])
-        np.array_equal(result, expected)
+        expected = np.array([-1, -1, -1, 3, 3, 3, -1, -1, 31, 31, 31, 31])
+        self.assertTrue(np.array_equal(result, expected))
+
+
+class TestGetScalarValue(unittest.TestCase):
+    def test_scalar_values(self):
+        result = get_scalar_values(
+            "ABCDDDCBABAB", [(3, 6), (8, 12)], {"A": 3, "B": 1, "C": 2, "D": 3}
+        )
+        expected = [3, 0, 0, 4, 0, 0, 0, 0, 0, 0, 5]
+        self.assertEqual(result, expected)
 
 
 if __name__ == "__main__":

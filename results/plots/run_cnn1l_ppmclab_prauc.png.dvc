@@ -1,0 +1,5 @@
+outs:
+- md5: ff43896ba25493e11743d429ed7de5ff
+  size: 20545
+  hash: md5
+  path: run_cnn1l_ppmclab_prauc.png

@@ -1,0 +1,5 @@
+outs:
+- md5: 88d7aebaaf6d0296dc45bd9479ee11e7
+  size: 7888
+  hash: md5
+  path: cnn1l_bd_ppmclab_cm_nidr.png
