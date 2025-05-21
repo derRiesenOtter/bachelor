@@ -1,0 +1,5 @@
+outs:
+- md5: 277a3810bd9c61782cbd8477cd96fd1b
+  size: 521007
+  hash: md5
+  path: model_cnn2l_bd_ppmclab_adam

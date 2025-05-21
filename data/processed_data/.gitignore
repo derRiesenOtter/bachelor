@@ -1,1 +1,11 @@
 /model_cnn1l_bd_ppmclab
+/model_cnn2l_bd_ppmclab
+/model_run_cnn1l_pspire
+/model_cnn2l_bd_pspire
+/model_run_cnn1l_ppmclab
+/model_run_cnn1l_bilstm_pspire
+/model_cnn1l_bilstm_bd_pspire
+/model_run_cnn2l_pspire
+/model_run_cnn2l_ppmclab
+/model_cnn2l_bd_ppmclab_adam
+/model_cnn1l_bd_pspire

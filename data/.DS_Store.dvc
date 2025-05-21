@@ -1,0 +1,5 @@
+outs:
+- md5: 838e71ce5758e8c0ac4400a21cb17a0c
+  size: 6148
+  hash: md5
+  path: .DS_Store

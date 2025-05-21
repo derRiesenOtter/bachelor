@@ -1,0 +1,5 @@
+outs:
+- md5: ce7ac708449c233aef2aeaf25ac3c1b1
+  size: 126909
+  hash: md5
+  path: model_cnn1l_bd_pspire
