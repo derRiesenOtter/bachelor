@@ -1,0 +1,5 @@
+outs:
+- md5: 1be0f81dd6edad53ea14382b045eba89
+  size: 24219
+  hash: md5
+  path: run_cnn2l_att_ppmclab_pspire_rocauc_idr.png

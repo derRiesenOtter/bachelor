@@ -9,3 +9,10 @@
 /model_run_cnn2l_ppmclab
 /model_cnn2l_bd_ppmclab_adam
 /model_cnn1l_bd_pspire
+/model_run_cnn2l_ppmclab_pspire_multi
+/model_run_cnn3l_ppmclab_pspire
+/model_run_cnn2l_ppmclab_pspire
+/model_run_cnn2l_att_ppmclab_pspire
+/model_run_transformer_ppmclab_pspire
+/model_cnn2l_bd_ppmclab_pspire
+/model_run_cnn2l_blstm_ppmclab_pspire

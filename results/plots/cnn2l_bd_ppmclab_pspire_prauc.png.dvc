@@ -1,0 +1,5 @@
+outs:
+- md5: ab007c5200ec1ce8f86873173b3c9896
+  size: 18540
+  hash: md5
+  path: cnn2l_bd_ppmclab_pspire_prauc.png

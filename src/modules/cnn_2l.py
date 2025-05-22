@@ -39,8 +39,7 @@ class CNN2L(nn.Module):
         self.fc1 = nn.Linear(conv2_out_channels, num_classes)
 
     def forward(self, X):
-        embedded_channels = []
-        X = self.embedding(X[:,])
+        X = self.embedding(X)
         # shape: (batch_size, seq_length, num_channels * embedding_dim)
         X = X.permute(0, 2, 1)
         # shape: (batch_size, num_channels * embedding_dim, seq_length)

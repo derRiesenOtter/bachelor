@@ -22,7 +22,6 @@ def run_train_eval(
     optimizer,
     val_df,
 ):
-
     model = model.to(device)
 
     epoch_number = 0
@@ -206,7 +205,7 @@ def run_train_eval(
     cm = confusion_matrix(nidr_labels, nidr_preds)
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False)
-    plt.xlabel("Predicted")
+    plt.xlabel("Preditrain_dfcted")
     plt.ylabel("True")
     plt.savefig(f"./results/plots/{model_name}_cm_nidr")
     plt.close()

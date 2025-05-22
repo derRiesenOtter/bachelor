@@ -1,0 +1,5 @@
+outs:
+- md5: e02feb92dc21140b794a0f48878f807d
+  size: 521315
+  hash: md5
+  path: model_cnn2l_bd_ppmclab_pspire

@@ -187,3 +187,19 @@ python ./src/scripts/run_cnn2l_pspire.py
 python ./src/scripts/run_cnn2l_bd_pspire.py
 ```
 The pspire data set seems to be a challange. For now the best model was the `cnn2l_pspire` model. 
+
+## 2025-05-22 
+Build models that train on ppmclab and pspire data to test the pspire data set: 
+```sh 
+python ./src/scripts/run_cnn2l_ppmclab_pspire.py
+python ./src/scripts/run_cnn2l_att_ppmclab_pspire.py
+python ./src/scripts/run_transformer_ppmclab_pspire.py
+```
+To see if it helps to train the model on an extra label for ps proteins with idr
+content a model was trained with this label:
+```sh
+python ./src/scripts/run_cnn2l_ppmclab_pspire_multi.py 
+```
+
+To analyze the results a train test loop was created for multiclass cases:
+`./src/modules/train_eval_multi.py`
