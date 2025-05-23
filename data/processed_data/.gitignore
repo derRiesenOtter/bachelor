@@ -16,3 +16,6 @@
 /model_run_transformer_ppmclab_pspire
 /model_cnn2l_bd_ppmclab_pspire
 /model_run_cnn2l_blstm_ppmclab_pspire
+/model_run_blstm_ppmclab_pspire
+/model_run_cnn2l_phasepdb
+/model_run_cnn2l_ppmclab_phasepdb

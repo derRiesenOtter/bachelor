@@ -21,12 +21,12 @@ def run_train_eval(
     loss_fn,
     optimizer,
     val_df,
+    patience=4,
 ):
     model = model.to(device)
 
     epoch_number = 0
     best_vloss = 1000000
-    patience = 3
     patience_counter = 0
 
     train_loss_list = []

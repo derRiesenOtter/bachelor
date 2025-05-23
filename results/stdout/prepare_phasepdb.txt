@@ -1,0 +1,6 @@
+This data set contains 60801 entries
+After filtering out sequences that are longer than 2700 or shorter than 10 60186 entries were kept
+Of these filtered proteins 59619 were negative
+Of these filtered proteins 319 were PS-Self
+Of these filtered proteins 197 were PS-Part
+Of these filtered proteins 51 were PS

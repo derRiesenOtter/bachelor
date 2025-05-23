@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader
 
-from src.modules.cnn_2l import CNN2L
+from src.modules.blstm import BiLSTMClassifier
 from src.modules.sequence_dataset import SequenceDataSet
 from src.modules.train_eval import run_train_eval
 
@@ -24,7 +24,6 @@ with open("./data/intermediate_data/ppmclab.pkl", "rb") as f:
 val_df = pspire_df.loc[pspire_df["Datasets"] == "Testing"]
 pspire_train = pspire_df.loc[pspire_df["Datasets"] == "Training"]
 ppmclab_df = ppmclab_df.rename(columns={"UniProt.Acc": "id"})
-ppmclab_df = ppmclab_df.loc[~ppmclab_df["id"].isin(val_df["id"])]
 train_df = pd.concat([ppmclab_df, pspire_train])
 train_df = train_df.loc[~train_df["id"].duplicated(keep=False)]
 all_df = pd.concat([train_df, val_df])
@@ -46,20 +45,19 @@ torch.manual_seed(13)
 # Create DataLoaders that are
 # responsible for feeding the data into the model
 train_data_set = SequenceDataSet(train_df, "mapped_seq", "ps_label")
-train_loader = DataLoader(train_data_set, batch_size=64, shuffle=True)
+train_loader = DataLoader(train_data_set, batch_size=8, shuffle=True)
 val_data_set = SequenceDataSet(val_df, "mapped_seq", "ps_label")
-val_loader = DataLoader(val_data_set, batch_size=64, shuffle=False)
+val_loader = DataLoader(val_data_set, batch_size=8, shuffle=False)
 
 # get the number of categories
 num_categories = pspire_df["mapped_seq"].explode().nunique() + 1
 
 # Create the model
-model = CNN2L(
+model = BiLSTMClassifier(
     num_categories=num_categories,
-    embedding_dim=10,
-    conv1_out_channels=70,
-    conv2_out_channels=140,
-    kernel_size=10,
+    embedding_dim=12,
+    hidden_dim=3,
+    num_layers=4,
     num_classes=2,
 )
 
@@ -77,11 +75,11 @@ class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
 
 # Create a loss function that takes the class weights into consideration and an optimizer
 loss_fn = nn.CrossEntropyLoss(weight=class_weights)
-optimizer = torch.optim.Adam(model.parameters(), lr=0.5e-3, weight_decay=1.5e-4)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
 
 # get the model name and define the epochs
 model_name = Path(__file__).stem
-epochs = 20
+epochs = 15
 run_train_eval(
     model_name,
     model,
@@ -92,5 +90,4 @@ run_train_eval(
     loss_fn,
     optimizer,
     val_df,
-    patience=3,
 )

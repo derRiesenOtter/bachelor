@@ -9,6 +9,9 @@
   - [2025-05-15](#2025-05-15)
   - [2025-05-19](#2025-05-19)
   - [2025-05-20](#2025-05-20)
+  - [2025-05-21](#2025-05-21)
+  - [2025-05-22](#2025-05-22)
+  - [2025-05-23](#2025-05-23)
 <!--toc:end-->
 
 
@@ -203,3 +206,26 @@ python ./src/scripts/run_cnn2l_ppmclab_pspire_multi.py
 
 To analyze the results a train test loop was created for multiclass cases:
 `./src/modules/train_eval_multi.py`
+
+
+## 2025-05-23
+
+Downloaded Dataset S01 and S06 from the [PhaSepDB article](https://www.pnas.org/doi/10.1073/pnas.2115369119#supplementary-materials)
+and placed them as follows:
+S02 saps: `./data/raw_data/phasepdb_saps.csv`
+S02 pdps: `./data/raw_data/phasepdb_pdps.csv`
+S02 nops: `./data/raw_data/phasepdb_nops.csv`
+S03 saps test: `./data/raw_data/phasepdb_saps_test.csv`
+S03 pdps test: `./data/raw_data/phasepdb_pdps_test.csv`
+S03 nops test: `./data/raw_data/phasepdb_nops_test.csv`
+S03 ps test: `./data/raw_data/phasepdb_ps_test.csv`
+S06: `./data/raw_data/phasepdb_mlo.csv`
+
+Downloaded the supplementary data 5 from the [PSPire article](https://www.nature.com/articles/s41467-024-46445-y#MOESM9) 
+and placed it as follows: `./data/raw_data/pspire_mlo.csv`
+
+Wrote a script to prepare the data from phasepbd and ran it:
+```sh
+python ./src/scripts/prepare_phasepdb.py
+
+```

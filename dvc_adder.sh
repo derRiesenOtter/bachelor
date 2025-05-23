@@ -1,4 +1,4 @@
-!#bash
+#!bash
 
 find data -maxdepth 2 -type f \
     ! -name "*.dvc" \
