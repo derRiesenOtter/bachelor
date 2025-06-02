@@ -12,6 +12,8 @@
   - [2025-05-21](#2025-05-21)
   - [2025-05-22](#2025-05-22)
   - [2025-05-23](#2025-05-23)
+  - [2025-05-26 to 2025-05-28](#2025-05-26-to-2025-05-28)
+  - [2025-06-02](#2025-06-02)
 <!--toc:end-->
 
 
@@ -248,14 +250,14 @@ python run_xgb_phasepdb.py
 Started to evaluate the currently best model (one trained on the phasepdb data,
 the other on the union of pspire and ppmclab) on the MLO data:
 ```sh
-python prepare_phasepdb_G3BP1.py
-python prepare_phasepdb_dact1.py
-python prepare_phasepdb_opencell.py
-python prepare_phasepdb_phasepdb_high.py
-python pspire_phasepdb_dact1.py
-python pspire_phasepdb_drllps.py
-python pspire_phasepdb_g3bp1.py
-python pspire_phasepdb_psdbht.py
+python eval_phasepdb_G3BP1.py
+python eval_phasepdb_dact1.py
+python eval_phasepdb_opencell.py
+python eval_phasepdb_phasepdb_high.py
+python eval_pspire_dact1.py
+python eval_pspire_drllps.py
+python eval_pspire_g3bp1.py
+python eval_pspire_psdbht.py
 ```
 
 Created a script that downloads the data of alphafold and calculates the surface
@@ -265,3 +267,13 @@ python prepare_pspire_alpha.py
 ```
 
 ## 2025-06-02
+
+Created scripts to download the alphafold data for all datasets and maybe run
+them, if the internet service guy comes around.
+```sh 
+python prepare_pspire_alpha.py
+python prepare_pspire_mlo_alpha.py
+python prepare_ppmclab_alpha.py
+python prepare_phasepdb_alpha.py
+python prepare_phasepdb_mlo_alpha.py
+```

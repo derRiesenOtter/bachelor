@@ -9,7 +9,6 @@
   set text(weight: "bold")
   set block(above: 1.3em)
   header
-  the
 }
 #show figure.where(kind: table): set figure.caption(position: top)
 #show: init-glossary.with(yaml("glossary.yaml"))

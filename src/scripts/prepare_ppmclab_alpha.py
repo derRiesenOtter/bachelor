@@ -6,15 +6,16 @@ import requests
 from Bio.PDB.DSSP import DSSP
 from Bio.PDB.PDBParser import PDBParser
 
-dataset = "pspire"
+dataset = "ppmclab"
 
 with open(f"./data/intermediate_data/{dataset}.pkl", "rb") as f:
     df = pickle.load(f)
 
+
 df["rsa"] = None
 
 for idx, row in df.iterrows():
-    id = row["UniprotEntry"]
+    id = row["UniProt.Acc"]
     file = f"./data/raw_data/alpha_pdb/{id}.pdb"
 
     if not Path(file).exists():

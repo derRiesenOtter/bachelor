@@ -6,7 +6,7 @@ import requests
 from Bio.PDB.DSSP import DSSP
 from Bio.PDB.PDBParser import PDBParser
 
-dataset = "pspire"
+dataset = "phasepdb"
 
 with open(f"./data/intermediate_data/{dataset}.pkl", "rb") as f:
     df = pickle.load(f)

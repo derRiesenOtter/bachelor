@@ -52,7 +52,7 @@ def main():
                 )
             )
         ]
-        with open(f"./data/intermediate_data/{mlo_list}.pkl", "wb") as f:
+        with open(f"./data/intermediate_data/phasepdb_{mlo_list}.pkl", "wb") as f:
             pickle.dump(mlo_df, f)
 
 

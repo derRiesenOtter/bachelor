@@ -39,7 +39,9 @@ def main():
     plt.show()
 
     df_joined["mapped_seq"] = df_joined["seq"].apply(map_sequence, args=(AAMapping,))
-    for mlo_list in df_joined.drop(columns=["id", "UniprotEntry", "mapped_seq"]):
+    for mlo_list in df_joined.drop(
+        columns=["id", "UniprotEntry", "mapped_seq", "ps_label", "Type", "seq"]
+    ):
         mlo_df = df_joined.loc[df_joined[mlo_list] == 1][
             ["UniprotEntry", "mapped_seq", "ps_label", "Type"]
         ]
