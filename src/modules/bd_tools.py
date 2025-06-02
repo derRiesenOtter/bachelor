@@ -5,10 +5,7 @@ from collections import Counter
 import numpy as np
 
 
-def get_scalar_values(
-    sequence: str, block_list: list[tuple[int, int]], mapping: dict
-) -> list:
-    block_seq = get_block_seq(sequence, block_list, mapping)
+def get_scalar_values(sequence: np.ndarray, mapping: dict) -> dict:
     dic = {}
     for _, value in mapping.items():
         dic[value] = 0
@@ -18,12 +15,11 @@ def get_scalar_values(
         dic[new_key] = 0
     dic[9] = 0
     dic[-1] = 0
-    for residue in block_seq:
+    for residue in sequence:
         dic[int(residue)] = dic[int(residue)] + 1
-    feature_list = []
-    for _, value in dic.items():
-        feature_list.append(value)
-    return feature_list
+    for key in dic.keys():
+        dic[key] = dic[key] / len(sequence)
+    return dic
 
 
 def get_block_seq(
@@ -134,9 +130,10 @@ class TestGetBlockSeq(unittest.TestCase):
 class TestGetScalarValue(unittest.TestCase):
     def test_scalar_values(self):
         result = get_scalar_values(
-            "ABCDDDCBABAB", [(3, 6), (8, 12)], {"A": 3, "B": 1, "C": 2, "D": 3}
+            np.array([-1, -1, -1, 3, 3, 3, -1, -1, 31, 31, 31, 31]),
+            {"A": 3, "B": 1, "C": 2, "D": 3},
         )
-        expected = [3, 0, 0, 4, 0, 0, 0, 0, 0, 0, 5]
+        expected = [3 / 12, 0, 0, 4 / 12, 0, 0, 0, 0, 0, 0, 5 / 12]
         self.assertEqual(result, expected)
 
 

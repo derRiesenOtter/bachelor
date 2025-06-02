@@ -1,4 +1,5 @@
 src/modules/Words/*
 src/modules/__pycache__
+data/raw_data/alpha_pdb
 
 !src/modules/Words/Mappings.py

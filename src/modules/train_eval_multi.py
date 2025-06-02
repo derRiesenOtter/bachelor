@@ -29,7 +29,7 @@ def run_train_eval(
 
     epoch_number = 0
     best_vloss = 1000000
-    patience = 3
+    patience = 10
     patience_counter = 0
 
     train_loss_list = []
@@ -118,17 +118,7 @@ def run_train_eval(
     y_true_bin = label_binarize(all_labels, classes=list(range(n_classes)))
     y_score = np.array(all_probs)
 
-    plt.figure()
-    for i in range(n_classes):
-        fpr, tpr, _ = roc_curve(y_true_bin[:, i], y_score[:, i])
-        roc_auc = auc(fpr, tpr)
-        plt.plot(fpr, tpr, label=f"Class {i} (AUC = {roc_auc:.2f})")
-    plt.xlabel("False Positive Rate")
-    plt.ylabel("True Positive Rate")
-    plt.legend()
-    plt.plot([0, 1], [0, 1], "k--")
-    plt.savefig(f"./results/plots/{model_name}_rocauc")
-    plt.close()
+    create_rocauc(n_classes, y_true_bin, y_score, model_name)
 
     print(classification_report(all_labels, all_preds, digits=3))
 
@@ -151,121 +141,32 @@ def run_train_eval(
     plt.legend()
     plt.savefig(f"./results/plots/{model_name}_prauc")
     plt.close()
-    #
-    # all_probs = np.array(all_probs)
-    #
-    # fpr, tpr, _ = roc_curve(all_labels, all_probs)
-    # roc_auc = roc_auc_score(all_labels, all_probs)
-    #
-    # plt.figure()
-    # plt.plot(fpr, tpr, label=f"ROC (AUC = {roc_auc:.2f})")
-    # plt.plot([0, 1], [0, 1], "k--")
-    # plt.xlabel("False Positive Rate")
-    # plt.ylabel("True Positive Rate")
-    # plt.ylim(0, 1)
-    # plt.legend()
-    # plt.savefig(f"./results/plots/{model_name}_rocauc")
-    # plt.close()
-    #
-    # precision, recall, _ = precision_recall_curve(all_labels, all_probs)
-    # pr_auc = average_precision_score(all_labels, all_probs)
-    #
-    # plt.figure()
-    # plt.plot(recall, precision, label=f"PR (AUC = {pr_auc:.2f})")
-    # plt.xlabel("Recall")
-    # plt.ylabel("Precision")
-    # plt.ylim(0, 1)
-    # plt.legend()
-    # plt.savefig(f"./results/plots/{model_name}_prauc")
-    # plt.close()
-    #
-    # # create the plots for proteins containing idrs and no idrs separetely
-    # if "pspire" in model_name:
-    #     idr_probs = np.array(all_probs)[
-    #         (val_df["idr_protein"] == 1) | (val_df["ps_label"] == 0)
-    #     ]
-    #     idr_labels = np.array(all_labels)[
-    #         (val_df["idr_protein"] == 1) | (val_df["ps_label"] == 0)
-    #     ]
-    #     idr_preds = np.array(all_preds)[
-    #         (val_df["idr_protein"] == 1) | (val_df["ps_label"] == 0)
-    #     ]
-    # else:
-    #     idr_probs = np.array(all_probs)[val_df["idr_protein"] == 1]
-    #     idr_labels = np.array(all_labels)[val_df["idr_protein"] == 1]
-    #     idr_preds = np.array(all_preds)[val_df["idr_protein"] == 1]
-    #
-    # nidr_probs = np.array(all_probs)[val_df["idr_protein"] == 0]
-    # nidr_labels = np.array(all_labels)[val_df["idr_protein"] == 0]
-    # nidr_preds = np.array(all_preds)[val_df["idr_protein"] == 0]
-    #
-    # # create a confusion_matrix
-    # cm = confusion_matrix(idr_labels, idr_preds)
-    # plt.figure(figsize=(8, 6))
-    # sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False)
-    # plt.xlabel("Predicted")
-    # plt.ylabel("True")
-    # plt.savefig(f"./results/plots/{model_name}_cm_idr")
-    # plt.close()
-    #
-    # fpr, tpr, _ = roc_curve(idr_labels, idr_probs)
-    # roc_auc = roc_auc_score(idr_labels, idr_probs)
-    #
-    # plt.figure()
-    # plt.plot(fpr, tpr, label=f"ROC (AUC = {roc_auc:.2f})")
-    # plt.plot([0, 1], [0, 1], "k--")
-    # plt.xlabel("False Positive Rate")
-    # plt.ylabel("True Positive Rate")
-    # plt.ylim(0, 1)
-    # plt.legend()
-    # plt.savefig(f"./results/plots/{model_name}_rocauc_idr")
-    # plt.close()
-    #
-    # precision, recall, _ = precision_recall_curve(idr_labels, idr_probs)
-    # pr_auc = average_precision_score(idr_labels, idr_probs)
-    #
-    # plt.figure()
-    # plt.plot(recall, precision, label=f"PR (AUC = {pr_auc:.2f})")
-    # plt.xlabel("Recall")
-    # plt.ylabel("Precision")
-    # plt.ylim(0, 1)
-    # plt.legend()
-    # plt.savefig(f"./results/plots/{model_name}_prauc_idr")
-    # plt.close()
-    #
-    # # create a confusion_matrix
-    # cm = confusion_matrix(nidr_labels, nidr_preds)
-    # plt.figure(figsize=(8, 6))
-    # sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False)
-    # plt.xlabel("Preditrain_dfcted")
-    # plt.ylabel("True")
-    # plt.savefig(f"./results/plots/{model_name}_cm_nidr")
-    # plt.close()
-    #
-    # fpr, tpr, _ = roc_curve(nidr_labels, nidr_probs)
-    # roc_auc = roc_auc_score(nidr_labels, nidr_probs)
-    #
-    # plt.figure()
-    # plt.plot(fpr, tpr, label=f"ROC (AUC = {roc_auc:.2f})")
-    # plt.plot([0, 1], [0, 1], "k--")
-    # plt.xlabel("False Positive Rate")
-    # plt.ylabel("True Positive Rate")
-    # plt.ylim(0, 1)
-    # plt.legend()
-    # plt.savefig(f"./results/plots/{model_name}_rocauc_nidr")
-    # plt.close()
-    #
-    # precision, recall, _ = precision_recall_curve(nidr_labels, nidr_probs)
-    # pr_auc = average_precision_score(nidr_labels, nidr_probs)
-    #
-    # plt.figure()
-    # plt.plot(recall, precision, label=f"PR (AUC = {pr_auc:.2f})")
-    # plt.xlabel("Recall")
-    # plt.ylabel("Precision")
-    # plt.ylim(0, 1)
-    # plt.legend()
-    # plt.savefig(f"./results/plots/{model_name}_prauc_nidr")
-    # plt.close()
+
+
+def create_rocauc(n_classes, y_true_bin, y_score, model_name):
+    plt.figure()
+    for i in range(1, n_classes):
+        fpr, tpr, _ = roc_curve(y_true_bin[:, i], y_score[:, i])
+        roc_auc = auc(fpr, tpr)
+        plt.plot(fpr, tpr, label=f"Class {i} (AUC = {roc_auc:.2f})")
+
+    y_true_combined = np.any(y_true_bin[:, 1:], axis=1).astype(int)
+    y_score_combined = np.max(y_score[:, 1:], axis=1)
+    fpr, tpr, _ = roc_curve(y_true_combined, y_score_combined)
+    roc_auc = auc(fpr, tpr)
+    plt.plot(
+        fpr,
+        tpr,
+        label=f"Combined Classes 1-{n_classes-1} (AUC = {roc_auc:.2f})",
+        linestyle=":",
+        linewidth=3,
+    )
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.legend()
+    plt.plot([0, 1], [0, 1], "k--")
+    plt.savefig(f"./results/plots/{model_name}_rocauc")
+    plt.close()
 
 
 def train_one_epoch(model, train_loader, device, loss_fn, optimizer):

@@ -235,6 +235,91 @@ def run_train_eval(
     plt.savefig(f"./results/plots/{model_name}_prauc_nidr")
     plt.close()
 
+    if "phasepdb" in model_name:
+        d_probs = np.array(all_probs)[
+            (val_df["ps_sp_label"] == 1) | (val_df["ps_label"] == 0)
+        ]
+        d_labels = np.array(all_labels)[
+            (val_df["ps_sp_label"] == 1) | (val_df["ps_label"] == 0)
+        ]
+        d_preds = np.array(all_preds)[
+            (val_df["ps_sp_label"] == 1) | (val_df["ps_label"] == 0)
+        ]
+        c_probs = np.array(all_probs)[
+            (val_df["ps_sp_label"] == 2) | (val_df["ps_label"] == 0)
+        ]
+        c_labels = np.array(all_labels)[
+            (val_df["ps_sp_label"] == 2) | (val_df["ps_label"] == 0)
+        ]
+        c_preds = np.array(all_preds)[
+            (val_df["ps_sp_label"] == 2) | (val_df["ps_label"] == 0)
+        ]
+        cm = confusion_matrix(d_labels, d_preds)
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False)
+        plt.xlabel("Predicted")
+        plt.ylabel("True")
+        plt.savefig(f"./results/plots/{model_name}_cm_d")
+        plt.close()
+
+        fpr, tpr, _ = roc_curve(d_labels, d_probs)
+        roc_auc = roc_auc_score(d_labels, d_probs)
+
+        plt.figure()
+        plt.plot(fpr, tpr, label=f"ROC (AUC = {roc_auc:.2f})")
+        plt.plot([0, 1], [0, 1], "k--")
+        plt.xlabel("False Positive Rate")
+        plt.ylabel("True Positive Rate")
+        plt.ylim(0, 1)
+        plt.legend()
+        plt.savefig(f"./results/plots/{model_name}_rocauc_d")
+        plt.close()
+
+        precision, recall, _ = precision_recall_curve(d_labels, d_probs)
+        pr_auc = average_precision_score(d_labels, d_probs)
+
+        plt.figure()
+        plt.plot(recall, precision, label=f"PR (AUC = {pr_auc:.2f})")
+        plt.xlabel("Recall")
+        plt.ylabel("Precision")
+        plt.ylim(0, 1)
+        plt.legend()
+        plt.savefig(f"./results/plots/{model_name}_prauc_d")
+        plt.close()
+
+        cm = confusion_matrix(c_labels, c_preds)
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False)
+        plt.xlabel("Predicted")
+        plt.ylabel("True")
+        plt.savefig(f"./results/plots/{model_name}_cm_c")
+        plt.close()
+
+        fpr, tpr, _ = roc_curve(c_labels, c_probs)
+        roc_auc = roc_auc_score(c_labels, c_probs)
+
+        plt.figure()
+        plt.plot(fpr, tpr, label=f"ROC (AUC = {roc_auc:.2f})")
+        plt.plot([0, 1], [0, 1], "k--")
+        plt.xlabel("False Positive Rate")
+        plt.ylabel("True Positive Rate")
+        plt.ylim(0, 1)
+        plt.legend()
+        plt.savefig(f"./results/plots/{model_name}_rocauc_c")
+        plt.close()
+
+        precision, recall, _ = precision_recall_curve(c_labels, c_probs)
+        pr_auc = average_precision_score(c_labels, c_probs)
+
+        plt.figure()
+        plt.plot(recall, precision, label=f"PR (AUC = {pr_auc:.2f})")
+        plt.xlabel("Recall")
+        plt.ylabel("Precision")
+        plt.ylim(0, 1)
+        plt.legend()
+        plt.savefig(f"./results/plots/{model_name}_prauc_c")
+        plt.close()
+
 
 def train_one_epoch(model, train_loader, device, loss_fn, optimizer):
     model.train()

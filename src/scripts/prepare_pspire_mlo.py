@@ -13,9 +13,10 @@ from src.modules.mappings import AAMapping
 
 
 def main():
-    df = pd.read_csv("./data/raw_data/pspire_mlo.csv")
 
-    # requesting the sequences from uniprot
+    df = pd.read_csv("./data/raw_data/pspire_mlo.csv")
+    df.columns
+
     df_with_seq = pd.DataFrame()
     counter = 0
     protein_list = []
@@ -30,75 +31,29 @@ def main():
     df_slice = get_sequences(protein_list)
     df_with_seq = pd.concat([df_with_seq, df_slice])
     df_joined = pd.merge(df, df_with_seq, left_on="UniprotEntry", right_on="id")
-
+    df_joined["ps_label"] = 1
     sns.kdeplot(np.array(df_joined["seq"].apply(len)))
     plt.xlabel("Sequence Length in residues")
     plt.ylabel("Density")
-    plt.savefig("./results/plots/pspire_mlo_sequence_length_density.png")
+    plt.savefig("./results/plots/pspire_sequence_length_density.png")
     plt.show()
 
-    # creating column with mapped sequences
     df_joined["mapped_seq"] = df_joined["seq"].apply(map_sequence, args=(AAMapping,))
-    unfiltered_len = len(df_joined)
-    # Filtering too long and too short sequences
-    print(f"This data set contains {unfiltered_len} entries")
-    filtered_df = df_joined.loc[
-        (df_joined["mapped_seq"].apply(len) <= 2700)
-        & (df_joined["mapped_seq"].apply(len) > 9)
-    ]
-    print(
-        f"After filtering out sequences that are longer than 2700 or shorter than 10 {len(filtered_df)} entries were kept"
-    )
-    # adding a ps label
-    filtered_df.loc[filtered_df["Type"] == "non-PSP", "ps_label"] = 0
-    filtered_df.loc[filtered_df["Type"] == "noID-PSP", "ps_label"] = 1
-    filtered_df.loc[filtered_df["Type"] == "ID-PSP", "ps_label"] = 1
-
-    # adding a idr label
-    filtered_df.loc[filtered_df["Type"] == "non-PSP", "idr_protein"] = 0
-    filtered_df.loc[filtered_df["Type"] == "noID-PSP", "idr_protein"] = 0
-    filtered_df.loc[filtered_df["Type"] == "ID-PSP", "idr_protein"] = 1
-
-    print(
-        f"Of these filtered proteins {len(filtered_df.loc[filtered_df["ps_label"] == 0])} were negatives"
-    )
-    print(
-        f"Of these filtered proteins {len(filtered_df.loc[filtered_df["ps_label"] == 1])} were positives"
-    )
-    print(
-        f"Of these filtered proteins {len(filtered_df.loc[filtered_df["idr_protein"] == 1])} were positives with an idr"
-    )
-    print(
-        f"Of these filtered proteins {len(filtered_df.loc[filtered_df["ps_label"] == 1])
-    -len(filtered_df.loc[filtered_df["idr_protein"] == 1])} were positives with an idr"
-    )
-
-    x = ["PS", "nPS", "filtered out"]
-    y1 = np.array([0, 0, unfiltered_len - len(filtered_df)])
-    y2 = np.array([0, len(filtered_df.loc[filtered_df["ps_label"] == 0]), 0])
-    y3 = np.array([len(filtered_df.loc[filtered_df["idr_protein"] == 1]), 0, 0])
-    y4 = np.array(
-        [
-            len(filtered_df.loc[filtered_df["ps_label"] == 1])
-            - len(filtered_df.loc[filtered_df["idr_protein"] == 1]),
-            0,
-            0,
+    for mlo_list in df_joined.drop(columns=["id", "UniprotEntry", "mapped_seq"]):
+        mlo_df = df_joined.loc[df_joined[mlo_list] == 1][
+            ["UniprotEntry", "mapped_seq", "ps_label", "Type"]
         ]
-    )
-    colors = plt.color_sequences["Paired"]
-
-    plt.ylim(0, 11000)
-    plt.bar(x, y1, color=colors[8])
-    plt.bar(x, y2, bottom=y1, color=colors[0])
-    plt.bar(x, y3, bottom=y1 + y2, color=colors[4])
-    plt.bar(x, y4, bottom=y1 + y2 + y3, color=colors[5])
-    plt.legend(["Filtered out", "nPS", "IDR PS", "nIDR PS"])
-
-    plt.savefig("./results/plots/pspire_sample_dist.png")
-    plt.show()
-
-    with open("./data/intermediate_data/pspire_mlo.pkl", "wb") as f:
-        pickle.dump(filtered_df, f)
+        mlo_df = mlo_df.loc[
+            (mlo_df["mapped_seq"].apply(len) <= 2700)
+            & (mlo_df["mapped_seq"].apply(len) > 9)
+            & (
+                df_joined["mapped_seq"].apply(
+                    lambda seq: all(not pd.isna(x) for x in seq)
+                )
+            )
+        ]
+        with open(f"./data/intermediate_data/pspire_{mlo_list}.pkl", "wb") as f:
+            pickle.dump(mlo_df, f)
 
 
 def get_sequences(protein_list: list) -> pd.DataFrame:

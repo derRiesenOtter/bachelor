@@ -1,0 +1,5 @@
+outs:
+- md5: 10feee0b229db54d2798230a4c15500f
+  size: 35490
+  hash: md5
+  path: run_cnn2l_ppmclab_multi_rocauc.png

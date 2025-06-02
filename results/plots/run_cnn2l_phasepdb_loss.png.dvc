@@ -1,5 +1,5 @@
 outs:
-- md5: 99a8e02d12a5a61bf04a741def732edb
-  size: 16328
+- md5: ac8390f9c5eea0731b204a41434575e0
+  size: 15973
   hash: md5
   path: run_cnn2l_phasepdb_loss.png

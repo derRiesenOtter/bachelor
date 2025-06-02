@@ -19,3 +19,6 @@
 /model_run_blstm_ppmclab_pspire
 /model_run_cnn2l_phasepdb
 /model_run_cnn2l_ppmclab_phasepdb
+/run_xgb_phasepdb.json
+/model_run_cnn2l_ppmclab_multi
+/model_run_cnn2l_phasepdb_multi

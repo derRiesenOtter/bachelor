@@ -229,3 +229,39 @@ Wrote a script to prepare the data from phasepbd and ran it:
 python ./src/scripts/prepare_phasepdb.py
 
 ```
+## 2025-05-26 to 2025-05-28
+
+Created scripts to prepare the data from the mlo data sets (phasepdb and pspire)
+and ran them: 
+
+```sh 
+python prepare_phasepdb_mlo.py 
+python prepare_pspire_mlo.py 
+```
+Created a script to test a simpler model (xgb) on the data of the block
+decomposition and ran it on the phasepdb data: 
+
+```sh 
+python run_xgb_phasepdb.py
+```
+
+Started to evaluate the currently best model (one trained on the phasepdb data,
+the other on the union of pspire and ppmclab) on the MLO data:
+```sh
+python prepare_phasepdb_G3BP1.py
+python prepare_phasepdb_dact1.py
+python prepare_phasepdb_opencell.py
+python prepare_phasepdb_phasepdb_high.py
+python pspire_phasepdb_dact1.py
+python pspire_phasepdb_drllps.py
+python pspire_phasepdb_g3bp1.py
+python pspire_phasepdb_psdbht.py
+```
+
+Created a script that downloads the data of alphafold and calculates the surface
+availability for the pspire data:
+```sh 
+python prepare_pspire_alpha.py
+```
+
+## 2025-06-02

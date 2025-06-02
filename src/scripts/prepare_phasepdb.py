@@ -127,10 +127,10 @@ def main():
         f"Of these filtered proteins {len(filtered_df.loc[filtered_df["ps_sp_label"] == 0])} were negative"
     )
     print(
-        f"Of these filtered proteins {len(filtered_df.loc[filtered_df["ps_sp_label"] == 1])} were PS-Self"
+        f"Of these filtered proteins {len(filtered_df.loc[filtered_df["ps_sp_label"] == 1])} were PS-Part"
     )
     print(
-        f"Of these filtered proteins {len(filtered_df.loc[filtered_df["ps_sp_label"] == 2])} were PS-Part"
+        f"Of these filtered proteins {len(filtered_df.loc[filtered_df["ps_sp_label"] == 2])} were PS-Self"
     )
     print(
         f"Of these filtered proteins {len(filtered_df.loc[filtered_df["ps_sp_label"] == 3])} were PS"
