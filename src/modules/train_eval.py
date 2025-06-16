@@ -52,7 +52,10 @@ def run_train_eval(
         with torch.no_grad():
             for i, vdata in enumerate(val_loader):
                 vinputs, vlabels = vdata
-                vinputs, vlabels = vinputs.to(device), vlabels.to(device)
+                vinputs, vlabels = (
+                    vinputs.to(device),
+                    vlabels.to(device),
+                )
                 voutputs = model(vinputs)
                 vloss = loss_fn(voutputs, vlabels)
                 running_vloss += vloss
@@ -328,7 +331,10 @@ def train_one_epoch(model, train_loader, device, loss_fn, optimizer):
 
     for i, data in enumerate(train_loader):
         inputs, labels = data
-        inputs, labels = inputs.to(device), labels.to(device)
+        inputs, labels = (
+            inputs.to(device),
+            labels.to(device),
+        )
 
         # Zero your gradients for every batch!
         optimizer.zero_grad()

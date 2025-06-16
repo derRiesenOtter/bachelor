@@ -1,0 +1,5 @@
+outs:
+- md5: f49a8591479dd17f8ac77e7fa8afc149
+  size: 338661
+  hash: md5
+  path: phasepdb_Amyloid fiber-forming proteins_rsa.pkl

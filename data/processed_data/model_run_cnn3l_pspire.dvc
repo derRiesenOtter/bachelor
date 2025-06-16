@@ -1,0 +1,5 @@
+outs:
+- md5: fb571f08b963b9145ef2120d0967317d
+  size: 1604266
+  hash: md5
+  path: model_run_cnn3l_pspire

@@ -1,0 +1,5 @@
+outs:
+- md5: fba9aeb0d52b1804705f245c5ff27820
+  size: 980331
+  hash: md5
+  path: phasepdb_OpenCell nuclear punctae_rsa.pkl

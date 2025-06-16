@@ -1,0 +1,5 @@
+outs:
+- md5: 199f7e4a9a6facb4ae75e0e54a07e219
+  size: 1749101
+  hash: md5
+  path: phasepdb_DACT1-particulate proteome_rsa.pkl

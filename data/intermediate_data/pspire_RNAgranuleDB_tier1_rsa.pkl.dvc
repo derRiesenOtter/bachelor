@@ -1,0 +1,5 @@
+outs:
+- md5: 3f2e55f949b5f5584120256336ffb1d9
+  size: 4484222
+  hash: md5
+  path: pspire_RNAgranuleDB_tier1_rsa.pkl

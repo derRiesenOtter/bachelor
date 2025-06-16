@@ -1,0 +1,5 @@
+outs:
+- md5: 73cc0e2fbda61b07502296114888a958
+  size: 3716833
+  hash: md5
+  path: ptm.pkl

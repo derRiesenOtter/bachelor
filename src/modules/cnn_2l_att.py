@@ -2,56 +2,76 @@ import torch
 import torch.nn as nn
 
 
-class CNN2L_AttentionPooling(nn.Module):
+class CNN2L(nn.Module):
     def __init__(
         self,
         num_categories,
         embedding_dim,
-        conv1_out,
-        conv2_out,
+        conv1_out_channels,
+        conv2_out_channels,
         kernel_size,
-        attn_dim,
         num_classes,
     ):
         super().__init__()
-        self.embedding = nn.Embedding(num_categories, embedding_dim)
+
+        self.embedding = nn.Embedding(
+            num_embeddings=num_categories, embedding_dim=embedding_dim
+        )
 
         self.conv1 = nn.Conv1d(
-            embedding_dim, conv1_out, kernel_size, padding=kernel_size // 2
+            in_channels=embedding_dim,
+            out_channels=conv1_out_channels,
+            kernel_size=kernel_size,
+            padding=kernel_size // 2,
         )
+
         self.conv2 = nn.Conv1d(
-            conv1_out, conv2_out, kernel_size, padding=kernel_size // 2
+            in_channels=conv1_out_channels,
+            out_channels=conv2_out_channels,
+            kernel_size=kernel_size,
+            padding=kernel_size // 2,
         )
 
+        self.attention = nn.Sequential(
+            nn.Linear(conv2_out_channels, conv2_out_channels // 2),
+            nn.ReLU(),
+            nn.Linear(conv2_out_channels // 2, 1),
+            nn.Softmax(dim=1),
+        )
+
+        self.pool1 = nn.MaxPool1d(kernel_size=2, stride=2)
+        self.dropout = nn.Dropout(p=0.3)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.3)
-        self.pool = nn.MaxPool1d(kernel_size=2, stride=2)
 
-        # Attention pooling
-        self.attn_fc = nn.Linear(conv2_out, attn_dim)
-        self.attn_vector = nn.Linear(attn_dim, 1)
+        self.global_pool = nn.AdaptiveMaxPool1d(1)
 
-        self.classifier = nn.Linear(conv2_out, num_classes)
+        self.fc1 = nn.Linear(conv2_out_channels, num_classes)
 
-    def forward(self, x):
-        x = self.embedding(x)  # (batch, seq_len, emb)
-        x = x.permute(0, 2, 1)  # (batch, emb, seq_len)
+    def forward(self, X):
+        X = self.embedding(X)
+        # shape: (batch_size, seq_length, num_channels * embedding_dim)
+        X = X.permute(0, 2, 1)
+        # shape: (batch_size, num_channels * embedding_dim, seq_length)
+        X = self.conv1(X)
+        # shape: (batch_size, conv1_out_channels, new_seq_length)
+        X = self.relu(X)
+        # shape: (batch_size, conv1_out_channels, new_seq_length)
+        X = self.pool1(X)
+        # shape: (batch_size, conv1_out_channels, pooled_seq_length)
+        X = self.conv2(X)
+        X = self.relu(X)
+        # shape: (batch_size, conv1_out_channels)
 
-        x = self.relu(self.conv1(x))  # (batch, conv1_out, seq_len)
-        x = self.pool(x)
-        x = self.dropout(x)
+        X_permuted = X.permute(0, 2, 1)  # (batch_size, seq_len, conv3_out_channels)
+        attn_weights = self.attention(X_permuted)  # (batch_size, seq_len, 1)
+        attn_weights = attn_weights.permute(0, 2, 1)  # (batch_size, 1, seq_len)
 
-        x = self.relu(self.conv2(x))  # (batch, conv2_out, seq_len//2)
-        x = self.dropout(x)
+        # Apply attention weights
+        X = torch.bmm(attn_weights, X_permuted).squeeze(
+            1
+        )  # (batch_size, conv3_out_channels)
 
-        x = x.permute(0, 2, 1)  # (batch, seq_len//2, conv2_out)
-
-        # Attention pooling
-        attn_weights = torch.tanh(self.attn_fc(x))  # (batch, seq_len, attn_dim)
-        attn_weights = self.attn_vector(attn_weights)  # (batch, seq_len, 1)
-        attn_weights = torch.softmax(attn_weights, dim=1)  # (batch, seq_len, 1)
-
-        attended = (x * attn_weights).sum(dim=1)  # (batch, conv2_out)
-
-        out = self.dropout(attended)
-        return self.classifier(out)
+        X = self.dropout(X)
+        X = self.fc1(X)
+        # shape: (batch_size, num_classes)
+        return X

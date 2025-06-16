@@ -24,6 +24,8 @@ train_df, val_df = train_test_split(
     df, test_size=0.2, stratify=df["ps_label"], random_state=13
 )
 
+val_df["UniProt.Acc"]
+
 # Create DataLoaders that are
 # responsible for feeding the data into the model
 train_data_set = SequenceDataSet(train_df, "mapped_seq", "ps_label")

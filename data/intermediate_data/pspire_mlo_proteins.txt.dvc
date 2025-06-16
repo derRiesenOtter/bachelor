@@ -1,0 +1,5 @@
+outs:
+- md5: 139e30e5bf62a4a7ec924fe8506f3acc
+  size: 7
+  hash: md5
+  path: pspire_mlo_proteins.txt

@@ -1,0 +1,5 @@
+outs:
+- md5: a66b59b8d32e01d69db7dcf6aa3c3b27
+  size: 1864029
+  hash: md5
+  path: pspire_DACT1-particulate proteome_rsa.pkl

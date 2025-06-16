@@ -1,0 +1,5 @@
+outs:
+- md5: d31d753668317b1dcc7b7d391e06ddf3
+  size: 484537
+  hash: md5
+  path: model_run_cnn2l_trans_pspire_rsa_weight_bn_nidr_ptm

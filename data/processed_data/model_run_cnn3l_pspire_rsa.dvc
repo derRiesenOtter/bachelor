@@ -1,0 +1,5 @@
+outs:
+- md5: 49470d3cf9ab8cbb1079e70b8a772c66
+  size: 430758
+  hash: md5
+  path: model_run_cnn3l_pspire_rsa

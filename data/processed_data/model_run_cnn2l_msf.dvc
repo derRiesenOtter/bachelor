@@ -1,0 +1,5 @@
+outs:
+- md5: 2a08c0ff925dbc8ce10b14688b922776
+  size: 265248
+  hash: md5
+  path: model_run_cnn2l_msf

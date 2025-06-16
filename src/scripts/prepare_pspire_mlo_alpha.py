@@ -15,16 +15,16 @@ relevant_files = [
 ]
 
 for file in relevant_files:
-    with open(f"./data/intermediate_data/{file}.pkl", "rb") as f:
+    with open(f"./data/intermediate_data/{file}", "rb") as f:
         df = pickle.load(f)
 
     df["rsa"] = None
 
     for idx, row in df.iterrows():
         id = row["UniprotEntry"]
-        file = f"./data/raw_data/alpha_pdb/{id}.pdb"
+        fil = f"./data/raw_data/alpha_pdb/{id}.pdb"
 
-        if not Path(file).exists():
+        if not Path(fil).exists():
             url = f"https://alphafold.com/api/prediction/{id}?key=AIzaSyCeurAJz7ZGjPQUtEaerUkBZ3TaBkXrY94"
 
             r = requests.get(url)
@@ -32,14 +32,14 @@ for file in relevant_files:
 
             r2 = requests.get(pdb_url)
 
-            with open(file, "wb") as f:
+            with open(fil, "wb") as f:
                 f.write(r2.content)
 
             time.sleep(0.1)
 
         parser = PDBParser()
-        structure = parser.get_structure("test", file)
-        dssp = DSSP(structure[0], file)
+        structure = parser.get_structure("test", fil)
+        dssp = DSSP(structure[0], fil)
         rsa_values = [dssp[key][3] for key in dssp.keys()]
         df.at[idx, "rsa"] = rsa_values
 

@@ -1,0 +1,5 @@
+outs:
+- md5: 8edad8946b13c8ab5c070abe174f3b6f
+  size: 2601278
+  hash: md5
+  path: phasepdb_G3BP1 proximity labeling_rsa.pkl

@@ -277,3 +277,71 @@ python prepare_ppmclab_alpha.py
 python prepare_phasepdb_alpha.py
 python prepare_phasepdb_mlo_alpha.py
 ```
+
+## 2025-06-03 - 2025-06-14
+
+Created models that take the rsa values into consideration. 
+One that uses it as separate feature. 
+```sh 
+python ./src/modules/cnn_2l_rsa.py
+```
+One that uses a linear layer for the rsa values. 
+```sh 
+python ./src/modules/cnn_2l_rsa_linear.py
+```
+One that uses the rsa values as weights for the amino acids. 
+```sh 
+python ./src/modules/cnn_2l_rsa_weight.py
+```
+
+Other optimizations were tried: 
+Again, using a third convolutional layer. 
+```sh
+python ./src/modules/cnn_3l_rsa.py
+```
+
+Adding batch normalization: 
+```sh
+python ./src/scripts/run_cnn2l_pspire_bn.py
+```
+
+Adding layers with multiple kernel sizes: 
+```sh 
+python ./src/scripts/run_cnn2l_msf.py
+```
+
+Adding layers with an attention like mechanism: 
+```sh 
+python ./src/scripts/run_cnn2l_att_pspire.py
+```
+
+The batch normalization and the rsa as weights was combined, as they were the
+most affective. 
+
+```sh
+python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn.py
+```
+
+Posttranslational Modification Sites were added as they do affect the ability of
+proteins to undergo phase separation.
+
+```sh 
+python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_idr_ptm.py
+```
+
+To see if it helps the model if it learns idrs and non idrs separately, two
+separate models were created and run: 
+
+```sh
+python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_idr_ptm.py
+python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_nidr_ptm.py
+```
+
+## 2025-06-16
+
+Created a model that integrates a transformer into the already strong two layer
+cnn. 
+
+```sh 
+python src/scripts/run_cnn2l_trans_pspire_rsa_weight_bn_idr_ptm.py
+```
