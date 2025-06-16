@@ -1,0 +1,5 @@
+outs:
+- md5: 2f2b1809f84b012ea17f47c3a2918728
+  size: 19400
+  hash: md5
+  path: run_cnn3l_pspire_rsa_dc_prauc.png

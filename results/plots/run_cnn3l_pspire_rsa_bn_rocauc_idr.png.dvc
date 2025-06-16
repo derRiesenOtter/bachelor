@@ -1,0 +1,5 @@
+outs:
+- md5: c7c10fd3309922c1b23380b8b506f00c
+  size: 24318
+  hash: md5
+  path: run_cnn3l_pspire_rsa_bn_rocauc_idr.png

@@ -1,0 +1,5 @@
+outs:
+- md5: 025156bae7ac13f429e72883b9712141
+  size: 13070
+  hash: md5
+  path: run_cnn2l_att_pspire_loss.png

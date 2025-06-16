@@ -1,0 +1,5 @@
+outs:
+- md5: 852b20f721ebb0a1b0d726ef7418feff
+  size: 8907
+  hash: md5
+  path: run_cnn2l_pspire_rsa_weigth_cm.png

@@ -1,0 +1,5 @@
+outs:
+- md5: c8cae97e69299e0484e5566ec39f10ce
+  size: 19701
+  hash: md5
+  path: run_cnn2l_ppmclab_pspire_rsa_weigth_prauc_idr.png

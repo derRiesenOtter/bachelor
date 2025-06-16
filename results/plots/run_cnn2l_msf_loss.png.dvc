@@ -1,0 +1,5 @@
+outs:
+- md5: fe1e594939312bfc65a0f1afccb260ce
+  size: 13747
+  hash: md5
+  path: run_cnn2l_msf_loss.png

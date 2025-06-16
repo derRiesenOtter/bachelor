@@ -1,0 +1,5 @@
+outs:
+- md5: ef182939d0fd90b691a1266c316a4105
+  size: 25247
+  hash: md5
+  path: run_cnn2l_att_pspire_rocauc_nidr.png

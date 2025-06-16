@@ -1,0 +1,5 @@
+outs:
+- md5: 8487e586648bb1166e59e8a6ccec2a6e
+  size: 8590
+  hash: md5
+  path: run_cnn2l_ppmclab_pspire_rsa_weigth_cm.png

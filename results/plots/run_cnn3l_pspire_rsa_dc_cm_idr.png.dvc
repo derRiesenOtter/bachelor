@@ -1,0 +1,5 @@
+outs:
+- md5: 188efc0db19f103f37db27fe14908c24
+  size: 8930
+  hash: md5
+  path: run_cnn3l_pspire_rsa_dc_cm_idr.png
