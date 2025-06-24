@@ -2,9 +2,13 @@ llps:
   short: LLPS
   long: Liquid-Liquid Phase Separation
 
-idrs:
-  short: IDRs 
-  long: Intrinsically Disordered Regions
+idp: 
+  short: IDP
+  long: Intrinsically Disordered Protein
+
+idr:
+  short: IDR 
+  long: Intrinsically Disordered Region
 
 ml: 
   short: ML 
@@ -21,3 +25,19 @@ cnn:
 lstm: 
   short: LSTM  
   long: Long Short-Term Memory
+
+mlo:
+  short: MLO
+  long: Membraneless Organells
+
+ptm: 
+  short: PTM
+  long: Post-translational modification
+
+ssup: 
+  short: SSUP
+  long: Structured Superficial Regions
+
+rsa: 
+  short: RSA 
+  long: Relative Solvent Accesibility

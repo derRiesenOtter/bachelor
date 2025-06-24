@@ -1,0 +1,5 @@
+outs:
+- md5: 9ad7df404ca0b48dc222f313440e86ae
+  size: 23714
+  hash: md5
+  path: run_cnn2l_phasep_rsa_weight_bn_idr_ptm_rocauc_idr.png

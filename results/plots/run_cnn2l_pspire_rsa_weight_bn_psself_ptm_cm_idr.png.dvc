@@ -1,0 +1,5 @@
+outs:
+- md5: 389c848d0913c9805f9a060dc50f4a2e
+  size: 8259
+  hash: md5
+  path: run_cnn2l_pspire_rsa_weight_bn_psself_ptm_cm_idr.png

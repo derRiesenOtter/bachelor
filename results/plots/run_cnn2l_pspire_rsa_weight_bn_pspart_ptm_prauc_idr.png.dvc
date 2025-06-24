@@ -1,0 +1,5 @@
+outs:
+- md5: 8bffb5700e72b4292ffb6fc6a9d876c2
+  size: 13796
+  hash: md5
+  path: run_cnn2l_pspire_rsa_weight_bn_pspart_ptm_prauc_idr.png

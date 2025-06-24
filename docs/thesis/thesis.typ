@@ -3,7 +3,12 @@
 #set page(paper: "a4")
 #set par(justify: true)
 #set text(size: 11pt)
-#set table(stroke: (_, y) => if y == 0{ (bottom: 0.5pt, top: 1pt) })
+#set table(stroke: (_, y) => if y == 0{ (bottom: 0.5pt, top: 1pt) }, fill: (_, y) => if calc.odd(y) { rgb(230, 230, 230) }, align: left)
+
+#show table.cell.where(y: 0): txt => {
+  set text(weight: "bold")
+  txt
+}
 
 #show outline.entry.where(level: 1): header => {
   set text(weight: "bold")

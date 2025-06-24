@@ -1,0 +1,5 @@
+outs:
+- md5: b2477fb38188dd716cc02e4441609a2c
+  size: 8130
+  hash: md5
+  path: run_cnn2l_pspire_rsa_weight_bn_psself_ptm_cm.png

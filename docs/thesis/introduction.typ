@@ -5,81 +5,133 @@
 
 = Introduction
 
-== Phase Separation
+== Liquid-Liquid Phase Separation
 
-The organization of the eukaryotic cell has classically been associated with
-organelles that are surrounded by lipid membranes. However, over the past few
-years phase transitions gained interest, as they have proven their role in
-organizing cells. The term phase transition describes the process in which a
-substance changes it physical state. @alberti_phase_2017
+@llps is a process where a homogeneous mixture spontaneous separates into two
+liquid phases, one with a depleted and one with an increased concentration of
+components. @llps can form colloids like milk or layers like a mixture of oil
+and water. It is a widespread phenomena that is dependent on many factors like
+temperature, pressure, differences in polarity, hydrophobicity and
+hydrophilicity. Studying @llps in polymer systems started in the mid of the
+20th century. In the late 20th century the phenomena was recognized as an
+important process organisms and studies began to understand the implications of
+@llps in an biological context. @xu_liquid-liquid_2023
 
-An especially important form of phase transition is @llps, where a homogeneous
-solution separates into two phases. One phase is enriched in molecules, the
-other is depleted. @alberti_phase_2017
-- interface forms boundary that allows selective passage of some molecules but
-  not others
-- they can adopt different physical states, for example harden into gel- or
-  glass-like states or turn into solid crystals
-- consist of macromolecules such as RNAs and proteins
-- some examples of this are P bodies, nucleolus
-- organelles can be very large and complex and multilayered
+Cells are capable of conducting various different tasks that involve many
+biochemical reactions. As these reactions often need different educts, enzymes
+and conditions a spatial organization helps the cell to conduct these reactions
+effectively. Organelles are the compartments of the cell. They need a boundary
+that separates them from the rest of the cell and the components inside the
+compartment have to be able to move freely. Compartments that are confined by a
+membrane like the nucleus or mitochondria are well known for a long time. A
+more recent discovery was the existence of @mlo. They are created through
+@llps. An example of one such @mlo is the nucleoli, but there are many other
+@mlo that play important roles in cell and are the reason cells are able to do
+these many diverse reactions. @xu_liquid-liquid_2023
 
-- the availability of many different binding sites on a molecule is an important
-  parameter to predict if phase separation will happen multi domain proteins
-- a mixture of weak and strong interactions
-- many phase separating proteins have poor solubility in water
+The macro molecules responsible for @llps in cells are proteins and nucleic acids.
+A combination of simultaneous weak and strong interactions between proteins and
+proteins or proteins and nucleic acids seems to be the driving force. The presence of
+many different binding sites - multivalency is a crucial parameter. The solubility
+also effects the propensity to undergo @llps, as many proteins that undergo @llps
+have a poor solubility in water. Other than proteins with multiple domains, @idp::pl
+are often involved in @llps. They differ from globular molecules in two ways. They
+do not posses a fixed conformation and they only use a small subset of the available
+amino acids. Their function is generally less dependent on their exact sequence than
+on more general characteristics like charge patterns. @alberti_phase_2017
 
-- Intrinsically Disordered Proteins have been implicated in promoting phase separation
-- do not have a fixed conformation
-- often characterized by low sequence complexity (IDPs use only a small subset of the
-  20 available amino acids)
-- exact sequence of IDPs is often not important
-- what matters for phase separation are simple charge patterns and the overall
-  sequence composition.
-- different types of IDPs
-  - prion-like mostly composed of polar amino acids such as serine, tyrosine, glutamine, asparagine, and glycine
-  - second class positively and/or negatively charged residues arranged in characteristic charge patterns. Such charged IDPs undergo electrostatic interactions that are highly sensitive to the pH and ionic strength of the solution.
-  - the interaction of arginine/glycine-rich RNA-binding proteins with RNA. In this case, polyvalent interactions between the positively charged arginine residues and the negatively charged RNA drive the phase separation process.
+As proteins that take part in @llps can serve different roles, groupings were
+created. One way to organize them is to put them into the two groups driver (or
+scaffolds) and clients. The driver proteins, that either induce the formation
+of a condensate or are essential for the integrity of a condensate and the
+clients that require a driver protein to form a condensate.
+@rostam_cd-code_2023 There is also another slightly different categorization.
+@llps proteins can also be divided into PS-Self and PS-Part. PS-Self
+(self-assembling phase-separating) are proteins that are able to form
+condensates on their own, while PS-Part (partner-dependent phase-separating)
+needs a partner protein. @noauthor_about-phasepred_nodate
 
-- One function may be to concentrate biomolecules in a confined space and thus promote biochemical reactions
-- Phase separation has also been shown to organize and facilitate signaling that phase separation can repress biochemical reactions One example is provided by ribonucleoprotein (RNP) granules. RNP granules often store mRNAs, which are then transported in a silenced state to diverse locations. By doing so, RNP granules promote the distribution of information in cells. In neurons, this allows the local synthesis of proteins in synapses and in dendrites upon demand.
-- Phase separation is extremely sensitive to changes in physico-chemical conditions, suggesting that phase separation could play an important role in stress adaptation
-@alberti_phase_2017
+As @llps is extremely sensitive to changes in physico-chemical conditions, it
+is possible that it also plays an important role in stress adaptation
+@alberti_phase_2017. However, @llps is not always wanted. In some cases
+proteins undergo @llps that normally would not. This can be due to several
+reasons like mutations or posttranslational modifications. These unwanted
+aggregates are suspected to lead to diseases like cancer or neurodegenerative
+diseases. @xu_liquid-liquid_2023
 
 == Phase Separation Predictors
 
-To know if a protein will take part in @llps can help to understand its use or
-help planning experiments with it. As proving this property experimentally is
-difficult and resource consuming, a tool to predict @llps helps to do so in an
-efficient manner. In recent years many tools were developed with this task in
-mind. In the following section we will highlight the functionality of some
-representative @llps predictors:
+With the rise of interest on the topic of @llps, tools were developed to
+predict @llps propensity for proteins. These tools use sequential features of
+proteins in many cases in combination with other data like @ptm::pl or
+structural data. While these tools improved over time, there is still room for
+improvement. Developing a model to predict @llps propensity comes with some
+challenges. One big problem is the sparse experimental data on proteins that
+undergo @llps. After filtering out proteins that are similar to each other,
+less than 700 proteins remain. Defining a good negative data set is also
+difficult as there is no data base that collects non-@llps proteins and
+negative data is often not published. It is also a challenge to test if a
+protein takes part in @llps, as it is context dependent, meaning the conditions
+have to be right and for partner dependent proteins, said partner must be
+available. Another issue is, that current tools tend to favor proteins that
+contain @idr::pl or are labeled as partner-dependent. As partner-dependent
+proteins usually lack @idr::pl this bias is probably caused by the same reason.
 
-- in-silico screening of proteomes
-- often machine learning models used (the newer ones)
-@hou_machine_2024
+@pspredictors summarizes some of the @llps predictors. The predictors PhaSePred
+and PSPire are explained more thoroughly.
 
-=== PhaSePred
-Study points out that other predictors fail to predict Partner Dependent PS
-Proteins and add features to make it better.
-- has interesting data set containing a classification for self PS and Partner
-  Dependent PS
-@chen_screening_2022
+#figure(table(
+  columns: 4,
+  align: (left, left, center, center),
+  "Name",        "Information used for prediction",                                 "Release Article", "Source",
+  "PLAAC",       [Amino acid frequencies in Prion Like Domains of _S. cerevisiae_], "2014",            [@lancaster_plaac_2014],
+  "catGRANULE",  "Nucleic acid binding, disorder, length, R/G/F content",           "2016",            [@bolognesi_concentration-dependent_2016],
+  "PScore",      "Pi-Pi contact frequencies",                                       "2018",            [@vernon_pi-pi_2018],
+  "PSPer",       "Domain arrangements in FUS-like proteins",                        "2019",            [@orlando_computational_2019],
+  "FuzDrop",     "",                                                                "2020",            [@hardenberg_widespread_2020],
+  "PSAP",        "",                                                                "2021",            [@mierlo_predicting_2021],
+  "PSPredictor", "",                                                                "2022",            [@chu_prediction_2022],
+  "PdPS / SaPS", "",                                                                "2022",            [@chen_screening_2022],
+  "PSPire",      "",                                                                "2024",            [@hou_machine_2024],
+  table.hline()
+), caption: [Summary of recent Liquid-liquid phase separation predictors.]) <pspredictors>
 
-=== PSAP
-based solely on amino acid content of the proteins. Uses Random Forest.
-Important features were Fraction of AS C and L, percentage of IDRs and Low
-Complexity scores.
-- interesting data set containing a classification for PS with IDR and without
-@mierlo_predicting_2021
+=== PhaSePred - PdPS / SaPS
+
+PhaSePred is a meta predictor that uses some of the @llps predictors already
+listet in @pspredictors (catGranule, PLAAC, PScore), an @idr predictor
+(ESpritz), an low-complexity region predictor (LCR), hydropathy prediction from
+CIDER, coiled-coil domain predictor DeepCoil, the immunofluorescence
+image-based droplet-forming propenity predictor DeepPhase.
+
+The tools PdPS and SaPS were specifically developed to tackle the challenge of
+predicting PdPS. Both models have a version with 8 features, designed for
+all-species data, as well as models with 10 features for human proteins, as
+there is more data available. The eight features are hydropathy, fraction of
+charged residues, @idr, low-complexity regions, PScore, PLAAC, catGranule and
+coiled coil domains. The two additional features are the Phos frequency and the
+IF image-based droplet forming propensities. Dividing their model into two
+helped them to outperform other tools when it comes to the prediction of
+partner-dependent @llps. They used XGBoost for their model. @noauthor_about-phasepred_nodate
 
 === PSPire
-As current models were biased towards proteins that contained @idrs this model
-also included structural information to better estimate proteins lacking @idrs.
-Previous models only relied on the amino acid sequence. This model outperformed
-the other models significantly for proteins without @idrs and yielded comparable
-results for proteins containing no @idrs. Uses XGBoost model.
-@hou_machine_2024
+
+As current predictors still struggle to predict non-@idr @llps proteins PSPire
+was developed. Their approach was to split protein data into @idr related
+features and @ssup related features. The @ssup features only contained the
+amino acids with an @rsa greater than 25%. The @ssup were calculated with
+AlphaFold while the @rsa values were calculated with PSAIA from the AlphaFold
+data. For both groups 44 features were calculated. Those features were fraction
+of the amino acid per amino acid, fraction of several other groups of amino
+acids (e.g. positively charged group), averaged isoelectric point value,
+averaged molecular weight, averaged hydropathy score, averaged polarity score,
+sequence length of @idr::pl, sequence length percentage of @idr::pl, total
+charged sticker number divided by the residue number in @ssup, charged sticker
+pair number divided by the residue number in @ssup and number of
+phosphorylation sites divided by the length of the protein sequence. They also
+used XGBoost as a model and were able to perform as good as the best other
+predictors for @llps proteins containing @idr::pl and significantly better for
+@llps proteins that do not contain @idr::pl. @hou_machine_2024
 
 == Artificial Intelligence in Bioinformatics
 Artificial Intelligence has brought new revolutionizing approaches to biological
@@ -111,28 +163,40 @@ time series data or sequences. It is able to capture long-term relations.
 
 == Block Decomposition of Protein Sequences
 
-The functionality of proteins stems from small groups of amino acids that are
-called motifs or active sites. These motifs are often integrated into larger protein
-domains which are structurally independent units that perform distinct
-functions. @embl-ebi_what_nodate
+The block decomposition algorithm by Martin Girard was created as part of a
+surrogate model for low complexity protein sequences. The model itself is based
+on combinatorics on words, particular sturmian words and their generalizations.
+It was able to show that low complexity protein sequences have similar
+properties to homopolymers with equivalent parameters, shown by their radius of
+gyration. Changes to the radius of gyration are strongly correlated to changes in
+the @llps propensity of a protein. @noauthor_files_2024
 
-Finding conserved motifs or domains in proteins has become quiet easy. While
-there are also motifs within @idrs, these motifs alone are not able to explain
-the full functionality of these regions.
+The block decomposition algorithm itself uses word balance as a measure of
+homogeneity. It finds the longest segments of the sequence, that have a word
+balance below the threshold. As the algorithm originates from the field of
+polymer physics these segments are called blocks. A word $w$ is $q$-balanced
+if, for any two equal-length substrings $u$ and $v$ within $w$, the count of
+each character differs by no more than $q$. Once the largest homogeneous block
+is identified, the algorithm recursively searches for the largest blocks to the
+left and right of it. Segments shorter than a predefined length threshold are
+discarded. Before applying the block decomposition algorithm a mapping is
+applied to be less sensitive to mutations. @noauthor_files_2024
 
-- block decomposition trying to find blocks with a certain functionality
-- mapping of the sequence to a smaller alphabet that represents this
-  functionality
+== Phase Separation Predictor using Block Decomposition and Neural Networks
 
-The original Block Decomposition algorithm was created in an
-
-It uses word balance as the parameter for homogeneity. Word balance for one word
-is defined as the maximum difference in occurrences of a single letter between
-any two factors of the word with the same length.
-
-== Block Decomposition for Phase Separation Predictor
-
-The goal of this work is to investigate the capabilities multidimensional block
-decompositions based on word balance as predictor for phase separation.
+The goal of this work is to develop @llps predictors using machine learning
+methods. Two approaches will be tested. The first is using neural networks as
+models. Current predictors use more conventional methods like random forest or
+XGBoost models that take scalar values as inputs. A lot of information is lost
+using only scalar values like fractions. Using models that take the whole
+sequence may lead to better performance or models that add to the current
+landscape of @llps predictors. The second approach involves using the block
+decomposition algorithm with different mappings to divide protein sequences
+into blocks of a certain homogeneity, where each mapping captures different
+types of information. This output can then be used as input for neural networks
+or applied in more traditional analysis methods. In contrast to other models
+that simply consider the fraction of individual or grouped amino acids, this
+approach only counts amino acids that occur within blocks of compositionally
+similar residues.
 
 #pagebreak()

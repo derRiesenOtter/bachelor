@@ -1,0 +1,5 @@
+outs:
+- md5: 5d5e48c167843c400734218882fc718c
+  size: 456365
+  hash: md5
+  path: model_run_cnn2l_pspire_rsa_weight_bn_driver_ptm

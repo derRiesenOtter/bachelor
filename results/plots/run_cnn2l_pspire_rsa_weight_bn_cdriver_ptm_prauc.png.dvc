@@ -1,0 +1,5 @@
+outs:
+- md5: ca34c4ad1a62a4ce47c195ec8d1439c5
+  size: 17118
+  hash: md5
+  path: run_cnn2l_pspire_rsa_weight_bn_cdriver_ptm_prauc.png

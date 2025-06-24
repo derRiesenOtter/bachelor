@@ -2,4 +2,7 @@ src/modules/Words/*
 src/modules/__pycache__
 data/raw_data/alpha_pdb
 
+/bachelor_venv_311/
+venv
+
 !src/modules/Words/Mappings.py

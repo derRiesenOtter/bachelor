@@ -1,0 +1,5 @@
+outs:
+- md5: aa69b269250c878856ccdbe30a3a41e0
+  size: 456133
+  hash: md5
+  path: model_run_cnn2l_phasep_rsa_weight_bn_ptm

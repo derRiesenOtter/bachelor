@@ -1,0 +1,5 @@
+outs:
+- md5: 8fa42515f2d7de7aaac2b5398b75c7a7
+  size: 1479951131
+  hash: md5
+  path: BIOGRID-ALL-4.4.246.tab3.txt
