@@ -1,0 +1,5 @@
+outs:
+- md5: debd4b77ff5b17014bed8e572de0415b
+  size: 456253
+  hash: md5
+  path: model_run_cnn2l_catgranule2_rsa_weight_bn_ptm

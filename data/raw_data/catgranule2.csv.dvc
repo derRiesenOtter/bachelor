@@ -1,0 +1,5 @@
+outs:
+- md5: cf4feff2c74e6ace82d29a931bf521b9
+  size: 524351
+  hash: md5
+  path: catgranule2.csv

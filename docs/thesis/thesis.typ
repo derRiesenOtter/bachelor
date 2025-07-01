@@ -1,9 +1,9 @@
 #import "@preview/glossy:0.8.0": *
-
+#let grey = luma(90%)
 #set page(paper: "a4")
 #set par(justify: true)
 #set text(size: 11pt)
-#set table(stroke: (_, y) => if y == 0{ (bottom: 0.5pt, top: 1pt) }, fill: (_, y) => if calc.odd(y) { rgb(230, 230, 230) }, align: left)
+#set table(stroke: (_, y) => if y == 0{ (bottom: 0.5pt, top: 1pt) }, fill: (_, y) => if calc.odd(y) { grey }, align: left)
 
 #show table.cell.where(y: 0): txt => {
   set text(weight: "bold")
@@ -49,3 +49,7 @@
 #context counter(page).update(counter(page).at(<page-anchor>).first())
 
 #bibliography("bachelor.bib")
+#pagebreak()
+#include "appendix.typ"
+#pagebreak()
+#include "declaration.typ"

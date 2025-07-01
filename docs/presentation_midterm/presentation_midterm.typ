@@ -169,39 +169,8 @@ was used for further tests:
 #image("figures/visual_summary_auc_pspire_first_models.png")
 
 == Enhancing the CNN2L models
-#align(center, diagram(
-  spacing: (3mm, 5mm),
-  node((0, 0), [CNN2L], shape: triangle, fill: rgb(150, 200, 200), stroke: black),
-
-  edge((0, 0), (-2, 1), "-"),
-  node((-2, 1), [RSA], shape: pill, fill: rgb(150, 200, 200), stroke: black),
-
-  edge((-2, 1), (-1, 2), "-"),
-  node((-3, 2), [RSA], shape: pill, fill: red, stroke: black),
-
-  edge((-2, 1), (-2, 2), "-"),
-  node((-2, 2), [RSA linear], shape: pill, fill: red, stroke: black),
-
-  edge((-2, 1), (-3, 2), "-"),
-  node((-1, 2), [RSA weights], shape: pill, fill: green, stroke: black),
-
-  edge((0, 0), (2, 1), "-"),
-  node((2, 1), [Opt.], shape: pill, fill: rgb(150, 200, 200), stroke: black),
-
-  edge((2, 1), (1, 2), "-"),
-  node((1, 2), [norm.], shape: pill, fill: green, stroke: black),
-
-  edge((2, 1), (3, 2), "-"),
-  node((3, 2), [Attention], shape: pill, fill: red, stroke: black),
-
-  edge((0, 3), (1, 2), "-"),
-  edge((0, 3), (-1, 2), "-"),
-  node((0, 3), [both], shape: pill, fill: green, stroke: black),
-
-  edge((0, 3), (0, 4), "-"),
-  node((0, 4), [split training \
-  in idr and nidr], inset: 5mm, shape: pill, fill: green, stroke: black),
-))
+#align(center, diagram(spacing: (3mm, 5mm), node((0, 0), [CNN2L], shape: triangle, fill: rgb(150, 200, 200), stroke: black), edge((0, 0), (-2, 1), "-"), node((-2, 1), [RSA], shape: pill, fill: rgb(150, 200, 200), stroke: black), edge((-2, 1), (-1, 2), "-"), node((-3, 2), [RSA], shape: pill, fill: red, stroke: black), edge((-2, 1), (-2, 2), "-"), node((-2, 2), [RSA linear], shape: pill, fill: red, stroke: black), edge((-2, 1), (-3, 2), "-"), node((-1, 2), [RSA weights], shape: pill, fill: green, stroke: black), edge((0, 0), (2, 1), "-"), node((2, 1), [Opt.], shape: pill, fill: rgb(150, 200, 200), stroke: black), edge((2, 1), (1, 2), "-"), node((1, 2), [norm.], shape: pill, fill: green, stroke: black), edge((2, 1), (3, 2), "-"), node((3, 2), [Attention], shape: pill, fill: red, stroke: black), edge((0, 3), (1, 2), "-"), edge((0, 3), (-1, 2), "-"), node((0, 3), [both], shape: pill, fill: green, stroke: black), edge((0, 3), (0, 4), "-"), node((0, 4), [split training \
+in idr and nidr], inset: 5mm, shape: pill, fill: green, stroke: black), edge((0, 4), (0, 5), "-"), node((0, 5), [Added PTMs], shape: pill, fill: green, stroke: black)))
 
 == Performance of the new models
 #image("figures/visual_summary_auc_pspire_later_models.png")
@@ -210,67 +179,86 @@ was used for further tests:
 #align(center, table(
   columns: 6,
   "PSPs",                             "Dataset",                          "Parameter", "My model", "PdPS", "PSPire",
-  table.cell(rowspan: 10)[noID-PSPs], table.cell(rowspan: 2)[G3BP1],      "ROCAUC",    "0.92",     "0.81", [*0.93*],
-                                                                          "PRAUC",     "0.36",     "0.18", [*0.66*],
-                                      table.cell(rowspan: 2)[DACT1],      "ROCAUC",    "0.91",     "0.81", [*0.93*],
-                                                                          "PRAUC",     "0.43",     "0.18", [*0.60*],
-                                      table.cell(rowspan: 2)[RNAGranule], "ROCAUC",    "0.80",     "0.68", [*0.90*],
-                                                                          "PRAUC",     "0.11",     "0.08", [*0.28*],
-                                      table.cell(rowspan: 2)[PhaSep],     "ROCAUC",    [*0.87*],   "0.65", "0.80",
-                                                                          "PRAUC",     [*0.71*],   "0.47", [*0.71*],
-                                      table.cell(rowspan: 2)[DRLLPS],     "ROCAUC",    [*0.87*],   "0.68", "0.85",
-                                                                          "PRAUC",     [*0.76*],   "0.45", "0.74",
+  table.cell(rowspan: 10)[noID-PSPs], table.cell(rowspan: 2)[G3BP1],      "ROCAUC",    [*0.96*],   "0.81", "0.93",
+                                                                          "PRAUC",     "0.51",     "0.18", [*0.66*],
+                                      table.cell(rowspan: 2)[DACT1],      "ROCAUC",    "0.90",     "0.81", [*0.93*],
+                                                                          "PRAUC",     "0.49",     "0.18", [*0.60*],
+                                      table.cell(rowspan: 2)[RNAGranule], "ROCAUC",    "0.88",     "0.68", [*0.90*],
+                                                                          "PRAUC",     "0.18",     "0.08", [*0.28*],
+                                      table.cell(rowspan: 2)[PhaSep],     "ROCAUC",    [*0.85*],   "0.65", "0.80",
+                                                                          "PRAUC",     [*0.73*],   "0.47", "0.71",
+                                      table.cell(rowspan: 2)[DRLLPS],     "ROCAUC",    "0.80",     "0.68", [*0.85*],
+                                                                          "PRAUC",     [*0.77*],   "0.45", "0.74",
 ))
 
 == Performance on MLO data sets
 #align(center, table(
   columns: 6,
   "PSPs",                           "Dataset",                          "",       "My model", "PdPS",   "PSPire",
-  table.cell(rowspan: 10)[ID-PSPs], table.cell(rowspan: 2)[G3BP1],      "ROCAUC", "0.76",     "0.86",   [*0.91*],
-                                                                        "PRAUC",  "0.33",     "0.41",   [*0.58*],
+  table.cell(rowspan: 10)[ID-PSPs], table.cell(rowspan: 2)[G3BP1],      "ROCAUC", "0.74",     "0.86",   [*0.91*],
+                                                                        "PRAUC",  "0.29",     "0.41",   [*0.58*],
                                     table.cell(rowspan: 2)[DACT1],      "ROCAUC", "0.72",     "0.85",   [*0.88*],
-                                                                        "PRAUC",  "0.21",     "0.33",   [*0.35*],
-                                    table.cell(rowspan: 2)[RNAGranule], "ROCAUC", "0.82",     "0.82",   [*0.84*],
-                                                                        "PRAUC",  "0.44",     "0.42",   [*0.48*],
-                                    table.cell(rowspan: 2)[PhaSep],     "ROCAUC", "0.72",     [*0.74*], "0.72",
-                                                                        "PRAUC",  "0.72",     [*0.80*], "0.79",
-                                    table.cell(rowspan: 2)[DRLLPS],     "ROCAUC", "0.70",     [*0.76*], "0.75",
-                                                                        "PRAUC",  "0.72",     "0.77",   [*0.78*],
+                                                                        "PRAUC",  "0.22",     "0.33",   [*0.35*],
+                                    table.cell(rowspan: 2)[RNAGranule], "ROCAUC", "0.80",     "0.82",   [*0.84*],
+                                                                        "PRAUC",  "0.39",     "0.42",   [*0.48*],
+                                    table.cell(rowspan: 2)[PhaSep],     "ROCAUC", "0.71",     [*0.74*], "0.72",
+                                                                        "PRAUC",  "0.70",     [*0.80*], "0.79",
+                                    table.cell(rowspan: 2)[DRLLPS],     "ROCAUC", "0.69",     [*0.76*], "0.75",
+                                                                        "PRAUC",  "0.71",     "0.77",   [*0.78*],
 ))
 
 == Results in context of the initial idea of this work
 - block decomposition can be used to predict phase separation
-- but using the raw sequence yields better results
-- therefore the focus has shifted to using the sequence and additional data to
-  build a good phase separation predictor
+  - but using the raw sequence yields better results
+  - therefore the focus has shifted to using the sequence and additional data to
+    build a good phase separation predictor
+- while the ppmclab data set should be a beeter training set, it failed to
+  predict the MLOs
 
 == Visualizing the results
 - ROC AUC and PR AUC
-- Confusion Matrix
-- F1 Scores, Accuracy etc.
 - bar plots / tables for comparison with other tools
+- Saliency (shows which input positions the model “cares about most” when making its prediction)
+  probably only for some visualizations
+https://bbb.rlp.net/rooms/hal-cta-mfd-wzm/join
+
+== Saliency
+#image("figures/saliency_test.png")
+#place(image("figures/mobi.png", width: 80%))
 
 == What can / should be done in the remaining time?
-- Add post translational modification data
 - Cross validation of the final model
-- Comparison of PSPire and my tool on the PPMCLAB data
-- If there is time left, check for Driver and Client differences
+- writing!
+- next week, report will be send
+- last meeting: 10.07.
+- end of this thesis: 04.08.
+- personal deadline: 25.07.
 
 == Structure of the thesis
 - Introduction
+  - Liquid-Liquid Phase Separation
   - Block decomposition of protein sequences
+  - Current predictors and the difficulties
   - Machine Learning in Bioinformatics
     - CNN
-  - Liquid-Liquid Phase Separation
-  - Current predictors and the difficulties
 - Material
   - Data (explain and visualize data sets)
 - Methods
   - Tools
   - data preparation
   - model architectures
+  - model optimizations
 - Results
+  - comparison of my own models
+    - most important block decompositions
+  - comparison with other models
+    - on their test data
+    - on mlo data
+  - visualizations of important sequence segments
 - Discussion
+  - Usefulness of this model
+  - What should / could still be done
+
 //
 // == Data Preparation
 // The datasets were filtered for:

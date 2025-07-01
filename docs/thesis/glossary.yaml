@@ -41,3 +41,40 @@ ssup:
 rsa: 
   short: RSA 
   long: Relative Solvent Accesibility
+
+auc: 
+  short: AUC 
+  long: Area Under the Curve
+
+roc: 
+  short: ROC 
+  long: Receiver Operator Curve
+
+prc: 
+  short: PRC 
+  long: Precision Recall Curve
+
+hmm:
+  short: HMM 
+  long: Hidden Markov Model
+
+msa: 
+  short: MSA 
+  long: Multiple Sequence Alignment
+
+ai: 
+  short: AI 
+  long: Artificial Intelligence
+
+nn: 
+  short: NN 
+  long: Neural Network
+
+af: 
+  short: AF 
+  long: Activation Function
+
+relu: 
+  short: ReLU 
+  long: Rectified Linear Unit
+

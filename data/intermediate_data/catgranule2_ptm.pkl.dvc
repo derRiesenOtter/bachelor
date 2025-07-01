@@ -1,0 +1,5 @@
+outs:
+- md5: 7e1366910eac58701c5c19d96c267818
+  size: 6987773
+  hash: md5
+  path: catgranule2_ptm.pkl

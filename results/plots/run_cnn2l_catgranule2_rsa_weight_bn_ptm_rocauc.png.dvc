@@ -1,0 +1,5 @@
+outs:
+- md5: da6a1c0caeb44f2f3842bc9cd31fc154
+  size: 24239
+  hash: md5
+  path: run_cnn2l_catgranule2_rsa_weight_bn_ptm_rocauc.png

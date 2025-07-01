@@ -1,8 +1,34 @@
 import itertools
+import pickle
 import unittest
 from collections import Counter
 
 import numpy as np
+
+
+def get_scalar_values_rsa(
+    id: str, sequence: np.ndarray, mapping: dict, rsa: str
+) -> dict:
+    dic = {}
+    for _, value in mapping.items():
+        dic[value] = 0
+    permutations = itertools.permutations(dic.keys(), 2)
+    for value in permutations:
+        new_key = int(str(value[0]) + str(value[1]))
+        dic[new_key] = 0
+    dic[9] = 0
+    dic[-1] = 0
+    with open("./data/intermediate_data/pspire_rsa.pkl", "rb") as f:
+        rsa_df = pickle.load(f)
+    rsa_seq = rsa_df[rsa_df["UniprotEntry"] == id]["rsa"].iloc[0]
+    rsa_gt_025 = 0
+    for residue, rsa_residue in zip(sequence, rsa_seq):
+        if rsa_residue > 0.25:
+            rsa_gt_025 += 1
+            dic[int(residue)] = dic[int(residue)] + 1
+    for key in dic.keys():
+        dic[key] = dic[key] / rsa_gt_025
+    return dic
 
 
 def get_scalar_values(sequence: np.ndarray, mapping: dict) -> dict:

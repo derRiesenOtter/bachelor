@@ -1,0 +1,4 @@
+This data set contains 20200 entries
+After filtering out sequences that are longer than 2700 or shorter than 10 19947 entries were kept
+Of these filtered proteins 14613 were negatives
+Of these filtered proteins 5334 were positives
