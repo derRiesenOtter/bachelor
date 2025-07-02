@@ -23,7 +23,7 @@ The programs used during this work are listed in @programs.
                                                  [scikit-learn @pedregosa_scikit-learn_2011], "1.6.1",
                                                  [seaborn @waskom_seaborn_2021],              "0.13.2",
                                                  [torch @noauthor_pytorch_nodate],            "2.7.0",
-                                                 [xgboost @noauthor_xgboost_nodate],          "3.0.2",
+                                                 [xgboost @chen_xgboost_2016],                "3.0.2",
   [DSSP @noauthor_pdb-redodssp_nodate],          "-",                                         "4.5.3",
   table.hline()
 ), caption: "Programs used in this work") <programs>

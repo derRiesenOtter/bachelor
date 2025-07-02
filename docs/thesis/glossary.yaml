@@ -78,3 +78,10 @@ relu:
   short: ReLU 
   long: Rectified Linear Unit
 
+bilstm: 
+  short: BiLSTM
+  long: Bidirectional Long Short-Term Memory
+
+rnn: 
+  short: RNN 
+  long: Recurrent Neural Network

@@ -1,4 +1,5 @@
 #import "@preview/glossy:0.8.0": *
+#set math.equation(numbering: "(1)")
 #let grey = luma(90%)
 #set page(paper: "a4")
 #set par(justify: true)

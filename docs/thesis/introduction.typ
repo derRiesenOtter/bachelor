@@ -1,5 +1,5 @@
 #import "@preview/glossy:0.8.0": *
-#set math.equation(numbering: "1.")
+#set math.equation(numbering: "(1)")
 #import "@preview/cetz:0.4.0"
 #import "state.typ": bib_state
 #context bib_state.get()
@@ -12,13 +12,15 @@
 
 @llps is a process where a homogeneous mixture spontaneous separates into two
 liquid phases, one with a depleted and one with an increased concentration of
-components. @llps can form colloids like milk or layers like a mixture of oil
-and water. It is a widespread phenomena that is dependent on many factors like
-temperature, pressure, differences in polarity, hydrophobicity and
-hydrophilicity. Studying @llps in polymer systems started in the mid of the
-20th century. In the late 20th century the phenomena was recognized as an
-important process organisms and studies began to understand the implications of
-@llps in an biological context. @xu_liquid-liquid_2023
+components, see @phase_separation. @llps can form colloids like milk or layers
+like a mixture of oil and water. It is a widespread phenomena that is dependent
+on many factors like temperature, pressure, differences in polarity,
+hydrophobicity and hydrophilicity. Studying @llps in polymer systems started in
+the mid of the 20th century. In the late 20th century the phenomena was
+recognized as an important process organisms and studies began to understand
+the implications of @llps in an biological context. @xu_liquid-liquid_2023
+
+#figure(image("figures/phase_separation.png", width: 50%), caption: [Visualization of @llps. @xu_liquid-liquid_2023]) <phase_separation>
 
 Cells are capable of conducting various different tasks that involve many
 biochemical reactions. As these reactions often need different educts, enzymes
@@ -199,22 +201,24 @@ Bidirectional Encoder Representations from Transformers.
 
 In the following sections @ai models used during this work will be covered briefly.
 
-=== Neural Networks
+=== Neural Networks <sec_nn>
 @nn are inspired by nature, they consist of an input layer, an arbitrary number
 of hidden layers and an output layer. They imitate the complex connected networks of
 neurons in a living organism. Both biological and artificial neurons receive
 signals from multiple neurons and transmit signals to multiple neurons. An
 artificial neuron computes a weighted sum of its inputs, adds a bias term and
-then applies an activation function to produce its output, see @neuron.
+then applies an activation function to produce its output, see @neuron. In a classical
+@nn every neuron will have all neurons from the previous layer as input. Such
+a layer is called fully connected layer.
 @han_artificial_2018
 
 #figure(image("figures/neuron.jpg", width: 60%), caption: [Visualization of an
 artificial neuron. @han_artificial_2018]) <neuron>
 
 The output of a neuron $i$ with $n$ inputs $x$, the weights $w$ and an activation
-function could be described as:
+function could be described, see @activation_function
 
-$ "output"_i = "activation function"(sum_j^n w_(i j) x_j + b_i) $
+$ "output"_i = "activation function"(sum_j^n w_(i j) x_j + b_i) $ <activation_function>
 
 The weights and the biases are the learnable parameters of a @nn. They are
 initialised with random values and are updated each training epoch, see
@@ -243,10 +247,11 @@ non-linearity to the network. Without these a @nn would just produce the
 outputs as a linear function of the inputs. An activation function should also
 have some more properties. It should be easy to calculate, it should be
 differentiable and it should retain the distribution of data. The first common
-@af was the sigmoid function, see @sigmoid.
+@af::pl were the sigmoid function, see @sigmoid, and the tanh function, see @tanh.
 $ sigma(x)=frac(1, 1 + e^(-x)) $ <sigmoid>
-Today the @relu function is commonly used, as it is computational less complex, see @relu.
-$ "ReLU"(x) = cases(x ", if" x gt.eq 0, 0 ", otherwise") $ <relu>
+$ f(x) = frac(2, 1+e^(-2x)) -1 $ <tanh>
+Today the @relu function is commonly used, as it is computational less complex, see @relu_eq.
+$ "ReLU"(x) = cases(x ", if" x gt.eq 0, 0 ", otherwise") $ <relu_eq>
 
 There are also other more advanced @af::pl today, that do have some advantages
 over the here mentioned ones, but they are not in focus of this work. @dubey_activation_2022
@@ -255,39 +260,141 @@ Today there are several types of @nn, each designed to handle different tasks.
 Some of these used during this work will be introduced in the following sections.
 
 ==== Convolutional Neural Networks
-@cnn are part of the @nn models. Along with Recurrent Neural Networks, Generative
-Networks and Transformers they excel in tasks like image recognition or natural
-language processing. They are mainly known for their success in computer vision,
-yet they can also be used in other domains like natural language processing.
-@ersavas_novel_2024
+@cnn::pl are a popular class of @nn::pl that is often used for image classification,
+speech recognition and many more. It typically consists of four components.
+A convolutional layer, a pooling layer, an activation function and a fully
+connected layer. In a convolutional layer neurons of one layer are only connected
+to some neurons of the previous layer. These neurons of the previous layer are called
+the receptive field of the corresponding neuron in the next layer. The output of the
+receptive field is calculated using a weight vector that is called filter or kernel.
+This filter is slid over the whole input, see @convolution. The weights of the filter are the
+same for the whole layer. @indolia_conceptual_2018
+
+#figure(image("figures/convolution.png", width: 80%), caption: [Visualization of a convolutional layer with a two dimensional input @ratan_what_2020]) <convolution>
+
+The pooling layer typically shrinks its input further. There are different
+pooling techniques. Most common are average pooling and max pooling. Similar to
+the convolutional layer a window is slid over the input and the pooling
+function is applied. What differs is that the window usually does not overlap
+with the next window, leading to a considerable reduction in size, see @maxpooling. @indolia_conceptual_2018
+
+#figure(image("figures/maxpooling.png", width: 40%), caption: [Visualization of max pooling. @noauthor_everything_2020]) <maxpooling>
+
+Both activation function and fully connected layer were already described in
+@sec_nn. The fully connected layer is usually only used for the final prediction.
+@cnn::pl are considered above other classical @nn mainly due to the
+shared weights. They result in less parameters that need to be trained,
+reducing computational costs and improving generalization. Due to the convolutional
+layers a @cnn is also able to extract features by itself in a hierarchical order.
 
 ==== Long short-term memory
-@lstm are able to identify patterns over longer distances.
+@lstm networks are part of the @rnn family. Unlike standard neural networks, @rnn::pl
+allow connections across time via feedback loops. This architecture gives the
+network a form of "memory". @lstm::pl solve key problems faced by standard @rnn::pl, such as the
+vanishing and exploding gradient issues during backpropagation through time.
+They achieve this by enforcing a more stable error flow through their cell
+state, which enables the model to retain relevant information over longer
+sequences. @hochreiter_long_1997
+
+A @lstm unit consists of three sections called gates, the forget gate,
+the input gate and the output gate. It also carries two "memories", the "short-term memory"
+and the long term memory. The forget gate determines what percentage of the
+"long-term memory" will be remembered. The input gate updates the "long-term memory" and
+the output gate updates the "short-term memory". The "short-term memory" of the last unit
+is the output of the @lstm. Each step takes the "short-term memory", the "long-term memory"
+and the current input into consideration. Two activation functions are used. The sigmoid and the
+tanh function, see @lstm. @noauthor_deep_nodate
+
+#figure(image("figures/lstm.jpeg", width: 60%), caption: [Visualization of a @lstm unit. @noauthor_deep_nodate]) <lstm>
+
+@bilstm are an extension of @lstm that process sequential data in forward and backward
+directions. This allows the model to capture context from past and future states
+simultaneously. This ability is important for tasks like natural language processing,
+where understanding both past and future context is crucial. @noauthor_bidirectional_nodate
 
 ==== Transformers
-Transformers have emerged as a novel @dl model that is great at working with
-time series data or sequences. It is able to capture long-term relations.
-@ersavas_novel_2024
+
+The introduction of the transformer architecture has had a big impact, with
+it being the foundation of modern large language models like Open AIs
+ChatGPT (Generative Pretrained Transformer). It could be seen as an advanced
+version of @rnn::pl. It does enable parallel processing and has improved long-range
+dependence.
+
+The original transformer consisted of an encoder and an decoder and was
+created for the purpose of machine translation. Today there
+are also transformer that only use one of theses two. ChatGPT for example only
+uses the decoder as it only needs to generate text, while BERT uses only
+the encoder as it only needs to process the input sequence. Here we will cover
+the original transcoder architecture briefly, even though this work will only
+use an encoder-only transformer.
+
+First of all, the input needs to be converted into numerical values, as is
+required for all @ai models. Depending on the type of input, an appropriate
+embedding is applied. Each segment of the input becomes a token, and each token
+is mapped to a corresponding embedding vector. To help the model understand the
+position of each token in the sequence, positional encoding is added to the
+embeddings. This encoding uses sine and cosine functions at different
+frequencies to generate a unique pattern for each position. The result is added
+to the embedded input.
+
+Next comes the self-attention mechanism, which is
+applied to every token. For each token, three vectors are computed: a query, a
+key, and a value. These are obtained by multiplying the input (embedding +
+positional encoding) with learned weight matrices. Then, the attention score
+for each token is calculated by taking the dot product between the query of the
+current token and the keys of all tokens. These scores are passed through a
+SoftMax function to normalize them into probabilities, determining how much
+each token should contribute to the current one. This process is done multiple
+times in parallel with different sets of weights — a technique known as
+Multi-Head Attention. The outputs from all heads are concatenated and projected
+back into the model's dimension. The result is then added back to the original
+input using a residual connection.
+
+After attention, the output passes through a feed-forward neural network (also
+called an MLP or multilayer perceptron), which consists of two linear layers
+with a non-linearity in between. This step is applied to each position
+separately and identically. Again, a residual connection is used, and layer
+normalization is applied before or after each sub-block, depending on the
+implementation, to stabilize training and improve performance.
+
+In the decoder, Masked Multi-Head Attention is used instead of regular
+self-attention. This ensures that each token can only attend to earlier
+positions in the sequence. Another important component is encoder-decoder
+attention, which allows the decoder to focus on relevant parts of the encoded
+input. It works similarly to self-attention: a query is computed for the
+current token being generated, and dot products are taken with the keys from
+the encoder’s output. After applying SoftMax, the decoder learns which encoded
+tokens are most important for generating the next word.Like other attention
+mechanisms, this can also be stacked.
+
+Finally, the output from the decoder is passed through a linear projection
+layer followed by a SoftMax function, producing a probability distribution over
+the entire vocabulary. The most likely next token is selected based on this
+distribution. Layer normalization and residual connections are applied
+throughout the model to ensure stable learning and better generalization — see
+@transformer for a detailed overview. @vaswani_attention_2017
+
+#figure(image("figures/transformer.png", width: 80%), caption: [Visual overview of the
+architecture of an encoder-decoder transformer.
+@nyandwi_transformer_2023 ]) <transformer>
 
 === XGBoost
 
-XGBoost eXtreme Gradient Boosted trees is an ensemble method. Boosting models
-take many weak learners and add them sequentially to their prediction. Each new
-weak learner is trained to correct the errors the previous tree caused. It has
-several features that set it apart from other models. It has regularized boosting
-to prevent overfitting.
+XGBoost (eXtreme Gradient Boosting) is a powerful and widely used @ml algorithm
+based on the concept of gradient boosted decision trees. Boosting models build an
+ensemble by sequentially adding many weak learners where each new learner
+is trained to correct the errors made the by the previous learners.
+It has several features that set it apart from other
+boosting implementations. It incorporates regularization to prevent overfitting
+and improve generalization. It can automatically handle missing values and
+is able to work in parallel. It employs tree pruning via a post-pruning process
+that starts with deep trees and removes branches that do not contribute to
+reducing the loss, thereby preventing overfitting. A schematic of the
+XGBoost algorithm is shown in @xgboost. @chen_xgboost_2016
 
-ion
-automatically handles missing values, is able to work
-in parallel, can cross validate at each iteration and uses tree pruning.
+#figure(image("figures/xgboost.png", width: 50%), caption: [Schematic of the XGBoost algorithm. @yao_short-term_2022]) <xgboost>
 
-is a powerful gradient tree boosting algorithm that belongs to the @ml
-models. It is a tree ensemble model, where the final prediction for a given
-sample is the sum of predictions from all trees. @chen_xgboost_2016
-
-the outputs of many weak learners to form a strong predictive model.
-Each new tree that is added to the model is trained to correct for the errors of
-the last tree.
+=== Categorical Embeddings
 
 == Block Decomposition of Protein Sequences
 
