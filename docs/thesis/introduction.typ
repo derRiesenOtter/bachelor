@@ -396,6 +396,42 @@ XGBoost algorithm is shown in @xgboost. @chen_xgboost_2016
 
 === Categorical Embeddings
 
+As already mentioned, most @ai models need numerical data as input. As inputs
+do not always fulfill this several embedding techniques have been developed. In
+this section we will focus on static word embeddings that were used in this
+work. Static here means, that each word in the vocabulary only has one vector
+representation.
+
+Words are, in a way, categorical data. Representing them as numerical values
+could be accomplished by using something like a one-hot encoding. In a one-hot
+encoding a vector of the size of the number of categories is created for each
+element. The position that corresponds to the category of this element is filled
+with a one, while all other positions contain a zero. However, this
+approach does have two drawbacks. First, these vectors are huge and second all
+words are treated the same. This means there is no way similarities between words
+can be expressed. @noauthor_word_nodate
+
+A better representation for words is to use dense vector of real numbers. Such
+a vector can be significantly shorter than a one-hot encoded vector and is
+filled with real numbers that each represent a property of the element. In
+a biological context if we assume that the elements are for example amino acids,
+those properties could be thought of as chemical properties. A representation
+of valine (@valine ) and threonine (@threonine) could look like this: @noauthor_word_nodate
+
+$ q_("valine") = [attach(limits(2.4), t: "Acidity"), attach(limits(1.2), t: "Size"), ... ] $ <valine>
+
+$ q_("threonine ") = [attach(limits(6.5), t: "Acidity"), attach(limits(1.3), t: "Size"), ... ] $ <threonine>
+
+This way similarities between words can be expressed and calculated, see @similarities. $Phi$
+is the angle between the two words. That way similar words will result in a value close to
+one while dissimilar words will result in a value close to zero. @noauthor_word_nodate
+
+$ "Similarity"("valine", "threonine") = frac(q_"valine" dot q_"threonine", ||q_"valine"|| ||q_"threonine"||) = cos(Phi) $ <similarities>
+
+In an actual word embedding these vectors do not contain real world properties like in
+this example. Instead a model trains these values for every word so it minimizes the loss.
+The resulting values do not correspond to any real properties of the word. @noauthor_word_nodate
+
 == Block Decomposition of Protein Sequences
 
 The block decomposition algorithm by Martin Girard was created as part of a

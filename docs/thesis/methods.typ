@@ -85,15 +85,112 @@ datasets.
 
 This model had the following structure:
 
+// #cetz.canvas({
+//   import cetz.draw: *
+//   let size = (.4, .4)
+//   let fbl = (0, 0)
+//   let ftr = (fbl.first() + size.first(), fbl.last() + size.last())
+//   let bbl = (2, 2)
+//   let btr = (bbl.first() + size.first(), bbl.last() + size.last())
+//   rect(fbl, ftr)
+//   line((bbl.first(), btr.last()), (btr.first(), btr.last()))
+//   line((btr.first(), bbl.last()), (btr.first(), btr.last()))
+//   line((fbl.first(), fbl.last() + size.last()), (bbl.first(), bbl.last() + size.last()))
+//   line((fbl.first() + size.first(), fbl.last() + size.last()), (bbl.first() + size.last(), bbl.last() + size.last()))
+//   line((fbl.first() + size.first(), fbl.last()), (bbl.first() + size.first(), bbl.last()))
+//
+//   content((fbl.first() + size.first() / 2, fbl.last() - .5), "2700")
+// })
+
 #cetz.canvas({
   import cetz.draw: *
-  grid(
-    (0, 0),
-    (0.8, 8),
-    step: 0.8
-  )
-  content((0.4, 0.3), box(fill: white, [$X_1$]))
-  content((0.4, 1.1), box(fill: white, [$X_1$]))
+  let heading = 4.5
+  let dim = -4.5
+  let dist = 2.9
+  let start = 0
+
+  content((0, heading), [Input])
+  content((0, 0), text(size: 7pt)[MASNDYTQQATQSYGAYPTQPGQGYSQQSSQPYGQQSYSGYSQSTD...], angle: 270deg)
+  content((0, dim), [2700 x 1])
+
+  let start = start + dist
+  content((start, heading), [Embedding])
+  let bottom = -3.5
+  let top = 3.5
+  let width = 0.3
+
+  for z in (0, 0.1, 0.2) {
+    rect((start - z, bottom - z), (start - z + width, top - z), fill: white)
+    let x = bottom
+    while x < top {
+      line((start - z, x - z), (start - z + width, x - z))
+      x = x + 0.1
+    }
+  }
+  content((start, dim), [2700 x 10])
+
+  let start = start + dist
+  content((start, heading), [Convolution])
+  let bottom = -3.3
+  let top = 3.3
+  let width = 0.3
+
+  for z in (0, 0.1, 0.2, 0.3, 0.4) {
+    rect((start - z, bottom - z), (start - z + width, top - z), fill: white)
+    let x = bottom
+    while x < top {
+      line((start - z, x - z), (start - z + width, x - z))
+      x = x + 0.1
+    }
+  }
+  content((start, dim), [2690 x 70])
+
+  let start = start + dist
+  content((start, heading), [Max Pooling])
+  let bottom = -1.5
+  let top = 1.5
+  let width = 0.3
+
+  for z in (0, 0.1, 0.2, 0.3, 0.4) {
+    rect((start - z, bottom - z), (start - z + width, top - z), fill: white)
+    let x = bottom
+    while x < top {
+      line((start - z, x - z), (start - z + width, x - z))
+      x = x + 0.1
+    }
+  }
+  content((start, dim), [1345 x 70])
+
+  let start = start + dist
+  content((start, heading), [Adaptive Max Pooling])
+  let bottom = 0
+  let top = 0.1
+  let width = 0.3
+
+  for z in (0, 0.1, 0.2, 0.3, 0.4) {
+    rect((start - z, bottom - z), (start - z + width, top - z), fill: white)
+    let x = bottom
+    while x < top {
+      line((start - z, x - z), (start - z + width, x - z))
+      x = x + 0.1
+    }
+  }
+  content((start, dim), [1 x 70])
+
+  let start = start + dist
+  content((start, heading), [Linear])
+  let bottom = -0.1
+  let top = 0.1
+  let width = 0.3
+
+  rect((start, bottom), (start + width, top), fill: white)
+  let x = bottom
+  while x < top {
+    line((start, x), (start + width, x))
+    x = x + 0.1
+  }
+  content((start, dim), [2])
+
 })
 
 To start the development of a new @llps predictor a few more models were created to
