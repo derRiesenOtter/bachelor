@@ -21,7 +21,6 @@ class CNN2L(nn.Module):
             in_channels=embedding_dim,
             out_channels=conv1_out_channels,
             kernel_size=kernel_size,
-            padding=kernel_size // 2,
         )
 
         self.conv2 = nn.Conv1d(

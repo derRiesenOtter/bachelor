@@ -85,3 +85,47 @@ bilstm:
 rnn: 
   short: RNN 
   long: Recurrent Neural Network
+
+cl: 
+  short: CL 
+  long: Convolutional Layer
+
+mpl: 
+  short: MPL
+  long: Max Pooling Layer
+
+ampl: 
+  short: AMPL
+  long: Adaptive Max Pooling Layer
+
+fcl: 
+  short: FCL 
+  long: Fully Connected Layer
+
+bn: 
+  short: BN 
+  long: Batch Normalization 
+
+do: 
+  short: DO 
+  long: Dropout
+
+ed: 
+  short: ED 
+  long: Embedding Dimension
+
+ks: 
+  short: KS 
+  long: Kernel Size
+
+pd: 
+  short: PD
+  long: Padding
+
+st: 
+  short: ST 
+  long: Stride
+
+oc: 
+  short: OC 
+  long: Output Channels
