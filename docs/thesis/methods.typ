@@ -93,7 +93,12 @@ the models between each other. As there was no defined Test or Training set in t
 PPMC-lab dataset a split of 80/20 was then used for training. A seed of 13 was used for
 all models to make the results reproducible. The training data loaders were set to shuffle,
 while the validation data loaders were not. The batch size was set depending on the complexity
-of the model and the size of the data set, these values can be found in the appendix.
+of the model and the size of the data set, these values can be found in the appendix. All
+models, excluding the XGBoost model, used cross entropy loss for the loss
+function and considered the distribution of positive and negative values using
+weights. The adam optimizer was used in all models except the XGBoost, as it requires
+less manual optimization than stochastic gradient descent. TODO. The learning rate and
+decay was adjusted per model and can be found in the appendix.
 
 == The first set of Models
 As there have been no previous @llps predictors that relied on @nn, the first step
@@ -358,9 +363,23 @@ It only added one additional @cl to see if it benefits the model, see the visual
 
 After the first set of models was tested, it was decided to discard the idea to use
 the block decomposition with @nn as they were outperformed by the models that used
-the raw sequence as input, see .
+the raw sequence as input, see . Instead the block decomposition was used to create
+a model based on the XGBoost algorithm and the @nn models based on the raw sequence
+were focused.
 
 === XGBoost
+
+To be able to use the block decomposition output for a model like XGBoost, the output
+had to be adapted again. For every channel representing a mapping the fraction of each
+label was calculated and used as an input. A simple XGBoost model was created with the
+parameters in @par_xgboost, for all parameters see appendix.
+
+#figure(table(
+  columns: 5,
+  [Tree Method],     [Learning Rate], [Estimators], [Max Depth], [Evaluation Metric],
+  [Histogram based], [0.05],          [1000],       [4],         [LogLoss],
+  table.hline()
+)) <par_xgboost>
 
 === 3 Layer @cnn
 
