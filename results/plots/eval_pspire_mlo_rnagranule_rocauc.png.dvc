@@ -1,5 +1,0 @@
-outs:
-- md5: 6d637f221833c5eaa5cc8bf4d5a50e15
-  size: 27023
-  hash: md5
-  path: eval_pspire_mlo_rnagranule_rocauc.png

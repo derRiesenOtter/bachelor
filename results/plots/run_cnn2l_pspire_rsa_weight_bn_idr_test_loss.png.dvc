@@ -1,5 +1,0 @@
-outs:
-- md5: a882a0ce8712430ae79476a00328cbd8
-  size: 17404
-  hash: md5
-  path: run_cnn2l_pspire_rsa_weight_bn_idr_test_loss.png

@@ -1,5 +1,0 @@
-outs:
-- md5: a61eca624a1c3d5ca83ff21a548759d1
-  size: 24023
-  hash: md5
-  path: run_cnn2l_pspire_rsa_weigth_rocauc_idr.png

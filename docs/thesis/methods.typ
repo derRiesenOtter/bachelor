@@ -87,20 +87,47 @@ The mappings in @mappings were used for the block decompositions.
   table.hline()
 ), caption: "Mappings used by the block decomposition algorithm") <mappings>
 
-== General Informations on running the models
-All models were run on the PSPire dataset, as this was the main dataset for comparing
-the models between each other. As there was no defined Test or Training set in the
-PPMC-lab dataset a split of 80/20 was then used for training. A seed of 13 was used for
-all models to make the results reproducible. The training data loaders were set to shuffle,
-while the validation data loaders were not. The batch size was set depending on the complexity
-of the model and the size of the data set, these values can be found in the appendix. All
-models, excluding the XGBoost model, used cross entropy loss for the loss
-function and considered the distribution of positive and negative values using
-weights. The adam optimizer was used in all models except the XGBoost, as it requires
-less manual optimization than stochastic gradient descent. TODO. The learning rate and
-decay was adjusted per model and can be found in the appendix.
+== Model Selection and Testing
 
-== The first set of Models
+The process of selecting and testing different models during this work can be
+divided into into three phases. The first phase was about testing if @nn::pl,
+especially @cnn::pl are capable of predicting @llps, given the small dataset
+sizes, and comparing the block decomposition to the raw sequence as input. The
+second phase revolved about testing other @nn that are more complex than the
+models from the previous phase and testing the block decomposition as input for
+a @ml model. The third phase focused on enhancing the best model with
+additional features and optimizations as well as trying to enhance the @ml
+model that used the block decomposition. As the PSPire dataset proved to be
+challenging and provided comparability towards many other @llps predictors it
+was chosen for deciding which model or optimization to keep. Therefore, not all
+models were run on all datasets. The PPMC-lab dataset was the only dataset that
+had no predefined train and test split. For running models on this dataset a
+split of 80% for training and 20% for testing was used. During all runs a
+random seed of 13 was set to be reproducible. The training data loaders were
+set to shuffle, while the validation data loaders were not. The batch size was
+set depending on the complexity of the model and the size of the data set,
+these values can be found in the appendix. All models, excluding the XGBoost
+model, used cross entropy loss for the loss function and considered the
+distribution of positive and negative values using weights. The adam optimizer
+was used in all models except the XGBoost, as it requires less manual
+optimization than stochastic gradient descent. TODO. The learning rate and
+decay was adjusted per model and can be found in the appendix.
+The models will be evaluated with the @auc values from the @roc and @prc.
+The evaluation will mostly be split into proteins that contain @idr::pl and
+proteins that do not contain @idr::pl.
+
+An overview of the tested models and optimizations is shown in @journey. The
+following sections will cover each phase and go into detail about what models
+were used, the input as well as the parameters.
+#let g = rgb(80, 150, 200)
+#let y = rgb(180, 230, 0)
+#let f = rgb(240, 100, 0)
+#figure(diagram(node-corner-radius: 2pt, spacing: (2.6em, 2.0em), node((0, 0), [Start], fill: g, name: <a>), edge(<a>, <b>, "-"), node((-1.5, 1), [Block Decomposition], fill: g, name: <b>), edge(<b>, <d>, "-"), node((-2.5, 2), [XGBoost], fill: y, name: <d>), edge(<b>, <e>, "-"), node((-1.5, 2), [1L CNN], fill: g, name: <e>), edge(<b>, <f>, "-"), node((-0.5, 2), [2L CNN], fill: g, name: <f>), edge(<a>, <c>, "=>"), node((1.5, 1), [Sequence], fill: g, name: <c>), edge(<c>, <g>, "-"), node((0.5, 2), [1L CNN], fill: g, name: <g>), edge(<c>, <h>, "-"), node((1.5, 3), [3L CNN], fill: y, name: <h>), edge(<c>, <i>, "-"), node((2.5, 2), [BLSTM], fill: y, name: <i>), edge(<c>, <j>, "=>"), node((0.5, 3), [2L CNN], fill: g, name: <j>), edge(<c>, <k>, "-"), node((2.5, 3), [Transformer], fill: y, name: <k>), edge(<d>, <l>, "-"), node((-2.5, 3), [RSA], fill: f, name: <l>), node((0.5, 4), [Batch Normalization], fill: f, name: <m>), node((1.5, 4), [Attention], fill: f, name: <n>), node((-0.5, 4), [RSA Weights], fill: f, name: <o>), node((-1.5, 4), [RSA], fill: f, name: <p>), node((0, 5), [Split @idr\
+and non-@idr], fill: f, name: <q>), node((0, 6), [@ptm], fill: f, name: <r>), edge(<j>, <m>, "=>"), edge(<j>, <n>), edge(<j>, <o>, "=>"), edge(<j>, <p>), edge(<o>, <q>, "=>"), edge(<m>, <q>, "=>"), edge(<q>, <r>, "=>")), caption: [Overview of the models
+tested during this work. The path to the final model is shown via the double arrows.
+The phases are represented by the fill of the nodes. Phase one is colored blue, phase two is colored green and phase three is colored orange.]) <journey>
+
+=== Phase One
 As there have been no previous @llps predictors that relied on @nn, the first step
 was to create simple models to see if @cnn::pl are capable of this task. Throughout
 this work the 1-dimensional versions of these @cl, the @mpl and the @ampl were used. A one layer
@@ -110,7 +137,7 @@ the sequence as input. Two models were created for each input. A one Layer @cnn 
 two layer @cnn. The basic models only consisted of an embedding, @cl::pl followed by
 the @relu activation function, a @mpl and an at the end an @ampl, @do and @fcl.
 
-=== 1 Layer @cnn
+==== 1 Layer @cnn
 
 The architecture of the one layer @cnn for the sequence based approach is shown in
 @1lcnn. The values for the @oc, @ed, @ks, @st and @pd are given in @par_1lcnn.
@@ -228,7 +255,7 @@ one layer @cnn is visualized in @1lcnn.
 
 }), caption: [Visualization of the 1 Layer @cnn used with the sequence as input.]) <1lcnn>
 
-=== 2 Layer @cnn
+==== 2 Layer @cnn
 The parameters of the 2 layer models are summarized in @par_2lcnn.
 
 #figure(table(
@@ -359,7 +386,7 @@ It only added one additional @cl to see if it benefits the model, see the visual
 
 }), caption: [Visualization of the 2 Layer @cnn used with the sequence as input.]) <2lcnn>
 
-== The second set of Models
+=== The second set of Models
 
 After the first set of models was tested, it was decided to discard the idea to use
 the block decomposition with @nn as they were outperformed by the models that used
@@ -367,31 +394,91 @@ the raw sequence as input, see . Instead the block decomposition was used to cre
 a model based on the XGBoost algorithm and the @nn models based on the raw sequence
 were focused.
 
-=== XGBoost
+==== XGBoost
 
 To be able to use the block decomposition output for a model like XGBoost, the output
 had to be adapted again. For every channel representing a mapping the fraction of each
 label was calculated and used as an input. A simple XGBoost model was created with the
-parameters in @par_xgboost, for all parameters see appendix.
+parameters in @par_xgboost, for all parameters see appendix. The parameters of this model
+are summarized in @par_xgboost.
 
 #figure(table(
   columns: 5,
+  align: (left, center, center, center, left),
   [Tree Method],     [Learning Rate], [Estimators], [Max Depth], [Evaluation Metric],
   [Histogram based], [0.05],          [1000],       [4],         [LogLoss],
   table.hline()
-)) <par_xgboost>
+), caption: [Parameters of the XGBoost model.]) <par_xgboost>
 
-=== 3 Layer @cnn
+==== 3 Layer @cnn
 
-=== BLSTM
+This model added one additional @cl, @relu and @mpl to the two layer @cnn.
 
-=== Transformer
+#figure(table(
+  align: (left, center, center, center),
+  columns: 17,
+  table.cell(rowspan: 2)[Input], table.vline(stroke: 0.5pt),  table.cell(rowspan: 2)[@ed], table.vline(stroke: 0.5pt), table.cell(colspan: 4)[@cl 1],                                                                                    table.vline(stroke: 0.5pt),  table.cell(colspan: 2)[@mpl 1 / 2],                       table.vline(stroke: 0.5pt),  table.cell(colspan: 4)[@cl 2],                                                                                      table.vline(stroke: 0.5pt),
+                                 table.cell(colspan: 4)[@cl 3],                                                                                   table.cell(rowspan: 2)[@do], table.cell(fill: none)[@oc], table.cell(fill: none)[@ks], table.cell(fill: none)[@pd], table.cell(fill: none)[@st], table.cell(fill: none)[@ks], table.cell(fill: none)[@st], table.cell(fill: none)[@oc], table.cell(fill: none)[@ks], table.cell(fill: none)[@pd], table.cell(fill: none)[@st], table.cell(fill: none)[@oc],
+  table.cell(fill: none)[@ks],   table.cell(fill: none)[@pd], table.cell(fill: none)[@st], table.vline(stroke: 0.5pt), table.hline(stroke: .5pt),                              [Sequence],                  [10],                        [70],                        [10],                        [2],                         [2],                         [2],                         [2],                         [140],                       [10],                        [2],
+  [2],                           [210],                       [10],                        [2],                        [2],                       [0.3],                       table.hline()
+), caption: [Parameters for 3 Layer @cnn::pl.]) <par_final>
 
-== The final model
-The final model also added @bn.
+==== @bilstm
+A very basic @bilstm model was created with the parameters shown in @par_bilstm.
+The input was embedded and subjected to the @lstm layer. @do and a @fcl followed.
 
 #figure(table(
   align: (center, center, center, center),
+  columns: 4,
+  [@ed],         [Hidden Dimensions], [Layers], [@do],
+  [12],          [3],                 [4],      [0.3],
+  table.hline()
+), caption: [Parameters of the @bilstm model. ]) <par_bilstm>
+
+==== Transformer
+A basic transformer model was created with the parameters shown in @par_transformer.
+The model did integrate a positional encoding.
+
+#figure(table(
+  align: (center, center, center, center),
+  columns: 6,
+  [@ed],         [Hidden Dimensions], [Heads], [Feed Forward Dimensions], [Layers], [@do],
+  [12],          [3],                 [4],     [256],                     [2],      [0.3],
+  table.hline()
+), caption: [Parameters of the transformer model.]) <par_transformer>
+
+=== The final model
+As the second set of models did not provide a better model than the two layer
+@cnn they were discarded. The work was then focused on improving the two layer
+@cnn. @bn, an attention implementation and the addition of @rsa values were
+tested independently. The inclusion of the @rsa values was tested as additional
+feature and as weight to the sequence. The tests showed that the inclusion of
+@bn and @rsa as weights benefit the model. To obtain the @rsa values the
+structure files of all proteins were downloaded from AlphaFold. Using DSSP the
+@rsa values per amino acid were calculated using these structure files.
+Splitting the model into one specialized to predict proteins with @idr::pl and
+one that predicts proteins without @idr::pl as well as the integration of @ptm
+values did also improve the models performance. The @ptm values were downloaded
+from UniProt for each protein. As there are many different @ptm::pl a mapping
+for similar @ptm::pl was created. It searched the @ptm description for a specific
+string. @ptm_prep describes how this mapping worked.
+
+#figure(table(
+  columns: 2,
+  [Group],            [Search Patterns],
+  [Phosphorylation],  [phospho],
+  [Acetylation],      [acetyl],
+  [Methylation],      [methyl],
+  [Ubiquitin-like],   [ubiquitin, sumo, nedd8, isg15],
+  [Adp-Ribosylation], [adp-ribosyl, polyadp],
+  [glycosylation],    [glcnac, galnac, glycos, xyl, fuc, man],
+  [Oxidation],        [sulfoxide, hydroxy, oxid],
+  [Other],            [-],
+  table.hline()
+), caption: [Mapping of @ptm::pl.]) <ptm_prep>
+
+#figure(table(
+  align: (left, center, center, center, center, center, center, center, center, center, center, center, center),
   columns: 13,
   table.cell(rowspan: 2)[Input], table.vline(stroke: 0.5pt), table.cell(rowspan: 2)[@ed], table.vline(stroke: 0.5pt),  table.cell(colspan: 4)[@cl 1],                                                                                      table.vline(stroke: 0.5pt),  table.cell(colspan: 2)[@mpl],                             table.vline(stroke: 0.5pt),  table.cell(colspan: 4)[@cl 2],
                                  table.vline(stroke: 0.5pt),                              table.cell(rowspan: 2)[@do], table.cell(fill: none)[@oc], table.cell(fill: none)[@ks], table.cell(fill: none)[@pd], table.cell(fill: none)[@st], table.cell(fill: none)[@ks], table.cell(fill: none)[@st], table.cell(fill: none)[@oc], table.cell(fill: none)[@ks], table.cell(fill: none)[@pd],
@@ -577,11 +664,5 @@ The final model also added @bn.
   content((start, dim), [2])
 
 }), caption: [Visualization of the final model.]) <final_model>
-
-The process of choosing the final model for this work is illustrated in @journey.
-
-#figure(diagram(node-fill: grey, spacing: (3.5em, 2.5em), node((0, 0), [Start], name: <a>), edge(<a>, <b>, "-"), node((-1.5, 1), [Block Decomposition], name: <b>), edge(<b>, <d>, "-"), node((-2.5, 2), [XGBoost], name: <d>), edge(<b>, <e>, "-"), node((-1.5, 2), [1L CNN], name: <e>), edge(<b>, <f>, "-"), node((-0.5, 2), [2L CNN], name: <f>), edge(<a>, <c>, "=>"), node((1.5, 1), [Sequence], name: <c>), edge(<c>, <g>, "-"), node((0.5, 2), [1L CNN], name: <g>), edge(<c>, <h>, "-"), node((1.5, 3), [3L CNN], name: <h>), edge(<c>, <i>, "-"), node((2.5, 2), [BLSTM], name: <i>), edge(<c>, <j>, "=>"), node((0.5, 3), [2L CNN], name: <j>), edge(<c>, <k>, "-"), node((2.5, 3), [Transformer], name: <k>), edge(<d>, <l>, "-"), node((-2.5, 3), [RSA], name: <l>), node((0.5, 4), [Batch Normalization], name: <m>), node((1.5, 4), [Attention], name: <n>), node((-0.5, 4), [RSA Weights], name: <o>), node((-1.5, 4), [RSA], name: <p>), node((0, 5), [Split @idr\
-and non-@idr], name: <q>), node((0, 6), [@ptm], name: <r>), edge(<j>, <m>, "=>"), edge(<j>, <n>), edge(<j>, <o>, "=>"), edge(<j>, <p>), edge(<o>, <q>, "=>"), edge(<m>, <q>, "=>"), edge(<q>, <r>, "=>")), caption: [Overview of the models
-created during this work. The path to the final model is shown via the double arrows.]) <journey>
 
 #pagebreak()

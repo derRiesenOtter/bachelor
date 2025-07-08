@@ -1,5 +1,0 @@
-outs:
-- md5: afdbf4a44fc0252f58a263675649de30
-  size: 92287
-  hash: md5
-  path: run_xgb_pspire_importance.png

@@ -1,5 +1,0 @@
-outs:
-- md5: 8af378390a1578138afe3717e34ea8eb
-  size: 8801
-  hash: md5
-  path: run_cnn2l_blstm_ppmclab_pspire_cm.png

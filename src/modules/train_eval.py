@@ -9,7 +9,6 @@ from sklearn.metrics import (
     roc_auc_score,
     roc_curve,
 )
-from torchviz import make_dot
 
 
 def run_train_eval(
@@ -341,9 +340,6 @@ def train_one_epoch(model, train_loader, device, loss_fn, optimizer):
         optimizer.zero_grad()
         outputs = model(inputs)
 
-        dot = make_dot(outputs, params=dict(model.named_parameters()))
-        dot.format = "png"
-        dot.render("./results/plots/vis_cnn1l")
         loss = loss_fn(outputs, labels)
         loss.backward()
 

@@ -1,5 +1,0 @@
-outs:
-- md5: c6d4d9b2dd0b45bc193c379f7cf50513
-  size: 24709
-  hash: md5
-  path: run_cnn2l_msf_rocauc.png

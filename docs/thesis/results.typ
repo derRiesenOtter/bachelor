@@ -10,9 +10,39 @@
 
 == The First Set of Models
 
+The first set of models, consisting of the one and two layer @cnn::pl, were compared
+on both the PPMC-lab dataset and the PSPire dataset. The results are shown in
+@first_models. The models using the raw sequence mostly outperformed the models
+using the block decomposition as input.
+
+#figure(table(
+  columns: 6,
+  align: center,
+  table.cell(rowspan: 2)[Data Set / \
+  Model],                    table.cell(rowspan: 2)[@auc], table.cell(colspan: 2, [@idr], align: center),                                 table.cell(colspan: 2, [non-@idr], align: center),
+                                                            table.cell(fill: none)[Sequence], table.cell(fill: none)[Block Decomposition], table.cell(fill: none)[Sequence], table.cell(fill: none)[Block Decomposition],
+  table.hline(stroke: 0.5pt), table.cell(rowspan: 2)[PPMC-lab / \
+  1 Layer],                    table.vline(stroke: 0.5pt),       [@roc],                                      [0.87],                           [*0.88*],
+  [*0.65*],                                                 [0.61],                           [@prc],                                      table.vline(stroke: 0.5pt),       [*0.66*],
+  [0.63],                     table.vline(stroke: 0.5pt),   [*0.72*],                         [0.71],                                      table.cell(rowspan: 2)[PPMC-lab / \
+  2 Layer],                        [@roc],
+  [*0.88*],                   [0.86],                       [*0.69*],                         [*0.69*],                                                                      [@prc],
+  table.vline(stroke: 0.5pt), [*0.68*],                     [0.63],                           table.vline(stroke: 0.5pt),                  [0.73],                           [*0.78*],
+  table.cell(rowspan: 2)[PSPire / \
+  1 Layer],                  [@roc],                       [*0.70*],                         [0.68],                                      [*0.63*],                         [0.59],
+                              [@prc],                       table.vline(stroke: 0.5pt),       [*0.20*],                                    [0.20],                           table.vline(stroke: 0.5pt),
+  [*0.06*],                   [0.04],                       table.cell(rowspan: 2)[PSPire / \
+  1 Layer],                        [@roc],                                      [*0.79*],                         [0.72],
+  [*0.62*],                   [0.56],                                                         [@prc],                                      table.vline(stroke: 0.5pt),       [*0.37*],
+  [0.26],                     table.vline(stroke: 0.5pt),   [*0.05*],                         [0.04],                                      table.hline()
+), caption: [Comparison of the @auc values for the one and two layer @cnn
+with the block decomposition and the raw sequence as input. PPMC-lab dataset.]) <first_models>
+
 == The Second Set of Models
 
 == Final Model
+
+=== PPMC-lab Dataset
 
 === PSPire Dataset
 

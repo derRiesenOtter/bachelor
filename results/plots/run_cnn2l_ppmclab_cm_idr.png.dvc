@@ -1,5 +1,0 @@
-outs:
-- md5: d323b30eef638215a36e6fde6f7f5d0e
-  size: 8461
-  hash: md5
-  path: run_cnn2l_ppmclab_cm_idr.png

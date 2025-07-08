@@ -1,5 +1,0 @@
-outs:
-- md5: 84660b53c575f92af612cda7c3e5da34
-  size: 8562
-  hash: md5
-  path: run_cnn2l_ppmclab_rsa_weight_bn_ptm_cm_idr.png

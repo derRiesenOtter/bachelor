@@ -1,5 +1,0 @@
-outs:
-- md5: a5d7c22621bf1cdf97de90f42a644459
-  size: 15851
-  hash: md5
-  path: run_cnn2l_ppmclab_multi_loss.png

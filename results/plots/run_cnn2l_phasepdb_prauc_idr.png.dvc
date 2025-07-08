@@ -1,5 +1,0 @@
-outs:
-- md5: 8c80d11e13bcaca6e288ff7a513cec0b
-  size: 18028
-  hash: md5
-  path: run_cnn2l_phasepdb_prauc_idr.png

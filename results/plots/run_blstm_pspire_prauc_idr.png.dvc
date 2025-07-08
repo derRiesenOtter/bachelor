@@ -1,5 +1,0 @@
-outs:
-- md5: dcb26d94e8497642a26bad2ff83c9d4e
-  size: 18415
-  hash: md5
-  path: run_blstm_pspire_prauc_idr.png

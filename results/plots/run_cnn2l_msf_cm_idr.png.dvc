@@ -1,5 +1,0 @@
-outs:
-- md5: 81dde3c0936d02f35f98ef49eca3d42f
-  size: 7355
-  hash: md5
-  path: run_cnn2l_msf_cm_idr.png

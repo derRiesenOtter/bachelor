@@ -1,5 +1,0 @@
-outs:
-- md5: f3e90755846ec7c140b36fd5e9999fc6
-  size: 14631
-  hash: md5
-  path: run_cnn2l_ppmclab_pspire_loss.png

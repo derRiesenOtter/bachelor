@@ -1,5 +1,0 @@
-outs:
-- md5: 49bffeadc5b350023d4d2ea6a7342a6f
-  size: 25347
-  hash: md5
-  path: eval_pspire_mlo_dact1_rocauc_idr.png

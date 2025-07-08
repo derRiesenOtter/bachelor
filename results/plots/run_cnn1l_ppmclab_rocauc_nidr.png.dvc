@@ -1,5 +1,0 @@
-outs:
-- md5: d301be7c0cf749a912ed7a7e4c570e2b
-  size: 22689
-  hash: md5
-  path: run_cnn1l_ppmclab_rocauc_nidr.png

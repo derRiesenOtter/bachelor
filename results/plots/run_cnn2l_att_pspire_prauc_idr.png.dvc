@@ -1,5 +1,0 @@
-outs:
-- md5: 3c12e793a6202472bbc2e3447f3def69
-  size: 17302
-  hash: md5
-  path: run_cnn2l_att_pspire_prauc_idr.png

@@ -1,5 +1,0 @@
-outs:
-- md5: 3385bfa1671999d72cba44a29645a737
-  size: 23293
-  hash: md5
-  path: run_transformer_pspire_rocauc_nidr.png

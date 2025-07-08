@@ -1,5 +1,0 @@
-outs:
-- md5: 3fb73177358ae1145de9144fb8bfa2dc
-  size: 18509
-  hash: md5
-  path: run_cnn2l_catgranule2_rsa_weight_bn_ptm_prauc.png

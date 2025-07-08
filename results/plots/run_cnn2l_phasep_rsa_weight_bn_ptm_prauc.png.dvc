@@ -1,5 +1,0 @@
-outs:
-- md5: 159927d6465b2986feb9ec1bce75559a
-  size: 17272
-  hash: md5
-  path: run_cnn2l_phasep_rsa_weight_bn_ptm_prauc.png

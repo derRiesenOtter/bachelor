@@ -1,5 +1,0 @@
-outs:
-- md5: 293748acaf2bdf9615322a4785cf741b
-  size: 6850
-  hash: md5
-  path: run_cnn2l_phasep_rsa_weight_bn_nidr_ptm_cm_idr.png

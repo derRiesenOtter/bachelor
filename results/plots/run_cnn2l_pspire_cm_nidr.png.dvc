@@ -1,5 +1,0 @@
-outs:
-- md5: 5e3520f1a58342c8e55e2f10cc9fde94
-  size: 8589
-  hash: md5
-  path: run_cnn2l_pspire_cm_nidr.png

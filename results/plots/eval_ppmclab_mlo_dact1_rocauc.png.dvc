@@ -1,5 +1,0 @@
-outs:
-- md5: f23b706c90162a2ed040c8b3aa32b596
-  size: 28145
-  hash: md5
-  path: eval_ppmclab_mlo_dact1_rocauc.png

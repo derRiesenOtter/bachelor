@@ -1,5 +1,0 @@
-outs:
-- md5: 4bd82f63570634a6d92678c681a21b80
-  size: 24520
-  hash: md5
-  path: run_cnn1l_pspire_rocauc_idr.png

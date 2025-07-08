@@ -1,5 +1,0 @@
-outs:
-- md5: 82f8def97656722ed4df946ba03f9cfd
-  size: 19581
-  hash: md5
-  path: run_cnn2l_pspire_rsa_weigth_prauc.png

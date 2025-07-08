@@ -1,5 +1,0 @@
-outs:
-- md5: 6e0116e96ef83f43644a5521165431f0
-  size: 10900
-  hash: md5
-  path: run_cnn2l_phasepdb_multi_cm.png

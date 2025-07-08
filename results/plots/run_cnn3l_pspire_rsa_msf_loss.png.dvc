@@ -1,5 +1,0 @@
-outs:
-- md5: e0bb2beb9656ddb93633466b9a316619
-  size: 16397
-  hash: md5
-  path: run_cnn3l_pspire_rsa_msf_loss.png

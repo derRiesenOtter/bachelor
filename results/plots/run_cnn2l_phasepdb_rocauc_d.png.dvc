@@ -1,5 +1,0 @@
-outs:
-- md5: d71b56eaec0f313a485c3892164edc1f
-  size: 23984
-  hash: md5
-  path: run_cnn2l_phasepdb_rocauc_d.png

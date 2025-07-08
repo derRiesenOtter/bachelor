@@ -1,5 +1,0 @@
-outs:
-- md5: a29d9ff075d8d1882d5e642fdbe075e0
-  size: 27835
-  hash: md5
-  path: run_cnn2l_phasep_rsa_weight_bn_ptm_rocauc.png
