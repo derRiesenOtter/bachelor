@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader
 
-from src.modules.cnn_2l_rsa_weight_bn import CNN2L
+from src.modules.cnn_2l_rsa import CNN2L
 from src.modules.sequence_dataset_rsa import SequenceDataSet
 from src.modules.train_eval_rsa import run_train_eval
 
@@ -61,11 +61,11 @@ class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
 
 # Create a loss function that takes the class weights into consideration and an optimizer
 loss_fn = nn.CrossEntropyLoss(weight=class_weights)
-optimizer = torch.optim.Adam(model.parameters(), lr=2e-3, weight_decay=1e-5)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
 
 # get the model name and define the epochs
 model_name = Path(__file__).stem
-epochs = 40
+epochs = 20
 run_train_eval(
     model_name,
     model,
@@ -76,5 +76,5 @@ run_train_eval(
     loss_fn,
     optimizer,
     val_df,
-    patience=40,
+    patience=10,
 )

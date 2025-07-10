@@ -2,6 +2,7 @@ import pickle
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
@@ -13,12 +14,14 @@ from src.modules.sequence_dataset_rsa import SequenceDataSet
 from src.modules.train_eval_rsa import run_train_eval
 
 # Opening the data containing the mapped sequences
-with open("./data/intermediate_data/pspire_rsa.pkl", "rb") as f:
+with open("./data/intermediate_data/catgranule2_rsa.pkl", "rb") as f:
     df = pickle.load(f)
 
+df.columns
+# df = df.loc[(df["idr_protein"] == 0) | (df["ps_label"] == 0)]
 
-train_df = df.loc[df["Datasets"] == "Training"]
-val_df = df.loc[df["Datasets"] == "Testing"]
+train_df = df.loc[df["training"] == 1]
+val_df = df.loc[df["test"] == 1]
 
 # set a seed for reproducability
 torch.manual_seed(13)
@@ -60,11 +63,11 @@ class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
 
 # Create a loss function that takes the class weights into consideration and an optimizer
 loss_fn = nn.CrossEntropyLoss(weight=class_weights)
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
+optimizer = torch.optim.Adam(model.parameters(), lr=2e-3, weight_decay=1e-5)
 
 # get the model name and define the epochs
 model_name = Path(__file__).stem
-epochs = 13
+epochs = 40
 run_train_eval(
     model_name,
     model,
@@ -75,4 +78,5 @@ run_train_eval(
     loss_fn,
     optimizer,
     val_df,
+    patience=40,
 )

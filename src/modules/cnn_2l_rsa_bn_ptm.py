@@ -18,8 +18,9 @@ class CNN2L(nn.Module):
             num_embeddings=num_categories, embedding_dim=embedding_dim
         )
 
+        self.embedding_ptm = nn.Embedding(num_embeddings=10, embedding_dim=8)
         self.conv1 = nn.Conv1d(
-            in_channels=embedding_dim,
+            in_channels=embedding_dim + 9,
             out_channels=conv1_out_channels,
             kernel_size=kernel_size,
             padding=kernel_size,
@@ -41,22 +42,26 @@ class CNN2L(nn.Module):
 
         self.fc1 = nn.Linear(conv2_out_channels, num_classes)
 
-    def forward(self, X, surface_availability):
+    def forward(self, X, surface_availability, ptm):
         X = self.embedding(X)
+        ptm_embedded = self.embedding_ptm(ptm)
         surface_availability = surface_availability.unsqueeze(-1)
-        X = X * surface_availability
+        X = torch.cat([X, ptm_embedded], dim=-1)
+        X = torch.cat([X, surface_availability], dim=-1)
         X = X.permute(0, 2, 1)
-
+        # shape: (batch_size, num_channels * embedding_dim, seq_length)
         X = self.conv1(X)
         X = self.bn1(X)
         X = self.relu(X)
+        # shape: (batch_size, conv1_out_channels, new_seq_length)
         X = self.pool1(X)
-
+        # shape: (batch_size, conv1_out_channels, pooled_seq_length)
         X = self.conv2(X)
         X = self.bn2(X)
         X = self.relu(X)
         X = self.global_pool(X).squeeze(-1)
-
+        # shape: (batch_size, conv1_out_channels)
         X = self.dropout(X)
         X = self.fc1(X)
+        # shape: (batch_size, num_classes)
         return X

@@ -13,8 +13,8 @@
   ]
   #box(height: 45%)[
     #text(size: 20pt, weight: "bold")[
-      Prediction of IDR related properties using machine learning trained on
-      sequences block decomposition
+      Prediction of Liquid-Liquid Phase Separation of Proteins using
+      Neural Networks
     ]
   ]
   #box(height: 25%)[

@@ -64,7 +64,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
 
 # get the model name and define the epochs
 model_name = Path(__file__).stem
-epochs = 13
+epochs = 20
 run_train_eval(
     model_name,
     model,
@@ -75,4 +75,5 @@ run_train_eval(
     loss_fn,
     optimizer,
     val_df,
+    patience=10,
 )

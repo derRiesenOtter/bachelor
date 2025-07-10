@@ -8,26 +8,29 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader
 
-from src.modules.cnn_2l_rsa_weight_bn import CNN2L
+from src.modules.cnn_2l_rsa_bn import CNN2L
 from src.modules.sequence_dataset_rsa import SequenceDataSet
 from src.modules.train_eval_rsa import run_train_eval
 
 # Opening the data containing the mapped sequences
-with open("./data/intermediate_data/pspire_rsa.pkl", "rb") as f:
+with open("./data/intermediate_data/ppmclab_rsa.pkl", "rb") as f:
     df = pickle.load(f)
 
-df = df.loc[(df["idr_protein"] == 0) | (df["ps_label"] == 0)]
+print(f"length of df: {len(df)}")
+df = df.loc[df["rsa"].notna()]
 
-train_df = df.loc[df["Datasets"] == "Training"]
-val_df = df.loc[df["Datasets"] == "Testing"]
+print(f"length of df after filtering None: {len(df)} ")
+
+# train_df = df.loc[df["Datasets"] == "Training"]
+# val_df = df.loc[df["Datasets"] == "Testing"]
 
 # set a seed for reproducability
 torch.manual_seed(13)
 
 # Split data into training data and validation data.
-# train_df, val_df = train_test_split(
-#     df, test_size=0.2, stratify=df["ps_label"], random_state=13
-# )
+train_df, val_df = train_test_split(
+    df, test_size=0.2, stratify=df["ps_label"], random_state=13
+)
 
 # Create DataLoaders that are
 # responsible for feeding the data into the model
@@ -61,11 +64,11 @@ class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
 
 # Create a loss function that takes the class weights into consideration and an optimizer
 loss_fn = nn.CrossEntropyLoss(weight=class_weights)
-optimizer = torch.optim.Adam(model.parameters(), lr=2e-3, weight_decay=1e-5)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
 
 # get the model name and define the epochs
 model_name = Path(__file__).stem
-epochs = 40
+epochs = 20
 run_train_eval(
     model_name,
     model,
@@ -76,5 +79,5 @@ run_train_eval(
     loss_fn,
     optimizer,
     val_df,
-    patience=40,
+    patience=10,
 )

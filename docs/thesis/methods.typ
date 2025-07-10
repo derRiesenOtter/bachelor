@@ -14,7 +14,7 @@ The programs used during this work are listed in @programs.
 #figure(table(
   columns: 3,
   "Program",                                     "Package",                                   "Version",
-  table.cell(rowspan: 10, "Python", fill: none), "-",                                         "3.13.3",
+  table.cell(rowspan: 11, "Python", fill: none), "-",                                         "3.13.3",
                                                  [numpy @harris_array_2020],                  "2.2.6",
                                                  [bio @cock_biopython_2009],                  "1.8.0",
                                                  [pandas @mckinney_data_2010],                "2.2.3",
@@ -24,6 +24,7 @@ The programs used during this work are listed in @programs.
                                                  [seaborn @waskom_seaborn_2021],              "0.13.2",
                                                  [torch @noauthor_pytorch_nodate],            "2.7.0",
                                                  [xgboost @chen_xgboost_2016],                "3.0.2",
+                                                 [captum @kokhlikyan_captum_2020],            "0.8.0",
   [DSSP @noauthor_pdb-redodssp_nodate],          "-",                                         "4.5.3",
   table.hline()
 ), caption: "Programs used in this work") <programs>
@@ -87,7 +88,7 @@ The mappings in @mappings were used for the block decompositions.
   table.hline()
 ), caption: "Mappings used by the block decomposition algorithm") <mappings>
 
-== Model Selection and Testing
+== Model Selection and Optimization
 
 The process of selecting and testing different models during this work can be
 divided into into three phases. The first phase was about testing if @nn::pl,
@@ -116,14 +117,16 @@ The models will be evaluated with the @auc values from the @roc and @prc.
 The evaluation will mostly be split into proteins that contain @idr::pl and
 proteins that do not contain @idr::pl.
 
-An overview of the tested models and optimizations is shown in @journey. The
+During this development @bn TODO was used. An overview of the tested models and optimizations is shown in @journey. The
 following sections will cover each phase and go into detail about what models
 were used, the input as well as the parameters.
-#let g = rgb(80, 150, 200)
-#let y = rgb(180, 230, 0)
-#let f = rgb(240, 100, 0)
-#figure(diagram(node-corner-radius: 2pt, spacing: (2.6em, 2.0em), node((0, 0), [Start], fill: g, name: <a>), edge(<a>, <b>, "-"), node((-1.5, 1), [Block Decomposition], fill: g, name: <b>), edge(<b>, <d>, "-"), node((-2.5, 2), [XGBoost], fill: y, name: <d>), edge(<b>, <e>, "-"), node((-1.5, 2), [1L CNN], fill: g, name: <e>), edge(<b>, <f>, "-"), node((-0.5, 2), [2L CNN], fill: g, name: <f>), edge(<a>, <c>, "=>"), node((1.5, 1), [Sequence], fill: g, name: <c>), edge(<c>, <g>, "-"), node((0.5, 2), [1L CNN], fill: g, name: <g>), edge(<c>, <h>, "-"), node((1.5, 3), [3L CNN], fill: y, name: <h>), edge(<c>, <i>, "-"), node((2.5, 2), [BLSTM], fill: y, name: <i>), edge(<c>, <j>, "=>"), node((0.5, 3), [2L CNN], fill: g, name: <j>), edge(<c>, <k>, "-"), node((2.5, 3), [Transformer], fill: y, name: <k>), edge(<d>, <l>, "-"), node((-2.5, 3), [RSA], fill: f, name: <l>), node((0.5, 4), [Batch Normalization], fill: f, name: <m>), node((1.5, 4), [Attention], fill: f, name: <n>), node((-0.5, 4), [RSA Weights], fill: f, name: <o>), node((-1.5, 4), [RSA], fill: f, name: <p>), node((0, 5), [Split @idr\
-and non-@idr], fill: f, name: <q>), node((0, 6), [@ptm], fill: f, name: <r>), edge(<j>, <m>, "=>"), edge(<j>, <n>), edge(<j>, <o>, "=>"), edge(<j>, <p>), edge(<o>, <q>, "=>"), edge(<m>, <q>, "=>"), edge(<q>, <r>, "=>")), caption: [Overview of the models
+#let g = rgb(80, 150, 200, 100)
+#let y = rgb(180, 230, 0, 100)
+#let f = rgb(240, 100, 0, 100)
+#figure(diagram(node-corner-radius: 2pt, spacing: (2.6em, 2.0em), node((0, 0), [Start], fill: g, name: <a>), edge(<a>, <b>, "-"), node((-1.5, 1), [Block Decomposition], fill: g, name: <b>), edge(<b>, <d>, "-"), node((-2.5, 2), [XGBoost], fill: y, name: <d>), edge(<b>, <e>, "-"), node((-1.5, 2), [1L CNN], fill: g, name: <e>), edge(<b>, <f>, "-"), node((-0.5, 2), [2L CNN], fill: g, name: <f>), edge(<a>, <c>, "=>"), node((1.5, 1), [Sequence], fill: g, name: <c>), edge(<c>, <g>, "-"), node((0.5, 2), [1L CNN], fill: g, name: <g>), edge(<c>, <h>, "-"), node((1.5, 3), [3L CNN], fill: y, name: <h>), edge(<c>, <i>, "-"), node((2.5, 2), [BLSTM], fill: y, name: <i>), edge(<c>, <j>, "=>"), node((0.5, 3), [2L CNN], fill: g, name: <j>), edge(<c>, <k>, "-"), node((2.5, 3), [Transformer], fill: y, name: <k>), edge(<d>, <l>, "-"), node((-2.5, 3), [RSA], fill: f, name: <l>), node((0.5, 5), [@bn], fill: f, name: <m>), node((-0.5, 5), [RSA Weights], fill: f, name: <o>), node((-1.5, 5), [RSA], fill: f, name: <p>), node((0, 4), [Split @idr
+non-@idr \
+\+ \
+higher @do], fill: f, name: <q>), node((1.5, 5), [@ptm], fill: f, name: <r>), node((0, 6), [Final Model], fill: f, name: <s>), edge(<j>, <q>, "=>"), edge(<q>, <o>, "=>"), edge(<q>, <p>), edge(<q>, <o>, "=>"), edge(<q>, <m>, "=>"), edge(<q>, <r>, "=>"), edge(<r>, <s>, "=>"), edge(<m>, <s>, "=>"), edge(<o>, <s>, "=>")), caption: [Overview of the models
 tested during this work. The path to the final model is shown via the double arrows.
 The phases are represented by the fill of the nodes. Phase one is colored blue, phase two is colored green and phase three is colored orange.]) <journey>
 
@@ -447,7 +450,7 @@ The model did integrate a positional encoding.
   table.hline()
 ), caption: [Parameters of the transformer model.]) <par_transformer>
 
-=== The final model
+=== Optimizing the Two Layer @cnn
 As the second set of models did not provide a better model than the two layer
 @cnn they were discarded. The work was then focused on improving the two layer
 @cnn. @bn, an attention implementation and the addition of @rsa values were
@@ -664,5 +667,20 @@ string. @ptm_prep describes how this mapping worked.
   content((start, dim), [2])
 
 }), caption: [Visualization of the final model.]) <final_model>
+
+== Evaluation of the model
+
+==== Visualization of Input Features
+
+To investigate the influence of the sequence composition as input feature on
+the model's predictions, the Python package Captum @kokhlikyan_captum_2020 was
+used. Captum is a model interpretability library developed for PyTorch,
+providing a variety of attribution methods that help identify which features
+contribute most significantly to a prediction. For this work, selected proteins
+were analyzed using techniques Saliency Maps, which highlight important
+positions or patterns in the input sequence that influence the model's output.
+These analyses were conducted to gain deeper insights into the model's
+decision-making process and to assess the biological plausibility of the
+learned representations.
 
 #pagebreak()

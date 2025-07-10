@@ -75,5 +75,5 @@ run_train_eval(
     loss_fn,
     optimizer,
     val_df,
-    patience=20,
+    patience=10,
 )

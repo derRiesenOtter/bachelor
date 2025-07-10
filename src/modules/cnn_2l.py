@@ -10,6 +10,7 @@ class CNN2L(nn.Module):
         conv2_out_channels,
         kernel_size,
         num_classes,
+        dropout=0.3,
     ):
         super().__init__()
 
@@ -30,7 +31,7 @@ class CNN2L(nn.Module):
         )
 
         self.pool1 = nn.MaxPool1d(kernel_size=2, stride=2)
-        self.dropout = nn.Dropout(p=0.3)
+        self.dropout = nn.Dropout(p=dropout)
         self.relu = nn.ReLU()
 
         self.global_pool = nn.AdaptiveMaxPool1d(1)

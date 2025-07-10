@@ -2,21 +2,25 @@ import pickle
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader
 
-from src.modules.cnn_2l_rsa_weight_bn import CNN2L
-from src.modules.sequence_dataset_rsa import SequenceDataSet
-from src.modules.train_eval_rsa import run_train_eval
+from src.modules.cnn_2l_rsa_weight_bn_ptm import CNN2L
+from src.modules.get_ptm import add_ptm
+from src.modules.sequence_dataset_rsa_ptm import SequenceDataSet
+from src.modules.train_eval_rsa_ptm import run_train_eval
 
 # Opening the data containing the mapped sequences
 with open("./data/intermediate_data/pspire_rsa.pkl", "rb") as f:
     df = pickle.load(f)
 
-df = df.loc[(df["idr_protein"] == 0) | (df["ps_label"] == 0)]
+df = df.loc[(df["idr_protein"] == 1) | (df["ps_label"] == 0)]
+
+df = add_ptm(df)
 
 train_df = df.loc[df["Datasets"] == "Training"]
 val_df = df.loc[df["Datasets"] == "Testing"]
@@ -31,9 +35,11 @@ torch.manual_seed(13)
 
 # Create DataLoaders that are
 # responsible for feeding the data into the model
-train_data_set = SequenceDataSet(train_df, "mapped_seq", "rsa", "ps_label")
+train_data_set = SequenceDataSet(
+    train_df, "mapped_seq", "rsa", "ptm_profile", "ps_label"
+)
 train_loader = DataLoader(train_data_set, batch_size=32, shuffle=True)
-val_data_set = SequenceDataSet(val_df, "mapped_seq", "rsa", "ps_label")
+val_data_set = SequenceDataSet(val_df, "mapped_seq", "rsa", "ptm_profile", "ps_label")
 val_loader = DataLoader(val_data_set, batch_size=32, shuffle=False)
 
 # get the number of categories
