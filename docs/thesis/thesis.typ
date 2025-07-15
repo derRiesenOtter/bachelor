@@ -25,6 +25,8 @@
 #include "titlepage.typ"
 
 #set page(numbering: "I")
+#include "preface.typ"
+#include "abstract.typ"
 
 #outline(title: "Table of Contents")
 #show outline: set heading(outlined: true)

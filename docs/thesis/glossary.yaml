@@ -129,3 +129,19 @@ st:
 oc: 
   short: OC 
   long: Output Channels
+
+tp: 
+  short: TP 
+  long: True Positive
+
+tn: 
+  short: TN 
+  long: True Negative 
+
+fp: 
+  short: FP 
+  long: False Positive 
+
+fn: 
+  short: FN 
+  long: False Negative

@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader
 
-from src.modules.cnn_2l_rsa_weight_bn_ptm import CNN2L
+from src.modules.cnn_2l_rsa_weight_ptm import CNN2L
 from src.modules.get_ptm import add_ptm
 from src.modules.sequence_dataset_rsa_ptm import SequenceDataSet
 from src.modules.train_eval_rsa_ptm import run_train_eval

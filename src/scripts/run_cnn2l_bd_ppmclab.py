@@ -28,6 +28,11 @@ train_df, val_df = train_test_split(
     df, test_size=0.2, stratify=df["ps_label"], random_state=13
 )
 
+# len(train_df[train_df["ps_label"] == 1])
+# len(train_df[(train_df["ps_label"] == 1) & (train_df["idr_protein"] == 1)])
+# len(val_df[val_df["ps_label"] == 1])
+# len(val_df[(val_df["ps_label"] == 1) & (val_df["idr_protein"] == 0)])
+
 # Create DataLoaders that are
 # responsible for feeding the data into the model
 train_data_set = BDSequenceDataSet(train_df, "ps_label")

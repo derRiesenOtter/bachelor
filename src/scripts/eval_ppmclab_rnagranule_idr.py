@@ -16,17 +16,19 @@ from sklearn.metrics import (
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader
 
-from src.modules.cnn_2l import CNN2L
-from src.modules.sequence_dataset import SequenceDataSet
+from src.modules.cnn_2l_rsa_weight import CNN2L
+from src.modules.sequence_dataset_rsa import SequenceDataSet
 
-with open("./data/intermediate_data/pspire.pkl", "rb") as f:
+with open("./data/intermediate_data/pspire_rsa.pkl", "rb") as f:
     df = pickle.load(f)
 
-with open("./data/intermediate_data/pspire_DACT1-particulate proteome.pkl", "rb") as f:
+with open("./data/intermediate_data/pspire_RNAgranuleDB_tier1_rsa.pkl", "rb") as f:
     df_mlo = pickle.load(f)
 
-with open("./data/intermediate_data/ppmclab.pkl", "rb") as f:
+with open("./data/intermediate_data/ppmclab_rsa.pkl", "rb") as f:
     ppmclab_df = pickle.load(f)
+
+model_name = "eval_ppmclab_mlo_rnagranule_idr"
 
 train_df = df.loc[df["Datasets"] == "Training"]
 val_df = df.loc[(df["Datasets"] == "Testing") & (df["ps_label"] == 0)]
@@ -34,11 +36,11 @@ val_df = pd.concat([df_mlo, val_df])
 
 val_df.__len__()
 
-ppmclab_df = ppmclab_df.rename(columns={"UniProt.Acc": "id"})
-ppmclab_df = ppmclab_df.loc[~ppmclab_df["id"].isin(val_df["id"])]
-train_df = train_df.loc[~train_df["id"].duplicated(keep=False)]
-val_df = val_df[~val_df["UniprotEntry"].isin(train_df["UniprotEntry"])]
-val_df.__len__()
+# ppmclab_df = ppmclab_df.rename(columns={"UniProt.Acc": "id"})
+# ppmclab_df = ppmclab_df.loc[~ppmclab_df["id"].isin(val_df["id"])]
+# train_df = train_df.loc[~train_df["id"].duplicated(keep=False)]
+# val_df = val_df[~val_df["UniprotEntry"].isin(train_df["UniprotEntry"])]
+# val_df.__len__()
 
 num_categories = df["mapped_seq"].explode().nunique() + 1
 
@@ -51,13 +53,12 @@ model = CNN2L(
     num_classes=2,
 )
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-state_dict = torch.load("./data/processed_data/model_run_cnn2l_ppmclab")
+state_dict = torch.load("./data/processed_data/model_run_cnn2l_ppmclab_rsa_weight_idr")
 model.load_state_dict(state_dict)
 model.to(device)
 model.eval()
 
-model_name = "eval_ppmclab_mlo_dact1"
-val_data_set = SequenceDataSet(val_df, "mapped_seq", "ps_label")
+val_data_set = SequenceDataSet(val_df, "mapped_seq", "rsa", "ps_label")
 val_loader = DataLoader(val_data_set, batch_size=128, shuffle=False)
 
 class_weights = compute_class_weight(
@@ -74,9 +75,9 @@ all_labels_tmp = []
 # Disable gradient computation and reduce memory consumption.
 with torch.no_grad():
     for i, vdata in enumerate(val_loader):
-        vinputs, vlabels = vdata
-        vinputs, vlabels = vinputs.to(device), vlabels.to(device)
-        voutputs = model(vinputs)
+        vinputs, vrsa, vlabels = vdata
+        vinputs, vrsa, vlabels = vinputs.to(device), vrsa.to(device), vlabels.to(device)
+        voutputs = model(vinputs, vrsa)
         vloss = loss_fn(voutputs, vlabels)
         running_vloss += vloss
         _, preds = torch.max(voutputs, 1)

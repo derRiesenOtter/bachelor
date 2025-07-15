@@ -2,44 +2,41 @@ import pickle
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
 import torch
 import torch.nn as nn
 from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader
 
-from src.modules.cnn_2l_rsa_weight_ptm import CNN2L
+from src.modules.cnn_2l_ptm import CNN2L
 from src.modules.get_ptm import add_ptm
-from src.modules.sequence_dataset_rsa_ptm import SequenceDataSet
-from src.modules.train_eval_rsa_ptm import run_train_eval
+from src.modules.sequence_dataset_ptm import SequenceDataSet
+from src.modules.train_eval_ptm import run_train_eval
 
 # Opening the data containing the mapped sequences
-with open("./data/intermediate_data/pspire_rsa.pkl", "rb") as f:
+with open("./data/intermediate_data/ppmclab_rsa.pkl", "rb") as f:
     df = pickle.load(f)
 
+
+df = add_ptm(df, "./data/intermediate_data/ptm_ppmclab.pkl", "UniProt.Acc")
 df = df.loc[(df["idr_protein"] == 1) | (df["ps_label"] == 0)]
 
-df = add_ptm(df)
-
-train_df = df.loc[df["Datasets"] == "Training"]
-val_df = df.loc[df["Datasets"] == "Testing"]
+# train_df = df.loc[df["Datasets"] == "Training"]
+# val_df = df.loc[df["Datasets"] == "Testing"]
 
 # set a seed for reproducability
 torch.manual_seed(13)
 
 # Split data into training data and validation data.
-# train_df, val_df = train_test_split(
-#     df, test_size=0.2, stratify=df["ps_label"], random_state=13
-# )
+train_df, val_df = train_test_split(
+    df, test_size=0.2, stratify=df["ps_label"], random_state=13
+)
 
 # Create DataLoaders that are
 # responsible for feeding the data into the model
-train_data_set = SequenceDataSet(
-    train_df, "mapped_seq", "rsa", "ptm_profile", "ps_label"
-)
+train_data_set = SequenceDataSet(train_df, "mapped_seq", "ptm_profile", "ps_label")
 train_loader = DataLoader(train_data_set, batch_size=32, shuffle=True)
-val_data_set = SequenceDataSet(val_df, "mapped_seq", "rsa", "ptm_profile", "ps_label")
+val_data_set = SequenceDataSet(val_df, "mapped_seq", "ptm_profile", "ps_label")
 val_loader = DataLoader(val_data_set, batch_size=32, shuffle=False)
 
 # get the number of categories
@@ -67,11 +64,11 @@ class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
 
 # Create a loss function that takes the class weights into consideration and an optimizer
 loss_fn = nn.CrossEntropyLoss(weight=class_weights)
-optimizer = torch.optim.Adam(model.parameters(), lr=2e-3, weight_decay=1e-5)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
 
 # get the model name and define the epochs
 model_name = Path(__file__).stem
-epochs = 40
+epochs = 20
 run_train_eval(
     model_name,
     model,
@@ -82,5 +79,5 @@ run_train_eval(
     loss_fn,
     optimizer,
     val_df,
-    patience=40,
+    patience=10,
 )
