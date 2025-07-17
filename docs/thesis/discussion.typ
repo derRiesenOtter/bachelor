@@ -79,7 +79,52 @@ Therefore proteins that are missing their annotations, because there were not
 experimentally found yet, interfere with the models learning and prediction
 capabilities.
 
+In the next step the different approaches were combined in any meaningful way.
+For the @idr model no combination provided a real benefit over using the two
+layer model with the @rsa values as weights. Therefore, this model was chosen
+to be the final model for the @idr proteins. For the non-@idr model however,
+the combination of @rsa as weights, @bn and the addition of the @ptm values
+yielded the best results, therefore this model was chosen to be the final
+non-@idr model.
+
 == Evaluation of the final Model
+
+To evaluate the final models further and compare the performance they were
+trained and tested on different datasets. The first comparison was made using
+the PSPire dataset. The results showed that the @idr model is not able to
+compete with the PSPire model, but it yielded comparable results to the PdPs
+model. The non-@idr model however outperformed both the PSPire and the PdPS model.
+Event thought the lead over PSPire is neglectable.
+Looking at the evaluation of the models trained on the PSPire dataset
+with the @mlo datasets for testing the results are similar. The @idr model
+performs worse than both PSPire and PdPS while the non-@idr model performs better
+than the PdPS model and comparable to the PSPire model.
+
+The reason why the @idr model performs worse than the other two models may be
+due to the nature of @idr::pl. Even though @cnn::pl are able to identify similar
+patterns, @idr::pl do not need to follow any patterns. Two @idr::pl that lead to
+@llps may look completely different. Using only the fractions of amino acids
+in combination with other scalar features seems to be the superior method for now.
+The non-@idr model on the other hand does already compete with the other models.
+Given that, it has to be said that the performance is still not good. There is still a lot of room for improvement.
+
+Interestingly the performance of using the PPMC-lab dataset for training and the
+@mlo datasets for testing showed a significant difference in comparison to the
+model trained on the PSPire dataset. While the @idr performance is still relatively
+comparable, the non-@idr performance drastically decreased and is similar to random guessing. A reason for this could be the smaller size of the dataset. Having more negative
+samples seems to be an advantage here. The test sets for the @mlo evaluation
+contained the negative testing set of the PSPire dataset. To test if the model trained
+on the PPMC-lab would perform better if the negative test set of the PPMC-lab was used instead, one dataset was analyzed like this.
+
+It would be interesting to see the performance of other models if they were
+only trained on the PPMC-lab dataset and compare them.
+
+The results of the evaluation of the catGranule 2.0 trained models
+does not use the split into @idr and non-@idr proteins, that improved the
+performance quiet a bit. Nonetheless the model of this work does outperform the
+other models mentioned in this paper. What is missing for a better comparison here
+is the @prc@auc values. To have a good understanding of a models performance both
+the @roc@auc and @prc@auc have to be provided. Many papers are missing the latter.
 
 == Conclusion
 

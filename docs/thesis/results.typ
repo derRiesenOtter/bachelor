@@ -249,16 +249,28 @@ The values for all predictors but my own are taken from the catGranule 2.0 artic
 === Visualization of Input Features
 @salinity_idr shows the saliency scores visualized along the protein sequence
 of P04264. This protein was labeled as an @idr protein and was therefore
-predicted with the @idr model. The predicted probability for it was 98 %.
+predicted with the @idr model. The predicted probability for it was 98 %. For
+the left color band, especially the residues 190 to 200, the UniProt feature
+viewer showed that there is a @ptm site. The lysine at position 197 can be be
+modified to Acetyl lysine. The right area with high saliency, especially the
+range between residue 555 and 570, does not show any special features in the
+UniProt feature viewer. Both high saliency segments lie in @idr::pl.
+The protein does contain many more @ptm:pl that are not recognizable in
+this visualization.
 #figure(image("figures/captum_idr_P04264_1.0_0.9834264516830444_ID-PSP.png"), caption: [Visualization of the Input Features using the @idr model on the protein P04264.]) <salinity_idr>
 
-@comparison_models the same graph for a different protein. In this case the
-protein P42766, which is a non-@idr labeled protein was picked. The figure shows the
+@cmpms shows the same graph for a different protein. In this case the
+protein P42766, which is a non-@idr labeled protein. The figure shows the
 saliency score visualizations for both models. It is important to mention that
 saliency scores are neither comparable between samples nor between models. The
 non-@idr model scored a probability of 44 % while the @idr model scored a probability of
-21 %.
+21 %. The saliency visualization of the non-@idr model has two brighter areas.
+Viewing them with the UniProt feature viewer did not reveal anything
+special. For the @idr model there is a relatively bright area to the left, in
+the middle and at the right end of the sequence. The left and middle area
+contain multiple @ptm::pl, the right area seems to be part of a @idr. These are not
+the only regions that contain @ptm::pl.
 #subpar.grid(columns: (1fr), figure(image("figures/captum_nidr_P42766_1.0_0.44323086738586426_noID-PSP.png"), caption: []), figure(image("figures/captum_idr_P42766_1.0_0.20686744153499603_noID-PSP.png"), caption: []), caption: [Comparison of the feature relevance for both the non-@idr model (a)
-and the @idr model (b) on the protein P42766.]) <comparison_models>
+and the @idr model (b) on the protein P42766.], label: <cmpms>)
 
 #pagebreak()
