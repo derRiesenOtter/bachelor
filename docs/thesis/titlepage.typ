@@ -19,10 +19,10 @@
   ]
   #box(height: 25%)[
     #text(size: 12pt)[
-      Bachelorarbeit \
-      Abgegeben am: TODO \
+      Bachelor Thesis \
+      Submitted on: TODO \
       Name: Robin Ender \
-      Matrikelnummer: 2184737
+      Student Number: 2184737
     ]
   ]
 ]

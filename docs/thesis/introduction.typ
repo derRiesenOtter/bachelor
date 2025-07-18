@@ -8,36 +8,61 @@
 
 = Introduction
 
+@llps is a biologically important process that plays key roles in cells. It is
+a major contributor to the functional compartmentalization but is also
+associated with some diseases @xu_liquid-liquid_2023. Although it is possible
+to experimentally determine whether a protein undergoes @llps under specific
+conditions, such experiments are expensive and consume resources. As a result,
+computational prediction of @llps poses an attractive alternative.
+
+In recent years, a variety of computational tools for @llps prediction have
+been developed. These tools have improved over time, incorporating new features
+and knowledge as well @ml techniques @hou_machine_2024. However, their
+predictive power still leaves room for improvement.
+
+Using @nn could simplify the development of @llps predictors, as they require
+less feature engineering and offer potentially greater predictive power
+especially as more curated data becomes available @li_deep_2019. Their ability
+to use the whole sequence as input should enable them to capture patterns and
+relationships between amino acids that relate to @llps. This is something more
+traditional @ml models can not do. This work will therefore test if @nn are
+suitable for @llps prediction and how they compare to current state-of-the-art
+predictors. For the main input two different approaches will be explored. One
+will use the raw amino acid sequence, while the other will use multiple block
+decompositions of the amino acid sequence that each emphasize different
+biochemical properties.
+
 == Liquid-Liquid Phase Separation
 
-@llps is a process where a homogeneous mixture spontaneous separates into two
-liquid phases, one with a depleted and one with an increased concentration of
-components, see @phase_separation. @llps can form colloids like milk or layers
-like a mixture of oil and water. It is a widespread phenomena that is dependent
-on many factors like temperature, pressure, differences in polarity,
-hydrophobicity and hydrophilicity. Studying @llps in polymer systems started in
-the mid of the 20th century. In the late 20th century the phenomena was
-recognized as an important process organisms and studies began to understand
-the implications of @llps in an biological context. @xu_liquid-liquid_2023
+@llps is a reversible process where a homogeneous mixture spontaneously separates
+into two liquid phases, one with a depleted and one with an increased
+concentration of components, see @phase_separation. @llps can form colloids
+like milk or layers like a mixture of oil and water. It is a widespread
+phenomena that is dependent on many factors like temperature, pressure,
+differences in polarity, hydrophobicity and hydrophobicity. Studying @llps in
+polymer systems started in the mid of the 20th century. In the late 20th
+century the phenomena was recognized as an important process in organisms and
+studies began to understand the implications of @llps in an biological context.
+@xu_liquid-liquid_2023
 
-#figure(image("figures/phase_separation.png", width: 50%), caption: [Visualization of @llps. @xu_liquid-liquid_2023]) <phase_separation>
+#figure(image("figures/phase_separation.png", width: 50%), caption: [Visualization of LLPS. @xu_liquid-liquid_2023]) <phase_separation>
 
 Cells are capable of conducting various different tasks that involve many
 biochemical reactions. As these reactions often need different educts, enzymes
-and conditions a spatial organization helps the cell to conduct these reactions
+and conditions a spatial organization helps the cell to carry out these reactions
 effectively. Organelles are the compartments of the cell. They need a boundary
 that separates them from the rest of the cell and the components inside the
 compartment have to be able to move freely. Compartments that are confined by a
-membrane like the nucleus or mitochondria are well known for a long time. A
-more recent discovery was the existence of @mlo. They are created through
+membrane, like the nucleus or mitochondria, have been well known for a long time. A
+more recent discovery was the existence of @mlo:pl. They often form via
 @llps. An example of one such @mlo is the nucleoli, but there are many other
-@mlo that play important roles in cell and are the reason cells are able to do
-these many diverse reactions. @xu_liquid-liquid_2023
+@mlo::pl that play important roles in cells. They contribute to cells being
+able to do many diverse reactions efficiently. @xu_liquid-liquid_2023
 
 The macro molecules responsible for @llps in cells are proteins and nucleic acids.
 A combination of simultaneous weak and strong interactions between proteins and
 proteins or proteins and nucleic acids seems to be the driving force. The presence of
-many different binding sites - multivalency is a crucial parameter. The solubility
+many different binding sites, multi valency, is a crucial parameter. The solubility
 also effects the propensity to undergo @llps, as many proteins that undergo @llps
 have a poor solubility in water. Other than proteins with multiple domains, @idp::pl
 are often involved in @llps. They differ from globular molecules in two ways. They
@@ -47,11 +72,11 @@ on more general characteristics like charge patterns. @alberti_phase_2017
 
 As proteins that take part in @llps can serve different roles, groupings were
 created. One way to organize them is to put them into the two groups driver (or
-scaffolds) and clients. The driver proteins, that either induce the formation
-of a condensate or are essential for the integrity of a condensate and the
-clients that require a driver protein to form a condensate.
-@rostam_cd-code_2023 There is also another slightly different categorization.
-@llps proteins can also be divided into PS-Self and PS-Part. PS-Self
+scaffolds) and clients. The driver proteins either induce the formation
+of a condensate or are essential for the integrity of a condensate while the
+clients require a driver protein to form a condensate. @rostam_cd-code_2023
+There is also another categorization that slightly differs. This categorization
+divides @llps proteins into PS-Self and PS-Part. PS-Self
 (self-assembling phase-separating) are proteins that are able to form
 condensates on their own, while PS-Part (partner-dependent phase-separating)
 needs a partner protein. @noauthor_about-phasepred_nodate
@@ -60,39 +85,32 @@ As @llps is extremely sensitive to changes in physico-chemical conditions, it
 is possible that it also plays an important role in stress adaptation
 @alberti_phase_2017. However, @llps is not always wanted. In some cases
 proteins undergo @llps that normally would not. This can be due to several
-reasons like mutations or posttranslational modifications. These unwanted
+reasons like mutations or @ptm. These unwanted
 aggregates are suspected to lead to diseases like cancer or neurodegenerative
 diseases. @xu_liquid-liquid_2023
 
 == Phase Separation Predictors
 
+=== Overview
+
 With the rise of interest on the topic of @llps, tools were developed to
-predict @llps propensity for proteins. These tools use sequential features of
-proteins in many cases in combination with other data like @ptm::pl or
-structural data. While these tools improved over time, there is still room for
-improvement. Developing a model to predict @llps propensity comes with some
-challenges. One big problem is the sparse experimental data on proteins that
-undergo @llps. After filtering out proteins that are similar to each other,
-less than 700 proteins remain. Defining a good negative data set is also
-difficult as there is no data base that collects non-@llps proteins and
-negative data is often not published. It is also a challenge to test if a
-protein takes part in @llps, as it is context dependent, meaning the conditions
-have to be right and for partner dependent proteins, said partner must be
-available. Another issue is, that current tools tend to favor proteins that
-contain @idr::pl or are labeled as partner-dependent. As partner-dependent
-proteins usually lack @idr::pl this bias is probably caused by the same reason.
-
-While there have been tools that use @hmm::pl they were later outperformed by
-@ml models. This is due to phase separation being driven by complex interactions
-and not being dependent on particular motifs. @hmm::pl also struggle on low-complexity
-and disordered regions, which are common and important in @llps proteins. While
-@hmm::pl are usually limited to sequence information alone, @ml models can
-incorporate other features like @ptm::pl.
-
-@pspredictors summarizes some of the most important @llps predictors that were
-created over the last few years. The predictors PhaSePred and PSPire are
-explained more thoroughly afterwards, as they both tackle the difficulty
-of @llps prediction in unique ways.
+predict @llps propensity for proteins. The first generation of tools were not
+specifically developed for @llps prediction. Their goals centered around
+finding prion-like domains (PLAAC @lancaster_plaac_2014), finding proteins that
+are associated with RNA granules (catGranule
+@bolognesi_concentration-dependent_2016) or detecting proteins with high
+propensities for $pi-pi$ interactions (PScore @vernon_pi-pi_2018). While these
+tools were not intended for @llps prediction, their predictions all correlated
+with the prediction of @llps. These tools used @hmm::pl or scoring formulas.
+PSPer was one of the first tools specifically designed for @llps prediction, it
+still used @hmm::pl @orlando_computational_2019. The tools that followed
+started to use @ml models as they were better suited for the complex task of
+@llps prediction @hardenberg_widespread_2020. With better understanding of the
+driving forces of @llps and the incorporation of according features the
+predictors steadily improved. A short summary of some of the current @llps
+predictors including a short description is given in @pspredictors. Two
+predictors, PsPS / SaPs (@phasepred) and PSPire (@pspire) will be covered in
+more detail due to their relevance and performance.
 
 #figure(table(
   columns: 3,
@@ -116,40 +134,79 @@ of @llps prediction in unique ways.
 
 === PhaSePred - PdPS / SaPS <phasepred>
 
-PhaSePred is a meta predictor that uses some of the @llps predictors already
-listet in @pspredictors (catGranule, PLAAC, PScore), an @idr predictor
-(ESpritz), an low-complexity region predictor (LCR), hydropathy prediction from
-CIDER, coiled-coil domain predictor DeepCoil, the immunofluorescence
-image-based droplet-forming propenity predictor DeepPhase.
+PhaSePred is a meta-predictor that integrates multiple existing tools to
+predict LLPS propensity. It combines outputs from several established LLPS
+predictors listed in @pspredictors (including CatGranule, PLAAC, and PScore),
+an @idr predictor (ESpritz @walsh_espritz_2012), a low-complexity region
+prediction @wootton_statistics_1993, hydropathy predictions from CIDER
+@vedantam_cider_2015, the coiled-coil domain predictor DeepCoil
+@ludwiczak_deepcoilfast_2019, the Immunofluorescence-image-based
+droplet-forming propensity predictor DeepPhase @noauthor_learning_nodate, and
+phosphorylation data from PhosphoSitePlus @hornbeck_phosphositeplus_2015.
 
-The tools PdPS and SaPS were specifically developed to tackle the challenge of
-predicting PdPS. Both models have a version with 8 features, designed for
-all-species data, as well as models with 10 features for human proteins, as
-there is more data available. The eight features are hydropathy, fraction of
-charged residues, @idr, low-complexity regions, PScore, PLAAC, catGranule and
-coiled coil domains. The two additional features are the Phos frequency and the
-IF image-based droplet forming propensities. Dividing their model into two
-helped them to outperform other tools when it comes to the prediction of
-partner-dependent @llps. They used XGBoost for their model. @noauthor_about-phasepred_nodate
+PhaSePred has two specialized submodels: PdPS and SaPS, tailored for different
+LLPS mechanisms. PdPS is trained and evaluated on partner-dependent
+phase-separating proteins, while SaPS is trained and tested on self-assembling
+proteins. Each of these has two versions: one for human proteins, which
+utilizes the full feature set including phosphorylation frequency and
+Immunofluorescence-image-based droplet propensity and one for non-human
+proteins, which omits those two features due to limited data availability. By
+distinguishing between partner-dependent and self-assembling proteins, the PdPS
+and SaPS models achieve significantly improved predictive performance,
+particularly for partner-dependent @llps proteins. They chose
+XGBoost @chen_xgboost_2016 as their @ml model. @chen_screening_2022.
 
 === PSPire <pspire>
 
-As current predictors still struggle to predict non-@idr @llps proteins PSPire
-was developed. Their approach was to split protein data into @idr related
-features and @ssup related features. The @ssup features only contained the
-amino acids with an @rsa greater than 25%. The @ssup were calculated with
-AlphaFold while the @rsa values were calculated with PSAIA from the AlphaFold
-data. For both groups 44 features were calculated. Those features were fraction
-of the amino acid per amino acid, fraction of several other groups of amino
-acids (e.g. positively charged group), averaged isoelectric point value,
-averaged molecular weight, averaged hydropathy score, averaged polarity score,
-sequence length of @idr::pl, sequence length percentage of @idr::pl, total
-charged sticker number divided by the residue number in @ssup, charged sticker
-pair number divided by the residue number in @ssup and number of
-phosphorylation sites divided by the length of the protein sequence. They also
-used XGBoost as a model and were able to perform as good as the best other
-predictors for @llps proteins containing @idr::pl and significantly better for
-@llps proteins that do not contain @idr::pl. @hou_machine_2024
+PSPire was developed due to the ongoing challenge of accurately predicting
+@llps in proteins that do not contain @idr::pl. The key innovation in their
+approach was to separate protein features into two categories: @idr related and
+@ssup related features. Amino acids in @ssup::pl of the protein
+were only taken into account if their @rsa value was above 25%, as amino acids
+that are on the surface of a protein are more likely to contribute to the
+formation of @llps. @hou_machine_2024
+
+The structural information was taken from AlphaFold and the calculation of the
+@rsa values was conducted using PSAIA @mihel_psaia_2008. Overall 44 features
+were engineered from which
+39 were calculated separately for @idr::pl and @ssup::pl. These include
+fractions of amino acids, fractions of groups of amino acids, the averaged
+scores of the: isoelectric point, molecular weight, hydropathy and polarity as
+well as @idr sequence length, fraction of @idr::pl, stickers and sticker pairs
+in @ssup::pl and number of phosphorylation sites. They also used XGBoost as
+their @ml model and were able to significantly outperform other @llps
+predictors when it comes to the prediction of non-@idr proteins.
+@hou_machine_2024
+
+=== Problems of @llps Prediction
+
+While the prediction of proteins undergoing @llps has steadily improved,
+significant challenges remain. One of the primary difficulties lies in the
+complexity of @llps itself. It is driven by multiple factors, including both
+strong and weak multivalent interactions @xu_liquid-liquid_2023, $pi -pi$
+interactions @vernon_pi-pi_2018, and hydrophobic effects
+@xu_liquid-liquid_2023. As a result, capturing the full spectrum of mechanisms
+that contribute to @llps is difficult using tabular data like the current
+predictors do.
+
+Computational approaches, such as @hmm::pl, have proven useful in many areas of
+bioinformatics, particularly for detecting conserved sequence motifs or
+structural domains @yoon_hidden_2009. However, their applicability to predict
+@llps is limited. This is because @llps is not solely determined by specific
+sequence motifs or local features @xu_liquid-liquid_2023.
+
+Another major challenge is the limited availability of experimental data,
+particularly for negative examples @pintado-grima_confident_2024. This scarcity
+restricts the ability of @ml models to generalize and hinders the development
+of balanced training datasets. Since @ml models require a lot of data,
+especially deep learning approaches, the lack of it slows down progress.
+
+Furthermore, many existing tools perform poorly in predicting partner-dependent
+and non-@idr proteins @hou_machine_2024@chen_screening_2022. As
+partner-dependent proteins usually have smaller @idr contents
+@zhou_two-task_2024 these problems correlate. Predictors like PhasePred and
+PSPire have tried to address this issue, yet there performance on said @llps
+proteins is still lacking.
 
 == Artificial Intelligence in Bioinformatics
 @ai has brought new approaches to biological questions. Applications like @ml,
@@ -165,21 +222,7 @@ As the techniques of @ai models differ they are often categorized into @ml, @dl
 and @nn as shown in @ai_cat. Although @nn and @dl are
 technically subfields of @ml, we distinguish between them in this work for
 clarity. Therefore, when we refer to @ml in this text, it explicitly excludes
-@nn. @dl are @nn that consist of three or more layers. @noauthor_ai_2023
-
-Comparing @ml models to @dl models, there are some important differences. @ml
-models usually perform better on small data sets ($< 10000$). @dl models
-tend to over fit if the sample size is not large enough. @ml models also need
-less computational resources and can therefore be trained faster and on lower
-end devices @noauthor_pdf_2025. They are also easier to interpret. @dl models
-on the other hand are able to learn more complex associations than @ml models
-and are therefore able to outperform @ml models in complex scenarios were there
-is enough training data. The input data for these models also differs. While @ml
-models usually require tabular unstructured data, @dl are able to handle
-structured data.
-
-Basic models already perform well. If there is only limited data there is no
-benefit in making the model more complex. @zeng_convolutional_2016
+@nn::pl. @dl models are @nn::pl that consist of three or more layers. @noauthor_ai_2023
 
 #figure(cetz.canvas({
   import cetz.draw: *
@@ -193,6 +236,17 @@ benefit in making the model more complex. @zeng_convolutional_2016
   content((), [@dl])
 }), caption: [Categorization of @ai models]) <ai_cat>
 
+Comparing @ml models to @dl models, there are some important differences. @ml
+models usually perform better on small data sets ($< 10000$). @dl models tend
+to over fit if the sample size is not large enough. @ml models also need less
+computational resources and can therefore be trained faster and on lower end
+devices. They are also easier to interpret. @dl models on the other hand are
+able to learn more complex associations than @ml models and are therefore able
+to outperform @ml models in complex scenarios were there is enough training
+data. @elmobark_evaluating_2025 \
+The input data for these models also differs. While @ml models usually
+require tabular unstructured data, @dl are able to handle structured data.
+
 One well known tool in bioinformatics that was created using @ai was AlphaFold.
 It is a @dl model developed by google that is able to predict the structure of
 proteins with almost experimental precision. It uses @msa::pl and is based on
@@ -202,21 +256,21 @@ Bidirectional Encoder Representations from Transformers.
 In the following sections @ai models used during this work will be covered briefly.
 
 === Neural Networks <sec_nn>
-@nn are inspired by nature, they consist of an input layer, an arbitrary number
-of hidden layers and an output layer. They imitate the complex connected networks of
+@nn are inspired by nature. They imitate the complex connected networks of
 neurons in a living organism. Both biological and artificial neurons receive
 signals from multiple neurons and transmit signals to multiple neurons. An
 artificial neuron computes a weighted sum of its inputs, adds a bias term and
-then applies an activation function to produce its output, see @neuron. In a classical
-@nn every neuron will have all neurons from the previous layer as input. Such
-a layer is called fully connected layer.
+then applies an activation function to produce its output, see @neuron. A @nn
+consists of an input layer, an arbitrary number of hidden layers and an output
+layer. In a classical @nn every neuron will have all neurons from the previous
+layer as input. Such a layer is called @fcl.
 @han_artificial_2018
 
 #figure(image("figures/neuron.jpg", width: 60%), caption: [Visualization of an
 artificial neuron. @han_artificial_2018]) <neuron>
 
 The output of a neuron $i$ with $n$ inputs $x$, the weights $w$ and an activation
-function could be described, see @activation_function
+function could be described using @activation_function.
 
 $ "output"_i = "activation function"(sum_j^n w_(i j) x_j + b_i) $ <activation_function>
 
@@ -229,13 +283,13 @@ initialised with random values and are updated each training epoch, see
 Updating these values uses an algorithm called backpropagation,
 see @backpropagation. After the model makes predictions, the difference between
 the predicted output and the label is calculated. This value is calculated by
-using the loss function and is called loss. Backpropagation then computes how
+using a loss function and is called loss. Backpropagation then computes how
 much each weight and bias contributed to that loss by calculating the
 gradients. Rather than calculating an exact solution for all parameters, which
-is computationally intractable in deep networks, neural networks use an
+is computationally difficult in deep networks, neural networks use an
 optimization technique called gradient descent. This method uses the computed
-gradients to update each parameter in the direction that reduces the loss most
-efficiently. Over many training epochs, the model gradually learns better
+gradients to update each parameter in the direction that reduces the loss the
+most. Over many training epochs, the model gradually learns better
 weights and biases that minimize the prediction error. Gradient descent is not
 guaranteed to find the global minima of the loss, as it is able to get stuck in
 a local minima. @han_artificial_2018
@@ -282,10 +336,11 @@ with the next window, leading to a considerable reduction in size, see @maxpooli
 
 Both activation function and fully connected layer were already described in
 @sec_nn. The fully connected layer is usually only used for the final prediction.
-@cnn::pl are considered above other classical @nn mainly due to the
-shared weights. They result in less parameters that need to be trained,
-reducing computational costs and improving generalization. Due to the convolutional
-layers a @cnn is also able to extract features by itself in a hierarchical order.
+@cnn::pl are widely used because their shared-weight architecture significantly
+reduces the number of trainable parameters, lowering computational costs and
+enhancing generalization. Additionally, their convolutional layers enable them
+to automatically learn hierarchical feature representations from the input
+data.
 
 ==== Long short-term memory
 @lstm networks are part of the @rnn family. Unlike standard neural networks, @rnn::pl
@@ -432,7 +487,7 @@ In an actual word embedding these vectors do not contain real world properties l
 this example. Instead a model trains these values for every word so it minimizes the loss.
 The resulting values do not correspond to any real properties of the word. @noauthor_word_nodate
 
-== Block Decomposition of Protein Sequences
+=== Block Decomposition of Protein Sequences
 
 The block decomposition algorithm by Martin Girard was created as part of a
 surrogate model for low complexity protein sequences. The model itself is based
@@ -452,22 +507,5 @@ is identified, the algorithm recursively searches for the largest blocks to the
 left and right of it. Segments shorter than a predefined length threshold are
 discarded. Before applying the block decomposition algorithm a mapping is
 applied to be less sensitive to mutations. @noauthor_files_2024
-
-== Phase Separation Predictor using Block Decomposition and Neural Networks
-
-The goal of this work is to develop @llps predictors using machine learning
-methods. Two approaches will be tested. The first is using neural networks as
-models. Current predictors use more conventional methods like random forest or
-XGBoost models that take scalar values as inputs. A lot of information is lost
-using only scalar values like fractions. Using models that take the whole
-sequence may lead to better performance or models that add to the current
-landscape of @llps predictors. The second approach involves using the block
-decomposition algorithm with different mappings to divide protein sequences
-into blocks of a certain homogeneity, where each mapping captures different
-types of information. This output can then be used as input for neural networks
-or applied in more traditional analysis methods. In contrast to other models
-that simply consider the fraction of individual or grouped amino acids, this
-approach only counts amino acids that occur within blocks of compositionally
-similar residues.
 
 #pagebreak()
