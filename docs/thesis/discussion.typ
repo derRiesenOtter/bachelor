@@ -133,8 +133,9 @@ general manner. For the @mlo evaluation, the negative test set from PSPire was
 reused. To investigate whether this influenced performance, one evaluation was
 conducted using the negative test set from the PPMC-lab dataset instead. This
 did not change the observation. It would be interesting to see how the more
-traditional @ml predictors would perform using the PPMC-lab dataset, as they
-require fewer data.
+traditional @ml predictors would perform using the PPMC-lab dataset as they
+require fewer data. This comparison could help quantify the impact of dataset
+size and feature complexity across modeling paradigms.
 
 Lastly, the evaluation using the catGranule 2.0 dataset did again show that
 the model created in this work does yield a competitive performance. It
@@ -143,129 +144,100 @@ catGranule 2.0 paper. It is important to mention that due to lack of time,
 the dataset was not split into @idp::pl and non-@idp::pl. This split
 could lead to further improvements as it did on the PSPire dataset.
 
-The visualization of the saliency provided some insights on which features of a
-sequence were important during classification. Investigating the saliency scores
-at a larger scale could unveil important patterns or sequences for @llps.
-For now the information they
-provide is limited, but further investigations of these could help identifying
-patterns or sequences that contribute to @llps. The comparison of the protein
-P42766 showed the difference of feature importance between the @idr model and
-the non-@idr model. The visualizations of the @idr proteins was usually more
-subtle and did not involve strong bands like for the non-@idr proteins.
+The visualization of the saliency scores provided a preliminary look at which
+features of a sequence might influence classification. While no concrete
+insights were drawn from this small-scale exploration, the goal was primarily
+to test the approach and develop an intuition for what the model may have
+learned. Nonetheless, scaling up this analysis may holds potential for
+uncovering meaningful patterns or sequence features associated with @llps.
+Another interesting insight was to compare the saliency between the @idr model
+and the non-@idr model. It revealed, that both models relied on very different
+areas of the proteins to form their prediction. This could be seen as
+supportive to create different models for the different @llps proteins.
+Comparing the results from the saliency scores with experimental data
+could confirm if the learned features actually play important roles in @llps.
 
-== Comparing @nn to @ml models
+Due to time constraints, several promising ideas could not be explored in this
+study. One such those is the optimization of hyperparameters, for example
+through five-fold cross-validation. This technique would likely improve the
+robustness and generalization ability of the models and might lead to
+measurable performance gains. Additionally, alternative strategies for dividing
+the training data could be investigated, for instance, by distinguishing
+between self-assembling proteins and those that depend on interaction partners,
+like the PhasePred study did. \
+Another worthwhile extension would be the construction of a new dataset that
+combines the larger positive data from the catGranule 2.0 study with the
+large negative set used in the PSPire dataset. Lastly, making the developed tool
+accessible for external users, for example, as a web application or
+command-line utility, would increase its practical value and
+enable its use by a broader scientific community.
 
-Given the similar performance, there are some benefits as well as downsides to
-using @nn compared to traditional @ml approaches. \
-One benefit is the reduction of feature engineering. The final models contained
-three different features at most. These being the sequence, the @rsa values and
-the @ptm::pl. Of these three features the sequence and the @ptm::pl are
-directly available for use on UniProt, even though the @ptm values underwent
-some feature engineering by mapping them into similar groups. The inclusion of
-the @rsa values did require obtaining the structure files from AlphaFold and
-using DSSP to calculate them. In comparison, the PSPire model used 44 different
-features. Most of these features were easy to calculate as 20 were only
-fractions of single amino acids and 19 were fractions of groups of amino acids.
-Others were more complex and required external tools for calculation like the
-isoelectric points, the polarity scores or their computational approach to
-identify charged stickers that included the use of @rsa values. \
-The second benefit may be the ability to process the whole sequence and search
-it for patterns. @ml models are limited to the tabular representation of a
-protein sequence. While this is a legitime approach, especially if the datasets
-are small, these features are limited and are not enough to model complex
-interactions like @llps appropriately. @nn are more powerful when it comes to
-understanding more complex interactions especially with sequence like data.
-What holds them back for now is the limited availability of curated data.
-
-Both types of models offer some degree of interpretability regarding the roles
-of input features. Traditional @ml models are generally more transparent in
-this regard. Feature importance can be directly quantified using techniques
-such as permutation importance, SHAP values, or model coefficients, making it
-easier to understand which features contribute most to the predictions.
-
-In contrast, interpreting @nn models is more complex due to their higher
-dimensionality and non-linear structure. However, interpretability is still
-possible through techniques such as saliency maps, integrated gradients, or
-attention mechanisms. These methods allow the visualization of feature
-importance on a per-sample basis, highlighting specific input regions that
-influence the model’s decision. This can support deeper biological analysis,
-for example by identifying critical amino acid regions or structural patterns,
-and may contribute to a better understanding of underlying mechanisms such as
-those driving @llps.
-
-There are, however, some notable downsides to using @nn models. Although not
-explicitly measured in this study, training neural networks typically requires
-significantly more computational resources and time compared to traditional @ml
-models. This can be a limiting factor, especially when working with large
-datasets or limited hardware.
-
-Another challenge is the need to pad sequences to a fixed length, due to the
-varying sizes of protein sequences. Padding can introduce noise and interfere
-with model performance, particularly if a large portion of the input consists
-of non-informative padded positions. This issue can distort intermediate
-representations—especially in techniques like batch normalization—and may
-reduce the model’s ability to generalize effectively.
-
-== The remaining challenge
-
-The main challenge in @llps prediction will continue to be the insufficient
-curated data. While datasets are growing it will still take some time till
-they reach appropriate sizes for training more complex models. Another
-challenge is the absence of a database for proteins that do not partake in
-@llps. Creating such a database itself would be difficult as @llps does only
-occur if the right physicochemical conditions are met.
-
-Furthermore, new @llps prediction tools should strive to be more comparable.
-One goal of the people behind the PPMC-lab dataset is to help with this problem
-by providing a dataset that can be used to benchmark models. In fact, part of their
-work focuses on comparing the currently available tools using their dataset.
+#pagebreak()
 
 == Conclusion
 
-This work has demonstrated that an @llps predictor based on a relatively simple
-two-layer @cnn architecture can perform on par with, and in some cases surpass,
-state-of-the-art models based on more traditional @ml methods. While the
-initial idea of using block decomposition as input proved viable for @llps
-prediction, it consistently underperformed compared to using the raw protein
-sequence. As a result, the focus of this study shifted toward developing a
-sequence-based @llps predictor.
+This work has shown that a relatively simple, sequence-based @cnn model can
+perform competitively and sometimes even outperform traditional @ml models.
+While both the @cnn models and the @ml models yielded similar performance,
+they offer different advantages and limitations.
 
-Several enhancements contributed to the model’s success, including the
-integration of @rsa values, @ptm features, and batch normalization (@bn), as
-well as the division of the dataset into proteins with and without @idr::pl.
-This stratification enabled the model to better capture differences in the
-underlying sequence characteristics of these two protein groups.
+One of the clearest benefits of using @nn models lies in the significant
+reduction of feature engineering. The final models in this study relied on only
+three main inputs: the raw amino acid sequence, @ptm annotations, and @rsa
+values. Of these, both the sequence and @ptm::pl information are readily
+accessible via databases like UniProt, although the @ptm features required some
+minor preprocessing. The @rsa values, while effective in improving performance,
+do require structural predictions and additional processing using tools like
+AlphaFold and DSSP. In contrast, PSPire used 44 features, many of which are
+derived from simple amino acid compositions but also include complex
+descriptors requiring external computation. Despite this feature richness, the
+@cnn model achieved comparable results.
 
-The final model achieved results that were comparable or superior to those of
-PSPire, particularly for proteins containing @idr::pl, on both the PSPire test
-data and the independent @mlo datasets. Notably, this performance was achieved
-with less reliance on handcrafted features compared to other models. It also
-outperformed several additional @llps predictors not covered in the PSPire
-publication, including CatGranule 2.0, which relies on a feature-rich input of
-128 descriptors.
+A second major benefit of @nn models is their ability to process whole
+sequences, identifying complex patterns that are inaccessible to models
+restricted to flat, tabular inputs. This is particularly relevant in the
+context of @llps, where interactions between sequence motifs, disorder, and
+post-translational modifications play significant roles. However, there are
+also certain drawbacks to these model types. Neural networks typically demand
+more computational resources and longer training times. Processing sequences
+of different lengths requires padding which can introduce noise.
 
-Despite these promising results, one of the ongoing challenges in @llps
-prediction is the limited amount of high-quality, curated data. Although the
-dataset has grown in recent years, it remains insufficient to capture the full
-complexity of the biological processes involved. The fact that a relatively
-lightweight @cnn model is already able to compete with more established @ml
-approaches is encouraging, especially considering the potential of neural
-networks when applied to larger datasets.
+When it comes to interpretability both @ml models and @nn models have their
+benefits. Traditional @ml models are generally more transparent, with
+well-established methods that allow for clear feature attribution. Neural
+networks, on the other hand, are inherently more complex due to their depth and
+non-linear structure. In this study, it was experimented with saliency-based
+visualization techniques to inspect model behavior, but these efforts were
+exploratory and did not yield concrete insights. Still, the potential for
+saliency methods to uncover biologically meaningful sequence or structure
+motifs remains promising.
 
-The experiments underscore that tailoring prediction models to specific protein
-characteristics—particularly by separating @idr and non-@idr proteins—can lead
-to meaningful improvements in performance. The consistent benefit of including
-@rsa values as attention weights further highlights the importance of surface
-accessibility in modeling interactions relevant to @llps. While @bn and @ptm
-features showed mixed effects, this likely reflects issues such as incomplete
-annotation databases and technical limitations like sequence padding.
+An important theme throughout this work is the limited availability of curated
+data. The success of the @cnn model, despite being relatively lightweight, is
+encouraging, but likely bounded by the current size and quality of existing
+datasets. The absence of a well-defined negative dataset also remains a bottleneck.
+Efforts, such as the PPMC-lab dataset, are therefore important contributions
+and will help to mitigate this problem. Despite the small dataset itself, the
+incompleteness of @ptm::pl may also limit current models.
 
-In conclusion, the final models—one optimized for @idr proteins using @rsa
-weighting, and another for non-@idr proteins that combines @rsa weighting with
-@bn and @ptm features—strike a strong balance between model complexity and
-generalization. These results lay a solid foundation for future improvements.
-Further progress may come from more comprehensive data curation, advanced
-handling of variable sequence lengths, and deeper integration of functional and
-structural protein annotations.
+Another major insight was the value of dividing the model to specific protein
+characteristics. Stratifying the data into proteins with and without @idr::pl
+and developing specialized models for each group led to consistent improvements
+in predictive performance. The addition of @rsa values as attention weights
+also proved beneficial. While @bn and @ptm features showed mixed impact, likely
+due to incomplete annotations and the variability introduced by padding, the
+overall framework remains extensible and can be adapted as better data and
+annotations become available.
+
+In summary, this study contributes both a practical @llps predictor and a
+broader comparison of modeling strategies, showing that @nn approaches can
+match or outperform traditional models while simplifying the feature
+engineering process. The strong performance achieved with relatively few
+features and a compact architecture suggests that there is significant
+potential in neural network-based methods, especially as datasets grow and more
+refined training strategies are developed. Future improvements may come from
+better handling of sequence variability, increased interpretability through
+large-scale saliency analysis, and deeper integration of functional and
+structural annotations.
 
 #pagebreak()

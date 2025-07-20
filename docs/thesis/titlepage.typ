@@ -20,7 +20,7 @@
   #box(height: 25%)[
     #text(size: 12pt)[
       Bachelor Thesis \
-      Submitted on: TODO \
+      Submitted on: 24.07.2025 \
       Name: Robin Ender \
       Student Number: 2184737
     ]
