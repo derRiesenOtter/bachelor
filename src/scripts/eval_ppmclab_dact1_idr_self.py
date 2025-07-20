@@ -17,9 +17,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from torch.utils.data import DataLoader
 
-from src.modules.cnn_2l_rsa_weight_bn_ptm import CNN2L
-from src.modules.get_ptm import add_ptm
-from src.modules.sequence_dataset_rsa_ptm import SequenceDataSet
+from src.modules.cnn_2l_rsa_weight import CNN2L
+from src.modules.sequence_dataset_rsa import SequenceDataSet
 
 with open("./data/intermediate_data/pspire_rsa.pkl", "rb") as f:
     df = pickle.load(f)
@@ -35,17 +34,12 @@ with open("./data/intermediate_data/ppmclab_rsa.pkl", "rb") as f:
 
 ppmclab_df = ppmclab_df.loc[ppmclab_df["rsa"].notna()]
 
-df = add_ptm(df)
-df_mlo = add_ptm(df_mlo)
-ppmclab_df = add_ptm(
-    ppmclab_df, "./data/intermediate_data/ptm_ppmclab.pkl", "UniProt.Acc"
-)
 
 train_df, val_df = train_test_split(
     ppmclab_df, test_size=0.2, stratify=ppmclab_df["ps_label"], random_state=13
 )
 
-model_name = "eval_ppmclab_mlo_dact1_nidr_self"
+model_name = "eval_ppmclab_mlo_dact1_idr_self"
 
 val_df = val_df.loc[(val_df["ps_label"] == 0)]
 val_df.rename(columns={"UniProt.Acc": "id"})
@@ -70,14 +64,12 @@ model = CNN2L(
     num_classes=2,
 )
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-state_dict = torch.load(
-    "./data/processed_data/model_run_cnn2l_ppmclab_rsa_weight_bn_nidr_ptm"
-)
+state_dict = torch.load("./data/processed_data/model_run_cnn2l_ppmclab_rsa_weight_idr")
 model.load_state_dict(state_dict)
 model.to(device)
 model.eval()
 
-val_data_set = SequenceDataSet(val_df, "mapped_seq", "rsa", "ptm_profile", "ps_label")
+val_data_set = SequenceDataSet(val_df, "mapped_seq", "rsa", "ps_label")
 val_loader = DataLoader(val_data_set, batch_size=128, shuffle=False)
 
 class_weights = compute_class_weight(
@@ -94,14 +86,13 @@ all_labels_tmp = []
 # Disable gradient computation and reduce memory consumption.
 with torch.no_grad():
     for i, vdata in enumerate(val_loader):
-        vinputs, vrsa, vptm, vlabels = vdata
-        vinputs, vrsa, vptm, vlabels = (
+        vinputs, vrsa, vlabels = vdata
+        vinputs, vrsa, vlabels = (
             vinputs.to(device),
             vrsa.to(device),
-            vptm.to(device),
             vlabels.to(device),
         )
-        voutputs = model(vinputs, vrsa, vptm)
+        voutputs = model(vinputs, vrsa)
         vloss = loss_fn(voutputs, vlabels)
         running_vloss += vloss
         _, preds = torch.max(voutputs, 1)

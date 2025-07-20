@@ -369,28 +369,26 @@ where understanding both past and future context is crucial. @noauthor_bidirecti
 
 ==== Transformers
 
-The introduction of the transformer architecture has had a big impact, with
-it being the foundation of modern large language models like Open AIs
-ChatGPT (Generative Pretrained Transformer). It could be seen as an advanced
-version of @rnn::pl. It does enable parallel processing and has improved long-range
-dependence.
+The introduction of the transformer architecture has had a big impact that is
+not limited to scientific research. Large Language Models like Open AIs ChatGPT
+used this technology to revolutionize chat bots @ray_chatgpt_2023. It could be
+seen as an advanced version of @rnn::pl. It does enable parallel processing and
+has improved long-range dependence @vaswani_attention_2017.
 
-The original transformer consisted of an encoder and an decoder and was
-created for the purpose of machine translation. Today there
-are also transformer that only use one of theses two. ChatGPT for example only
-uses the decoder as it only needs to generate text, while BERT uses only
-the encoder as it only needs to process the input sequence. Here we will cover
-the original transcoder architecture briefly, even though this work will only
-use an encoder-only transformer.
+The original transformer consisted of an encoder and a decoder and was created
+for the purpose of machine translation @vaswani_attention_2017. Today there are
+also Transformers that only use one of theses two. ChatGPT for example only uses
+the decoder as it only needs to generate text, while BERT uses only the encoder
+as it only needs to process the input sequence @vaswani_attention_2017. Here we
+will cover the original transcoder architecture used for machine translation.
 
-First of all, the input needs to be converted into numerical values, as is
-required for all @ai models. Depending on the type of input, an appropriate
-embedding is applied. Each segment of the input becomes a token, and each token
-is mapped to a corresponding embedding vector. To help the model understand the
+As for most @ai models the input needs to be converted into a numerical
+representation. Every token, which corresponds to a word or subword, is mapped to
+a dense vector using a learned embedding matrix. To help the model understand the
 position of each token in the sequence, positional encoding is added to the
 embeddings. This encoding uses sine and cosine functions at different
 frequencies to generate a unique pattern for each position. The result is added
-to the embedded input.
+to the embedded input. @vaswani_attention_2017
 
 Next comes the self-attention mechanism, which is
 applied to every token. For each token, three vectors are computed: a query, a
@@ -400,17 +398,17 @@ for each token is calculated by taking the dot product between the query of the
 current token and the keys of all tokens. These scores are passed through a
 SoftMax function to normalize them into probabilities, determining how much
 each token should contribute to the current one. This process is done multiple
-times in parallel with different sets of weights — a technique known as
+times in parallel with different sets of weights, a technique known as
 Multi-Head Attention. The outputs from all heads are concatenated and projected
 back into the model's dimension. The result is then added back to the original
-input using a residual connection.
+input. @vaswani_attention_2017
 
-After attention, the output passes through a feed-forward neural network (also
-called an MLP or multilayer perceptron), which consists of two linear layers
-with a non-linearity in between. This step is applied to each position
-separately and identically. Again, a residual connection is used, and layer
-normalization is applied before or after each sub-block, depending on the
-implementation, to stabilize training and improve performance.
+After attention, the output passes through a feed-forward neural network, which
+consists of two linear layers with a non-linearity in between. This step is
+applied to each position separately and identically. Again, a residual
+connection is used, and layer normalization is applied before or after each
+sub-block, depending on the implementation, to stabilize training and improve
+performance. @vaswani_attention_2017
 
 In the decoder, Masked Multi-Head Attention is used instead of regular
 self-attention. This ensures that each token can only attend to earlier
@@ -420,13 +418,13 @@ input. It works similarly to self-attention: a query is computed for the
 current token being generated, and dot products are taken with the keys from
 the encoder’s output. After applying SoftMax, the decoder learns which encoded
 tokens are most important for generating the next word.Like other attention
-mechanisms, this can also be stacked.
+mechanisms, this can also be stacked. @vaswani_attention_2017
 
 Finally, the output from the decoder is passed through a linear projection
 layer followed by a SoftMax function, producing a probability distribution over
 the entire vocabulary. The most likely next token is selected based on this
 distribution. Layer normalization and residual connections are applied
-throughout the model to ensure stable learning and better generalization — see
+throughout the model to ensure stable learning and better generalization, see
 @transformer for a detailed overview. @vaswani_attention_2017
 
 #figure(image("figures/transformer.png", width: 80%), caption: [Visual overview of the
@@ -438,9 +436,9 @@ architecture of an encoder-decoder transformer.
 XGBoost (eXtreme Gradient Boosting) is a powerful and widely used @ml algorithm
 based on the concept of gradient boosted decision trees. Boosting models build an
 ensemble by sequentially adding many weak learners where each new learner
-is trained to correct the errors made the by the previous learners.
+is trained to correct the errors made by the previous learners.
 It has several features that set it apart from other
-boosting implementations. It incorporates regularization to prevent overfitting
+boosting implementations: It incorporates regularization to prevent overfitting
 and improve generalization. It can automatically handle missing values and
 is able to work in parallel. It employs tree pruning via a post-pruning process
 that starts with deep trees and removes branches that do not contribute to
@@ -462,16 +460,16 @@ could be accomplished by using something like a one-hot encoding. In a one-hot
 encoding a vector of the size of the number of categories is created for each
 element. The position that corresponds to the category of this element is filled
 with a one, while all other positions contain a zero. However, this
-approach does have two drawbacks. First, these vectors are huge and second all
+approach does have two drawbacks. First, these vectors are huge and second, all
 words are treated the same. This means there is no way similarities between words
 can be expressed. @noauthor_word_nodate
 
 A better representation for words is to use dense vector of real numbers. Such
 a vector can be significantly shorter than a one-hot encoded vector and is
 filled with real numbers that each represent a property of the element. In
-a biological context if we assume that the elements are for example amino acids,
+a biological context, if we assume that the elements are for example amino acids,
 those properties could be thought of as chemical properties. A representation
-of valine (@valine ) and threonine (@threonine) could look like this: @noauthor_word_nodate
+of valine (@valine) and threonine (@threonine) could look like this: @noauthor_word_nodate
 
 $ q_("valine") = [attach(limits(2.4), t: "Acidity"), attach(limits(1.2), t: "Size"), ... ] $ <valine>
 
@@ -485,7 +483,7 @@ $ "Similarity"("valine", "threonine") = frac(q_"valine" dot q_"threonine", ||q_"
 
 In an actual word embedding these vectors do not contain real world properties like in
 this example. Instead a model trains these values for every word so it minimizes the loss.
-The resulting values do not correspond to any real properties of the word. @noauthor_word_nodate
+The resulting values do not correspond to any real world properties. @noauthor_word_nodate
 
 === Block Decomposition of Protein Sequences
 
@@ -493,19 +491,19 @@ The block decomposition algorithm by Martin Girard was created as part of a
 surrogate model for low complexity protein sequences. The model itself is based
 on combinatorics on words, particular sturmian words and their generalizations.
 It was able to show that low complexity protein sequences have similar
-properties to homopolymers with equivalent parameters, shown by their radius of
-gyration. Changes to the radius of gyration are strongly correlated to changes in
-the @llps propensity of a protein. @noauthor_files_2024
+properties to homopolymers with equivalent parameters. For example the radius
+of gyration. Changes to the radius of gyration are strongly correlated to
+changes in the @llps propensity of a protein. @noauthor_files_2024
 
 The block decomposition algorithm itself uses word balance as a measure of
 homogeneity. It finds the longest segments of the sequence, that have a word
-balance below the threshold. As the algorithm originates from the field of
-polymer physics these segments are called blocks. A word $w$ is $q$-balanced
+balance below a certain threshold. As the algorithm originates from the field
+of polymer physics these segments are called blocks. A word $w$ is $q$-balanced
 if, for any two equal-length substrings $u$ and $v$ within $w$, the count of
 each character differs by no more than $q$. Once the largest homogeneous block
 is identified, the algorithm recursively searches for the largest blocks to the
 left and right of it. Segments shorter than a predefined length threshold are
-discarded. Before applying the block decomposition algorithm a mapping is
+discarded. Before applying the block decomposition algorithm, a mapping is
 applied to be less sensitive to mutations. @noauthor_files_2024
 
 #pagebreak()

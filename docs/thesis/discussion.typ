@@ -7,14 +7,12 @@
 
 == Block Decomposition vs. Raw Sequence
 
-The comparison between simple models using either block decomposition or full
-sequence input revealed that while block decomposition achieved results
-comparable to the sequence-based approach on one dataset, its performance
-dropped significantly on the other. In the case of @nn models, which are
-capable of automatically learning and extracting complex features from raw
-data, applying block decomposition effectively limits the available
-information. This reduction in input detail likely explains the slight
-performance decrease observed with these models.
+The comparison between simple models using either block decomposition or the
+raw sequence input revealed that using the block decomposition does not benefit
+the models. In the case of @nn, which are capable of automatically learning and
+extracting complex features from raw data, applying block decomposition
+effectively limits the available information. This reduction in input detail
+likely explains the slight performance decrease observed with these models.
 
 Similarly, applying block decomposition to the traditional @ml model XGBoost
 did not yield strong results. This suggests that the simplified representation
@@ -24,28 +22,18 @@ such as modeling @llps.
 
 == Choosing the best Model
 
-In the second phase, several alternative @nn architectures were tested, all of
-which were more complex and, in theory, more expressive than the two-layer @cnn
-used as the baseline. Although some of these models achieved results comparable
-to the baseline, none were able to surpass its performance. A previous study
-that focused on DNA-protein binding also came to the conclusion that the
-performance of @cnn::pl decreases with network complexity when there is
-insufficient training data. In their case the more complex models only started
-to outperform the simple models when they used a training set of 40,000
-samples. @zeng_convolutional_2016
-
-There are likely two main reasons for this. First, complex models—particularly
-transformer-based architectures—tend to be more data-hungry. The dataset used
-in this study contained only around 10,000 entries, with approximately 2,000
-positive samples. This limited size is likely insufficient for effectively
-training deeper or more complex models, which require large-scale data to
-generalize well.
-
-Second, the two-layer @cnn may simply be particularly well-suited for this
-task. Convolutional networks are highly efficient at capturing local patterns
-in sequences, which may help in identifying subtle sequence motifs relevant to
-@llps, even if these motifs are not highly conserved. This local pattern
-recognition likely gives the @cnn an advantage when data is limited.
+After the simple two layer @cnn performed the best in the first tests, some
+more complex alternatives, including a three layer @cnn, a @bilstm model and a Transformer, were
+tested. Although some of these models achieved results comparable to the two
+layer model, none was able to surpass its performance. A previous study that
+focused on DNA-protein binding also came to the conclusion that the performance
+of @cnn::pl decreases with network complexity when there is insufficient
+training data. In their case the more complex models only started to outperform
+the simple models when they used a training set of 40,000 samples
+@zeng_convolutional_2016. This reasoning is probably applicable for @bilstm models
+and Transformers too, as they are also more complex. The datasets used in this
+study contained only around 10,000 entries at most. This limited size is likely
+insufficient for effectively training deeper or more complex models.
 
 It should also be noted that the alternative models were only evaluated using a
 single set of hyperparameters. It is possible that with more extensive tuning,
@@ -62,48 +50,48 @@ reduces the model’s reliance on individual neurons, encouraging it to learn
 more generalizable features and thereby mitigating overfitting.
 
 Since the features contributing to @llps in proteins often differ between
-proteins with and without @idr::pl, the positive dataset was split accordingly.
-Separate models were then trained on each subset. On the PPMC-lab dataset, this
-separation had minimal impact on performance. However, for the PSPire dataset,
-the performance of the non-@idr model improved notably. As a result, the
-split-model approach was adopted as the new baseline, and subsequent
-experiments were built upon this version.
+proteins with and without @idr::pl, the positive dataset was split accordingly
+@hou_machine_2024. Separate models were then trained on each subset. On the
+PPMC-lab dataset, this separation had minimal impact on performance. However,
+for the PSPire dataset, the performance of the non-@idr model improved notably.
+As a result, the split-model approach was adopted as the new baseline, and
+subsequent experiments were built upon this version.
 
 Both models incorporating @rsa values demonstrated improved performance.
 However, the model that used @rsa values as weights applied to the embedded
 sequence outperformed the one that simply concatenated the @rsa values with the
 embeddings. These performance gains were observed on both datasets, though they
 were more pronounced on the PSPire dataset. This improvement is intuitive, as
-amino acids located on the protein’s surface—typically captured by @rsa
-values—are primarily responsible for molecular interactions. Applying @rsa
-values as weights integrates this structural insight directly into the model in
-a meaningful way.
+amino acids located on the protein’s surface, which is represented by the @rsa
+values, are primarily responsible for molecular interactions. Applying @rsa
+values as weights integrates this information directly into the model in.
 
-The addition of @bn (batch normalization) yielded mixed results. On the PSPire
-dataset, it improved the performance of the non-@idr model, but led to
-performance declines when applied to the @idr model or on the PPMC-lab dataset.
-A likely explanation for this inconsistency lies in the use of sequence
-padding. Since protein sequences vary in length, all sequences were padded to a
-uniform length of 2700. This means that many input sequences contained more
-padding than actual amino acids. @bn calculates the mean and standard deviation
-per channel across the batch—including the padded values. When batches include
-many short sequences, these padding values disproportionately affect the
-normalization statistics, skewing the model’s behavior. Batches with longer
-sequences are less affected. This imbalance can result in unstable or degraded
-performance.
+The addition of @bn yielded mixed results. On the PSPire dataset, it improved
+the performance of the non-@idr model, but led to performance declines when
+applied to the @idr model or on the PPMC-lab dataset. A likely explanation for
+this inconsistency lies in the use of sequence padding. Since protein sequences
+vary in length, all sequences were padded to a uniform length of 2700. As seen
+in the distribution o sequence length, most proteins in this study were smaller
+than 1000 residues, which leads many sequences consisting mostly of padded values.
+@bn calculates the mean and standard deviation per channel across the
+batch, including the padded values. When batches include many short sequences,
+these padding values disproportionately affect the normalization statistics,
+skewing the model’s behavior. Batches with longer sequences are less affected.
+This imbalance can result in unstable or degraded performance.
 
 The inclusion of @ptm values did not yield significant improvements on the
 PPMC-lab dataset. On the PSPire dataset, the performance of the @idr model
 decreased slightly, while the non-@idr model experienced a minor improvement.
-Although @ptm::pl are known to play a role in @llps and their inclusion should
-theoretically enhance the models, the current databases for @ptm::pl are
-incomplete. Many proteins likely contain unannotated @ptm::pl that have not yet
-been experimentally identified. The absence of this data introduces noise,
-which can interfere with model training and prediction accuracy.
+Although @ptm::pl are known to play a role in @llps @li_post-translational_2022
+and their inclusion should theoretically enhance the models, the current
+databases for @ptm::pl are incomplete. Many proteins likely contain unannotated
+@ptm::pl that have not yet been experimentally identified. The absence of this
+data introduces noise, which can interfere with model training and prediction
+accuracy.
 
 In the final stage, the different enhancements were tested in various
 combinations. For the @idr model, no combination outperformed the two-layer
-model augmented with @rsa values used as weights. Consequently, this
+model with @rsa values used as weights. Consequently, this
 configuration was selected as the final model for @idr proteins. In contrast,
 for the non-@idr model, the combination of @rsa values as weights, @bn, and the
 inclusion of @ptm values produced the best overall performance. This model was
@@ -117,25 +105,23 @@ using the PSPire dataset. In this setting, the @idr model was unable to match
 the performance of the PSPire model, though it achieved results that were
 comparable to those of the PdPS model. Notably, the non-@idr model outperformed
 both the PSPire and PdPS models, although its advantage over PSPire was
-marginal.
-
-A similar pattern emerged when the models trained on the PSPire dataset were
-evaluated using the @mlo datasets. Once again, the @idr model underperformed
-relative to both the PSPire and PdPS models. Meanwhile, the non-@idr model
-surpassed the PdPS model and performed at a level comparable to the PSPire
-model.
+marginal. A similar pattern emerged when the models trained on the PSPire
+dataset were evaluated using the @mlo datasets. Once again, the @idr model
+underperformed relative to both the PSPire and PdPS models. Meanwhile, the
+non-@idr model surpassed the PdPS model and performed at a level comparable to
+the PSPire model.
 
 One possible explanation for the weaker performance of the @idr model lies in
 the intrinsic characteristics of @idr::pl. Unlike @cnn::pl, which are capable
 of identifying recurring patterns, @idr::pl are not constrained by any fixed or
-consistent structural motifs. Two @idr::pl sequences that lead to @llps can
-appear entirely different from each other. As a result, relying solely on
-structural similarity or pattern recognition may not be sufficient for accurate
-modeling. In contrast, using only the fractional composition of amino acids,
-combined with additional scalar features, appears to be a more effective
-strategy at present. The non-@idr model, which employs this approach, already
-performs competitively with existing models, though there is still considerable
-room for improvement in its overall accuracy.
+consistent structural motifs. Two @idr sequences that lead to @llps can appear
+entirely different from each other. As a result, relying solely on structural
+similarity or pattern recognition may not be sufficient for accurate modeling
+or requires more data. In contrast, using only the fractional composition of
+amino acids, combined with additional scalar features, appears to be a more
+effective strategy at present. The non-@idr model, already performs
+competitively with existing models, though there is still considerable room for
+improvement in its overall performance.
 
 An interesting observation arose when training was performed using the PPMC-lab
 dataset and testing was done on the @mlo datasets. This setup revealed a
