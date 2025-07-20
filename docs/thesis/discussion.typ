@@ -119,49 +119,39 @@ entirely different from each other. As a result, relying solely on structural
 similarity or pattern recognition may not be sufficient for accurate modeling
 or requires more data. In contrast, using only the fractional composition of
 amino acids, combined with additional scalar features, appears to be a more
-effective strategy at present. The non-@idr model, already performs
+effective strategy at present @hou_machine_2024. The non-@idr model, already performs
 competitively with existing models, though there is still considerable room for
 improvement in its overall performance.
 
-An interesting observation arose when training was performed using the PPMC-lab
-dataset and testing was done on the @mlo datasets. This setup revealed a
-significant drop in performance compared to models trained on PSPire. While the
-@idr model’s performance remained relatively stable, the non-@idr model’s
-results declined sharply—approaching the level of random guessing. One
+Using the models trained on the PPMC-lab dataset to evaluate their performance
+on the @mlo data yielded unexpected results. Compared to the the models trained
+on the PSPire dataset, a significant drop in performance was observed. One
 plausible reason for this drop could be the smaller size of the PPMC-lab
-dataset, particularly its limited number of negative samples. In this case,
-having access to a more extensive and diverse set of negative examples, as
-found in the PSPire dataset, seems to provide a clear advantage. For the @mlo
-evaluation, the negative test set from PSPire was reused. To investigate
-whether this influenced performance, one evaluation was conducted using the
-negative test set from the PPMC-lab dataset instead. This provided some insight
-into the effect of dataset composition on model accuracy.
+dataset, particularly its limited number of negative samples. With only a third
+of total samples the models were probably not able to learn the features in a
+general manner. For the @mlo evaluation, the negative test set from PSPire was
+reused. To investigate whether this influenced performance, one evaluation was
+conducted using the negative test set from the PPMC-lab dataset instead. This
+did not change the observation. It would be interesting to see how the more
+traditional @ml predictors would perform using the PPMC-lab dataset, as they
+require fewer data.
 
-It would be informative to conduct further evaluations of other models trained
-exclusively on the PPMC-lab dataset to determine whether the observed
-performance trends persist and how they compare across different architectures.
+Lastly, the evaluation using the catGranule 2.0 dataset did again show that
+the model created in this work does yield a competitive performance. It
+was able to slightly outperform all models that were evaluated in the
+catGranule 2.0 paper. It is important to mention that due to lack of time,
+the dataset was not split into @idp::pl and non-@idp::pl. This split
+could lead to further improvements as it did on the PSPire dataset.
 
-Lastly, it is worth noting that the evaluation of models trained using
-catGranule 2.0 did not involve separating proteins into @idr and non-@idr
-categories—a division that contributed to notable performance improvements in
-the current study. Despite this, the model introduced in this work outperformed
-the other models referenced in the paper. However, a more comprehensive
-comparison is currently hindered by the absence of reported @prc@auc values.
-For a thorough and fair assessment of model performance, it is important to
-report both @roc@auc and @prc@auc metrics. Unfortunately, many existing studies
-only provide the former, which limits the interpretability of their results in
-imbalanced classification settings.
-
-The visualization of the saliency provided some insights on which features were
-important for the @nn in classifying them. The saliency scores could be used
-for further analysis. For example extracting the regions with higher saliency
-scores and comparing them with each other or testing if these regions actually
-take part in @llps.
-
-The comparison of the protein P42766 showed the difference of feature
-importance between the @idr model and the non-@idr model. They almost look like
-the inverse of each other. The visualizations of the @idr proteins was usually
-more subtle and did not involve strong bands like for the non-@idr proteins.
+The visualization of the saliency provided some insights on which features of a
+sequence were important during classification. Investigating the saliency scores
+at a larger scale could unveil important patterns or sequences for @llps.
+For now the information they
+provide is limited, but further investigations of these could help identifying
+patterns or sequences that contribute to @llps. The comparison of the protein
+P42766 showed the difference of feature importance between the @idr model and
+the non-@idr model. The visualizations of the @idr proteins was usually more
+subtle and did not involve strong bands like for the non-@idr proteins.
 
 == Comparing @nn to @ml models
 
