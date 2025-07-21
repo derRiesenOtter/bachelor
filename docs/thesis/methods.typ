@@ -813,6 +813,7 @@ learned representations.
 From the Dr.LLPS @mlo dataset twenty random relatively high scoring @llps
 proteins were chosen. Ten @idr proteins and ten non-@idr proteins. The salinity
 map was created for all using both final models trained on the PSPire dataset.
-These results were compared between each other and with annotations from UniProt.
+These results were compared between each other. For some the catGranule 2.0 @llps
+propensity profile was created and compared to the saliency map.
 
 #pagebreak()
