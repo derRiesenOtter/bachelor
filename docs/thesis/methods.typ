@@ -10,7 +10,7 @@
 
 = Methods
 
-== Use of @ai Tools
+== Use of Artificial Intelligence Tools
 
 During the course of this work, AI assistance was employed to support various
 aspects of the writing and development process. Specifically, ChatGPT was used
@@ -42,7 +42,7 @@ ARM-based, unbinned M1 Pro processor and 16 GB of RAM.
                                                  [captum @kokhlikyan_captum_2020],            "0.8.0",
   [DSSP @noauthor_pdb-redodssp_nodate],          "-",                                         "4.5.3",
   table.hline()
-), caption: "Programs used in this work") <programs>
+), caption: "Programs used in this work.") <programs>
 
 == Data Preparation
 
@@ -220,7 +220,7 @@ and a two layer @cnn. The basic models only consisted of an embedding layer, @cl
 followed by the @relu activation functions and @mpl::pl and ended in an @ampl,
 @do and a @fcl.
 
-==== 1 Layer @cnn
+==== 1 Layer Convolutional Neural Network
 
 The architecture of the one layer @cnn for the sequence based approach is shown in
 @1lcnn. The values for the @oc, @ed, @ks, @st and @pd are given in @par_1lcnn.
@@ -233,7 +233,7 @@ The architecture of the one layer @cnn for the sequence based approach is shown 
   table.cell(fill: none)[@ks],   table.cell(fill: none)[@st], table.hline(stroke: .5pt),   [Sequence],                                              [10],                        [70],                        [10],                        [2],
   [2],                           [2],                         [2],                         [0.3],                      [Block Decomposition],       [3],                         [70],                        [10],                        [2],
   [2],                           [2],                         [2],                         [0.3],                      table.hline()
-), caption: [Parameters for 1 Layer @cnn::pl.]) <par_1lcnn>
+), caption: [Parameters for 1 Layer CNNs.]) <par_1lcnn>
 
 The model created for the Block Decomposition input already had 14 channels, two for
 every mapping. Each channel got its own embedding dimension. The architecture of the
@@ -336,9 +336,9 @@ one layer @cnn is visualized in @1lcnn.
   }
   content((start, dim), [2])
 
-}), caption: [Visualization of the 1 Layer @cnn used with the sequence as input.]) <1lcnn>
+}), caption: [Visualization of the 1 Layer CNN used with the sequence as input.]) <1lcnn>
 
-==== 2 Layer @cnn
+==== 2 Layer Convolutional Neural Network
 The parameters of the 2 layer models are summarized in @par_2lcnn.
 
 #figure(table(
@@ -349,7 +349,7 @@ The parameters of the 2 layer models are summarized in @par_2lcnn.
   table.cell(fill: none)[@st],   table.hline(stroke: .5pt),  [Sequence],                                               [10],                        [70],                        [10],                        [2],                         [2],                         [2],                         [2],                         [140],                       [10],
   [2],                           [2],                        [0.3],                       [Block Decomposition],       [3],                         [70],                        [10],                        [2],                         [2],                         [2],                         [2],                         [140],                       [10],
   [2],                           [2],                        [0.3],                       table.hline()
-), caption: [Parameters for 2 Layer @cnn::pl.]) <par_2lcnn>
+), caption: [Parameters for 2 Layer CNNs.]) <par_2lcnn>
 
 It only added one additional @cl to see if it benefits the model, see the visualization in @2lcnn.
 
@@ -467,7 +467,7 @@ It only added one additional @cl to see if it benefits the model, see the visual
   }
   content((start, dim), [2])
 
-}), caption: [Visualization of the 2 Layer @cnn used with the sequence as input.]) <2lcnn>
+}), caption: [Visualization of the 2 Layer CNN used with the sequence as input.]) <2lcnn>
 
 === The second set of Models
 
@@ -492,7 +492,7 @@ parameters in @par_xgboost, for all parameters see appendix.
   table.hline()
 ), caption: [Parameters of the XGBoost model.]) <par_xgboost>
 
-==== 3 Layer @cnn
+==== 3 Layer Convolutional Neural Network
 
 This model added one additional @cl, @relu and @mpl to the two layer @cnn.
 The parameters are shown in @par_3lcnn.
@@ -504,9 +504,9 @@ The parameters are shown in @par_3lcnn.
                                  table.cell(colspan: 4)[@cl 3],                                                                                   table.cell(rowspan: 2)[@do], table.cell(fill: none)[@oc], table.cell(fill: none)[@ks], table.cell(fill: none)[@pd], table.cell(fill: none)[@st], table.cell(fill: none)[@ks], table.cell(fill: none)[@st], table.cell(fill: none)[@oc], table.cell(fill: none)[@ks], table.cell(fill: none)[@pd], table.cell(fill: none)[@st], table.cell(fill: none)[@oc],
   table.cell(fill: none)[@ks],   table.cell(fill: none)[@pd], table.cell(fill: none)[@st], table.vline(stroke: 0.5pt), table.hline(stroke: .5pt),                              [Sequence],                  [10],                        [70],                        [10],                        [2],                         [2],                         [2],                         [2],                         [140],                       [10],                        [2],
   [2],                           [210],                       [10],                        [2],                        [2],                       [0.3],                       table.hline()
-), caption: [Parameters for 3 Layer @cnn::pl.]) <par_3lcnn>
+), caption: [Parameters for 3 Layer CNNs.]) <par_3lcnn>
 
-==== @bilstm
+==== Bidirectional Long Short Term Memory Model
 A very basic @bilstm model was created with the parameters shown in @par_bilstm.
 The input was embedded and subjected to the @lstm layer. @do and a @fcl followed.
 
@@ -516,7 +516,7 @@ The input was embedded and subjected to the @lstm layer. @do and a @fcl followed
   [@ed],         [Hidden Dimensions], [Layers], [@do],
   [12],          [3],                 [4],      [0.3],
   table.hline()
-), caption: [Parameters of the @bilstm model. ]) <par_bilstm>
+), caption: [Parameters of the BILSTM model. ]) <par_bilstm>
 
 ==== Transformer
 A basic transformer model was created with the parameters shown in @par_transformer.
@@ -530,7 +530,7 @@ The model did integrate a positional encoding.
   table.hline()
 ), caption: [Parameters of the transformer model.]) <par_transformer>
 
-=== Optimizing the Two Layer @cnn <optimize>
+=== Optimizing the Two Layer Convolutional Neural Network <optimize>
 As the second set of models did not provide a better model than the two layer
 @cnn, see @secon_set, they were discarded. The work was then focused on
 improving the two layer @cnn. The first step was to double the dropout rate and
@@ -569,7 +569,7 @@ PSPire dataset.
   [Oxidation],        [sulfoxide, hydroxy, oxid],
   [Other],            [-],
   table.hline()
-), caption: [Mapping of @ptm::pl.]) <ptm_prep>
+), caption: [Mapping of PTMs.]) <ptm_prep>
 
 The parameters for the final models are shown in @par_final_t.
 
@@ -580,7 +580,7 @@ The parameters for the final models are shown in @par_final_t.
                                  table.vline(stroke: 0.5pt),                              table.cell(rowspan: 2)[@do], table.cell(fill: none)[@oc], table.cell(fill: none)[@ks], table.cell(fill: none)[@pd], table.cell(fill: none)[@st], table.cell(fill: none)[@ks], table.cell(fill: none)[@st], table.cell(fill: none)[@oc], table.cell(fill: none)[@ks], table.cell(fill: none)[@pd],
   table.cell(fill: none)[@st],   table.hline(stroke: .5pt),  [Sequence],                                               [10],                        [70],                        [10],                        [2],                         [2],                         [2],                         [2],                         [140],                       [10],
   [2],                           [2],                        [0.6],                       table.hline()
-), caption: [Parameters for the final two layer @cnn::pl.]) <par_final_t>
+), caption: [Parameters for the final two layer CNNs.]) <par_final_t>
 
 As the optimizations affected both models differently, two different architectures
 were the result. The architecture for the non-@idr model is shown in @final_model.
@@ -765,7 +765,7 @@ In comparison the model for the @idr is missing the concatenation of the @ptm la
   }
   content((start, dim), [2])
 
-}), caption: [Visualization of the final non-@idr model.]) <final_model>
+}), caption: [Visualization of the final non-IDR model.]) <final_model>
 
 == Evaluation of the models
 

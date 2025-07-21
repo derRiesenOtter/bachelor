@@ -36,7 +36,7 @@ biochemical properties.
 
 @llps is a reversible process where a homogeneous mixture spontaneously separates
 into two liquid phases, one with a depleted and one with an increased
-concentration of components, see @phase_separation. @llps can form colloids
+concentration of components, see @phase_separation @xu_liquid-liquid_2023. @llps can form colloids
 like milk or layers like a mixture of oil and water. It is a widespread
 phenomena that is dependent on many factors like temperature, pressure,
 differences in polarity, hydrophobicity and hydrophobicity. Studying @llps in
@@ -45,7 +45,7 @@ century the phenomena was recognized as an important process in organisms and
 studies began to understand the implications of @llps in an biological context.
 @xu_liquid-liquid_2023
 
-#figure(image("figures/phase_separation.png", width: 50%), caption: [Visualization of LLPS. @xu_liquid-liquid_2023]) <phase_separation>
+#figure(image("figures/phase_separation.png", width: 50%), caption: [Visualization of LLPS.]) <phase_separation>
 
 Cells are capable of conducting various different tasks that involve many
 biochemical reactions. As these reactions often need different educts, enzymes
@@ -178,7 +178,7 @@ their @ml model and were able to significantly outperform other @llps
 predictors when it comes to the prediction of non-@idr proteins.
 @hou_machine_2024
 
-=== Problems of @llps Prediction
+=== Problems of Liquid-Liquid Phase Separation Prediction
 
 While the prediction of proteins undergoing @llps has steadily improved,
 significant challenges remain. One of the primary difficulties lies in the
@@ -234,7 +234,7 @@ clarity. Therefore, when we refer to @ml in this text, it explicitly excludes
   content((rel: (0.5, 0)), [@nn])
   circle((0, 0), radius: (0.5, 0.25), fill: rgb(0, 200, 250, 200))
   content((), [@dl])
-}), caption: [Categorization of @ai models]) <ai_cat>
+}), caption: [Categorization of AI models]) <ai_cat>
 
 Comparing @ml models to @dl models, there are some important differences. @ml
 models usually perform better on small data sets ($< 10000$). @dl models tend
@@ -260,14 +260,14 @@ In the following sections @ai models used during this work will be covered brief
 neurons in a living organism. Both biological and artificial neurons receive
 signals from multiple neurons and transmit signals to multiple neurons. An
 artificial neuron computes a weighted sum of its inputs, adds a bias term and
-then applies an activation function to produce its output, see @neuron. A @nn
-consists of an input layer, an arbitrary number of hidden layers and an output
-layer. In a classical @nn every neuron will have all neurons from the previous
-layer as input. Such a layer is called @fcl.
+then applies an activation function to produce its output, see @neuron
+@han_artificial_2018. A @nn consists of an input layer, an arbitrary number of
+hidden layers and an output layer. In a classical @nn every neuron will have
+all neurons from the previous layer as input. Such a layer is called @fcl.
 @han_artificial_2018
 
 #figure(image("figures/neuron.jpg", width: 60%), caption: [Visualization of an
-artificial neuron. @han_artificial_2018]) <neuron>
+artificial neuron.]) <neuron>
 
 The output of a neuron $i$ with $n$ inputs $x$, the weights $w$ and an activation
 function could be described using @activation_function.
@@ -276,25 +276,25 @@ $ "output"_i = "activation function"(sum_j^n w_(i j) x_j + b_i) $ <activation_fu
 
 The weights and the biases are the learnable parameters of a @nn. They are
 initialised with random values and are updated each training epoch, see
-@nn_weights.
+@nn_weights @han_artificial_2018.
 
-#figure(image("figures/nn_weights.jpg", width: 100%), caption: [Visualization of the weights in a @nn @han_artificial_2018]) <nn_weights>
+#figure(image("figures/nn_weights.jpg", width: 100%), caption: [Visualization of the weights in a Neural Network.]) <nn_weights>
 
-Updating these values uses an algorithm called backpropagation,
-see @backpropagation. After the model makes predictions, the difference between
-the predicted output and the label is calculated. This value is calculated by
-using a loss function and is called loss. Backpropagation then computes how
-much each weight and bias contributed to that loss by calculating the
-gradients. Rather than calculating an exact solution for all parameters, which
-is computationally difficult in deep networks, neural networks use an
+Updating these values uses an algorithm called backpropagation, see
+@backpropagation @han_artificial_2018. After the model makes predictions, the
+difference between the predicted output and the label is calculated. This value
+is calculated by using a loss function and is called loss. Backpropagation then
+computes how much each weight and bias contributed to that loss by calculating
+the gradients. Rather than calculating an exact solution for all parameters,
+which is computationally difficult in deep networks, neural networks use an
 optimization technique called gradient descent. This method uses the computed
 gradients to update each parameter in the direction that reduces the loss the
-most. Over many training epochs, the model gradually learns better
-weights and biases that minimize the prediction error. Gradient descent is not
-guaranteed to find the global minima of the loss, as it is able to get stuck in
-a local minima. @han_artificial_2018
+most. Over many training epochs, the model gradually learns better weights and
+biases that minimize the prediction error. Gradient descent is not guaranteed
+to find the global minima of the loss, as it is able to get stuck in a local
+minima. @han_artificial_2018
 
-#figure(image("figures/backpropagation.jpg", width: 70%), caption: [Visualization of the backpropagation mechanism. @han_artificial_2018]) <backpropagation>
+#figure(image("figures/backpropagation.jpg", width: 70%), caption: [Visualization of the backpropagation mechanism.]) <backpropagation>
 
 @af::pl are an important part of a @nn. Their main responsibility is adding
 non-linearity to the network. Without these a @nn would just produce the
@@ -314,25 +314,28 @@ Today there are several types of @nn, each designed to handle different tasks.
 Some of these used during this work will be introduced in the following sections.
 
 ==== Convolutional Neural Networks
-@cnn::pl are a popular class of @nn::pl that is often used for image classification,
-speech recognition and many more. It typically consists of four components.
-A convolutional layer, a pooling layer, an activation function and a fully
-connected layer. In a convolutional layer neurons of one layer are only connected
-to some neurons of the previous layer. These neurons of the previous layer are called
-the receptive field of the corresponding neuron in the next layer. The output of the
-receptive field is calculated using a weight vector that is called filter or kernel.
-This filter is slid over the whole input, see @convolution. The weights of the filter are the
-same for the whole layer. @indolia_conceptual_2018
 
-#figure(image("figures/convolution.png", width: 80%), caption: [Visualization of a convolutional layer with a two dimensional input @ratan_what_2020]) <convolution>
+@cnn::pl are a popular class of @nn::pl that is often used for image
+classification, speech recognition and many more. It typically consists of four
+components. A convolutional layer, a pooling layer, an activation function and
+a fully connected layer. In a convolutional layer neurons of one layer are only
+connected to some neurons of the previous layer. These neurons of the previous
+layer are called the receptive field of the corresponding neuron in the next
+layer. The output of the receptive field is calculated using a weight vector
+that is called filter or kernel. This filter is slid over the whole input, see
+@convolution @ratan_what_2020. The weights of the filter are the same for the
+whole layer. @indolia_conceptual_2018
+
+#figure(image("figures/convolution.png", width: 80%), caption: [Visualization of a convolutional layer with a two dimensional input. ]) <convolution>
 
 The pooling layer typically shrinks its input further. There are different
 pooling techniques. Most common are average pooling and max pooling. Similar to
 the convolutional layer a window is slid over the input and the pooling
 function is applied. What differs is that the window usually does not overlap
-with the next window, leading to a considerable reduction in size, see @maxpooling. @indolia_conceptual_2018
+with the next window, leading to a considerable reduction in size, see
+@maxpooling @noauthor_everything_2020. @indolia_conceptual_2018
 
-#figure(image("figures/maxpooling.png", width: 40%), caption: [Visualization of max pooling. @noauthor_everything_2020]) <maxpooling>
+#figure(image("figures/maxpooling.png", width: 40%), caption: [Visualization of max pooling. ]) <maxpooling>
 
 Both activation function and fully connected layer were already described in
 @sec_nn. The fully connected layer is usually only used for the final prediction.
@@ -358,9 +361,9 @@ and the long term memory. The forget gate determines what percentage of the
 the output gate updates the "short-term memory". The "short-term memory" of the last unit
 is the output of the @lstm. Each step takes the "short-term memory", the "long-term memory"
 and the current input into consideration. Two activation functions are used. The sigmoid and the
-tanh function, see @lstm. @noauthor_deep_nodate
+tanh function, see @lstm @noauthor_deep_nodate. @noauthor_deep_nodate
 
-#figure(image("figures/lstm.jpeg", width: 60%), caption: [Visualization of a @lstm unit. @noauthor_deep_nodate]) <lstm>
+#figure(image("figures/lstm.jpeg", width: 60%), caption: [Visualization of a Long Short Term Memory unit.]) <lstm>
 
 @bilstm are an extension of @lstm that process sequential data in forward and backward
 directions. This allows the model to capture context from past and future states
@@ -369,13 +372,13 @@ where understanding both past and future context is crucial. @noauthor_bidirecti
 
 ==== Transformers
 
-The introduction of the transformer architecture has had a big impact that is
+The introduction of the Transformer architecture has had a big impact that is
 not limited to scientific research. Large Language Models like Open AIs ChatGPT
 used this technology to revolutionize chat bots @ray_chatgpt_2023. It could be
 seen as an advanced version of @rnn::pl. It does enable parallel processing and
 has improved long-range dependence @vaswani_attention_2017.
 
-The original transformer consisted of an encoder and a decoder and was created
+The original Transformer consisted of an encoder and a decoder and was created
 for the purpose of machine translation @vaswani_attention_2017. Today there are
 also Transformers that only use one of theses two. ChatGPT for example only uses
 the decoder as it only needs to generate text, while BERT uses only the encoder
@@ -425,11 +428,10 @@ layer followed by a SoftMax function, producing a probability distribution over
 the entire vocabulary. The most likely next token is selected based on this
 distribution. Layer normalization and residual connections are applied
 throughout the model to ensure stable learning and better generalization, see
-@transformer for a detailed overview. @vaswani_attention_2017
+@transformer @nyandwi_transformer_2023 for a detailed overview. @vaswani_attention_2017
 
 #figure(image("figures/transformer.png", width: 80%), caption: [Visual overview of the
-architecture of an encoder-decoder transformer.
-@nyandwi_transformer_2023 ]) <transformer>
+architecture of an encoder-decoder Transformer. ]) <transformer>
 
 === XGBoost
 
@@ -443,9 +445,9 @@ and improve generalization. It can automatically handle missing values and
 is able to work in parallel. It employs tree pruning via a post-pruning process
 that starts with deep trees and removes branches that do not contribute to
 reducing the loss, thereby preventing overfitting. A schematic of the
-XGBoost algorithm is shown in @xgboost. @chen_xgboost_2016
+XGBoost algorithm is shown in @xgboost @yao_short-term_2022. @chen_xgboost_2016
 
-#figure(image("figures/xgboost.png", width: 50%), caption: [Schematic of the XGBoost algorithm. @yao_short-term_2022]) <xgboost>
+#figure(image("figures/xgboost.png", width: 50%), caption: [Schematic of the XGBoost algorithm. ]) <xgboost>
 
 === Categorical Embeddings
 
@@ -487,13 +489,16 @@ The resulting values do not correspond to any real world properties. @noauthor_w
 
 === Block Decomposition of Protein Sequences
 
-The block decomposition algorithm by Martin Girard was created as part of a
-surrogate model for low complexity protein sequences. The model itself is based
-on combinatorics on words, particular sturmian words and their generalizations.
-It was able to show that low complexity protein sequences have similar
-properties to homopolymers with equivalent parameters. For example the radius
-of gyration. Changes to the radius of gyration are strongly correlated to
-changes in the @llps propensity of a protein. @noauthor_files_2024
+The block decomposition algorithm by Martin Girard, who works at the Max Planck
+Institute for Polymer Research was used. This algorithm stems from an
+unpublished article where a surrogate model for low complexity protein
+sequences was created. The model itself is based on combinatorics on words,
+particular sturmian words and their generalizations. It was able to show that
+low complexity protein sequences have similar properties to homopolymers with
+equivalent parameters. For example the radius of gyration. Changes to the
+radius of gyration are strongly correlated to changes in the @llps propensity
+of a protein. The algorithm was kindly provided to test it as feature in this
+work. @noauthor_files_2024
 
 The block decomposition algorithm itself uses word balance as a measure of
 homogeneity. It finds the longest segments of the sequence, that have a word

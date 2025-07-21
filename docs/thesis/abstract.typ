@@ -1,5 +1,11 @@
 #heading(outlined: false, level: 2)[Abstract]
 
+Liquid-liquid phase separation of proteins is a fundamental cellular
+mechanism responsible for compartmentalization without membrane boundaries. It
+also plays a role in the development of certain diseases. Computational
+prediction of LLPS propensity helps in understanding protein interactions in
+cellular contexts where experimental data is lacking.
+
 This work presents a novel sequence-based predictor for Liquid-Liquid Phase
 Separation proteins using Neural Networks. In addition to raw amino acid
 sequences, a block decomposition of these sequences was explored as main input.

@@ -13,7 +13,7 @@ sections.
 
 #figure(table(
   columns: 3,
-  "Article",                                                            "Dataset",                         "Description",
+  "Article",                                                            "Dataset Name",                    "Description",
   table.cell([PSPire @hou_machine_2024]),                               "Supplementary Data 4",            "Training and Testing Data",
   table.cell(rowspan: 3, [PhasePred @chen_screening_2022], fill: none), "Dataset S02",                     "Training Data",
                                                                         "Dataset S03",                     "Test Data",
@@ -80,8 +80,10 @@ negative entries. The testing data set contains 258 positive entries with 194
 labeled as @idp::pl and 64 labeled as non-@idp::pl as well as 1961 negative entries.
 
 For evaluation, five human @mlo datasets were collected: G3BP1 proximity
-labeling set, DACT1-particulate proteome set, RNAgranuleDB Tier1 set, the
-PhaSepDB low and high throughput MLO set as well as the DRLLPS MLO set.
+labeling set @yang_g3bp1_2020, DACT1-particulate proteome set
+@esposito_tgf--induced_2021, RNAgranuleDB Tier1 set @youn_properties_2019, the
+PhaSepDB low and high throughput MLO @hou_phasepdb_2023 set as well as the
+DRLLPS MLO set @ning_drllps_2020.
 
 The PSPire dataset was used due to its focus on @llps proteins that contain
 no @idr and because it enables a broad comparison between many @llps predictors.

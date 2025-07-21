@@ -34,8 +34,8 @@ of the proteins in the dataset have annotations for @ptm::pl.
   [9255],                           [3273],                           [3215],                           [1404],                           [1363],                                                                 [@rsa],
   [9255],                           [3273],                           [3215],                           [1404],                           [1363],                                                                 [@ptm],
   [6124],                           [2817],                           [1666],                           [980],                            [679],                          table.hline()
-), caption: [Summary of the number of samples after each filter step. The @ptm rows were not filtered, they are only included to show the fraction of proteins that do contain annotations
-for @ptm::pl.]) <dataprep>
+), caption: [Summary of the number of samples after each filter step. The PTM rows were not filtered, they are only included to show the fraction of proteins that do contain annotations
+for PTMs.]) <dataprep>
 
 The distribution of the sequence length for each dataset can be seen in @datadist. It
 shows that most tested proteins are smaller than 1000 residues.
@@ -70,7 +70,7 @@ using the block decomposition as input.
   2 Layer],                                 [@roc],                                      table.hline(stroke: 0.5pt),                table.cell(fill: rgb(0, 90, 0, 60))[0.79],
   table.cell(fill: rgb(0, 20, 0, 60))[0.72],  table.cell(fill: rgb(10, 0, 0, 60))[0.62],                                            table.cell(fill: rgb(70, 0, 0, 60))[0.56],   [@prc],                                    table.vline(stroke: 0.5pt),
   table.cell(fill: rgb(0, 170, 0, 60))[0.37], table.cell(fill: rgb(0, 60, 0, 60))[0.26], table.vline(stroke: 0.5pt),                table.cell(fill: rgb(10, 0, 0, 60))[0.05],   table.cell(fill: rgb(20, 0, 0, 60))[0.04], table.hline()
-), caption: [Comparison of the @auc values for the one and two layer @cnn
+), caption: [Comparison of the AUC values for the one and two layer CNN
 with the block decomposition and the raw sequence as input. The one layer models
 that used the sequence as input where used as the baseline. Better performance
 is visualized with green, worse with red filling.]) <first_models>
@@ -98,12 +98,12 @@ None of the new models outperform the two layer model.
   table.hline(stroke: 0.5pt),                table.cell(fill: rgb(120, 0, 0, 60))[0.25],           table.cell(fill: rgb(20, 0, 0, 60))[0.03],          table.cell(fill: none, rowspan: 2)[Transformer],
   [@roc],                                    table.hline(stroke: 0.5pt),                           table.cell(fill: rgb(0, 10, 0, 60))[0.80],                                                                             table.cell(fill: rgb(70, 0, 0, 60))[0.55], [@prc],                                               table.cell(fill: rgb(80, 0, 0, 60))[0.29],          table.cell(fill: rgb(20, 0, 0, 60))[0.03],
   table.hline()
-), caption: [Comparison of the @auc values for the models created during
-the second phase and the two layer @cnn. The two layer model was used
+), caption: [Comparison of the AUC values for the models created during
+the second phase and the two layer CNN. The two layer model was used
 as baseline. Better performance
 is visualized with green, worse with red filling.]) <second_phase>
 
-== Optimizing the Two Layer @cnn <opt_two_layer>
+== Optimizing the Two Layer Convolutional Neural Network <opt_two_layer>
 
 The first optimizations to the two layer @cnn, that consisted of doubling the
 @do value as well as splitting the model into @idr and non-@idr proteins, were
@@ -123,7 +123,7 @@ dataset.
   table.cell(fill: rgb(0, 0, 0, 60))[0.68],  table.cell(fill: rgb(20, 0, 0, 60))[0.66], table.vline(stroke: 0.5pt),                table.cell(fill: rgb(0, 0, 0, 60))[0.73],  table.cell(fill: rgb(0, 10, 0, 60))[0.74], table.cell(rowspan: 2)[PSPire],
   [@roc],                                    table.hline(stroke: 0.5pt),                table.cell(fill: rgb(0, 0, 0, 60))[0.79],  table.cell(fill: rgb(10, 0, 0, 60))[0.78], table.cell(fill: rgb(0, 0, 0, 60))[0.62],                                             table.cell(fill: rgb(0, 90, 0, 60))[0.71], [@prc],                                    table.hline(stroke: 0.5pt),                table.vline(stroke: 0.5pt),                table.cell(fill: rgb(0, 0, 0, 60))[0.37],  table.cell(fill: rgb(0, 10, 0, 60))[0.38],
   table.vline(stroke: 0.5pt),                table.cell(fill: rgb(0, 0, 0, 60))[0.05],  table.cell(fill: rgb(0, 80, 0, 60))[0.13], table.hline(stroke: 1pt)
-), caption: [Results of adjusting the dropout to 0.6 and splitting the dataset into @idr and non@idr. Better performance
+), caption: [Results of adjusting the dropout to 0.6 and splitting the dataset into IDR and non-IDR. Better performance
 is visualized with green, worse with red filling. ]) <split_dropout>
 
 The results of the further optimization on the PSPire dataset are displayed in @opti.
@@ -140,7 +140,7 @@ of @ptm::pl was tested.
   table.cell(fill: rgb(0, 0, 0, 60))[0.74],   table.cell(fill: rgb(0, 80, 0, 60))[0.82], table.cell(fill: rgb(0, 100, 0, 60))[0.84], table.cell(fill: rgb(10, 0, 0, 60))[0.73],  table.cell(fill: rgb(0, 20, 0, 60))[0.76],  table.cell(rowspan: 2)[PSPire],            [@roc],                                    table.hline(stroke: 0.5pt),                table.cell(fill: rgb(0, 0, 0, 60))[0.78],  table.cell(fill: rgb(0, 0, 0, 60))[0.78],  table.cell(fill: rgb(0, 20, 0, 60))[0.80],  table.cell(fill: rgb(50, 0, 0, 60))[0.73],
   table.cell(fill: rgb(110, 0, 0, 60))[0.67], table.vline(stroke: 0.5pt),                table.cell(fill: rgb(0, 0, 0, 60))[0.71],   table.cell(fill: rgb(0, 130, 0, 60))[0.84], table.cell(fill: rgb(0, 140, 0, 60))[0.85],                                            table.cell(fill: rgb(0, 60, 0, 60))[0.77], table.cell(fill: rgb(0, 80, 0, 60))[0.79], [@prc],                                    table.hline(stroke: 0.5pt),                table.vline(stroke: 0.5pt),                 table.cell(fill: rgb(0, 0, 0, 60))[0.37],
   table.cell(fill: rgb(0, 20, 0, 60))[0.39],  table.cell(fill: rgb(0, 50, 0, 60))[0.42], table.cell(fill: rgb(120, 0, 0, 60))[0.25], table.cell(fill: rgb(170, 0, 0, 60))[0.20], table.cell(fill: rgb(0, 0, 0, 60))[0.13],   table.cell(fill: rgb(0, 70, 0, 60))[0.20], table.cell(fill: rgb(0, 50, 0, 60))[0.18], table.cell(fill: rgb(0, 60, 0, 60))[0.19], table.cell(fill: rgb(40, 0, 0, 60))[0.09], table.hline(stroke: 1pt)
-), caption: [Results of optimizing the model using different approaches. The two layer @cnn is used as base model. Better performance
+), caption: [Results of optimizing the model using different approaches. The two layer CNN is used as base model. Better performance
 is visualized with green, worse with red filling. ]) <opti>
 
 The last step of this optimization was to test the combination of multiple
@@ -182,9 +182,9 @@ test sets. Their results are taken from the PSPire article @hou_machine_2024.
   figure(image("figures/run_cnn2l_pspire_rsa_weight_bn_nidr_ptm_prauc_nidr.png"), caption: ""),
   <final_model_pspire_d>,
   columns: (1fr, 1fr),
-  caption: [Results of the final model on the PSPire data. (a, b) @roc@auc and
-  @prc@auc for Proteins containing @idr::pl. (c, d) @roc@auc and @prc@auc for
-  Proteins containing no @idr::pl.],
+  caption: [Results of the final model on the PSPire data. (a, b) ROCAUC and
+  PRCAUC for Proteins containing IDRs. (c, d) ROCAUC and PRCAUC for
+  Proteins containing no IDRs.],
   label: <final_model_pspire>,
 )
 
@@ -195,12 +195,12 @@ test sets. Their results are taken from the PSPire article @hou_machine_2024.
   table.hline(stroke: 0.5pt),                 [@roc],                                   table.cell(fill: rgb(0, 0, 0, 60))[0.80],  table.cell(fill: rgb(0, 60, 0, 60))[0.86],  table.cell(fill: rgb(0, 40, 0, 60))[0.84], table.cell(fill: rgb(0, 0, 0, 60))[0.88],  table.cell(fill: rgb(40, 0, 0, 60))[0.84],
   table.cell(fill: rgb(200, 0, 0, 60))[0.68], table.hline(stroke: 0.5pt),               [@prc],                                    table.vline(stroke: 0.5pt),                 table.cell(fill: rgb(0, 0, 0, 60))[0.42],  table.cell(fill: rgb(0, 90, 0, 60))[0.51], table.cell(fill: rgb(0, 0, 0, 60))[0.42],
   table.vline(stroke: 0.5pt),                 table.cell(fill: rgb(0, 0, 0, 60))[0.25], table.cell(fill: rgb(10, 0, 0, 60))[0.24], table.cell(fill: rgb(170, 0, 0, 60))[0.08], table.hline()
-), caption: [Comparison of the @auc values for the final models, PSPire and PdPS. The values for PSPire and PdPS are taken from the PSPire article @hou_machine_2024. Better performance
+), caption: [Comparison of the AUC values for the final models, PSPire and PdPS. The values for PSPire and PdPS are taken from the PSPire article. Better performance
 is visualized with green, worse with red filling.]) <final_model_pspire_table>
 
 #pagebreak()
 
-=== PPMC-lab Dataset
+=== Evaluation on the PPMC-lab Dataset
 
 @final_ppmclab shows the final values of the PPMC-lab dataset.
 
@@ -214,7 +214,7 @@ is visualized with green, worse with red filling.]) <final_model_pspire_table>
   table.hline()
 ), caption: [Results from the final model on the PPMC-lab dataset.]) <final_ppmclab>
 
-=== Evaluation on the @mlo data sets
+=== Evaluation on the Membraneless Organells data sets
 
 @evaluation_mlo compares the @auc values for the five @mlo datasets, that
 were received using the final models trained on the PSPire training dataset. They
@@ -229,18 +229,18 @@ this model outperforms PdPS consistently and has similar performance to PSPire.
   align: (left, left, center, center, center, center, center, center),
   table.cell(rowspan: 2)[Dataset],            table.cell(rowspan: 2)[AUC],                        table.cell(colspan: 3, [@idr]),                                                                                                                table.cell(colspan: 3, [non-@idr]),
                                                                                                   table.cell(fill: none)[Final Model],         table.cell(fill: none)[PSPire],                       table.cell(fill: none)[PdPS],               table.cell(fill: none)[Final Model],          table.cell(fill: none)[PSPire],             table.cell(fill: none)[PdPS],
-  table.hline(stroke: 0.5pt),                 table.cell(rowspan: 2, "G3BP1 proximity labeling"), [@roc],                                      table.cell(fill: rgb(0, 0, 0, 60))[0.78],             table.cell(fill: rgb(0, 130, 0, 60))[0.91], table.cell(fill: rgb(0, 80, 0, 60))[0.86],    table.cell(fill: rgb(0, 0, 0, 60))[0.96],   table.cell(fill: rgb(30, 0, 0, 60))[0.93],
-  table.cell(fill: rgb(150, 0, 0, 60))[0.81],                                                     table.hline(stroke: 0.5pt),                  [@prc],                                               table.cell(fill: rgb(0, 0, 0, 60))[0.34],   table.cell(fill: rgb(0, 240, 0, 60))[0.58],   table.cell(fill: rgb(0, 70, 0, 60))[0.41],  table.cell(fill: rgb(0, 0, 0, 60))[0.51],
-  table.hline(),                              table.cell(fill: rgb(0, 150, 0, 60))[0.66],         table.cell(fill: rgb(250, 0, 0, 210))[0.18], table.cell(rowspan: 2, "DACT1-particulate proteome"), [@roc],                                     table.hline(stroke: 0.5pt),                   table.cell(fill: rgb(0, 0, 0, 60))[0.72],   table.cell(fill: rgb(0, 160, 0, 60))[0.88],
-  table.cell(fill: rgb(0, 130, 0, 60))[0.85], table.cell(fill: rgb(0, 0, 0, 60))[0.90],           table.cell(fill: rgb(0, 30, 0, 60))[0.93],                                                         table.cell(fill: rgb(90, 0, 0, 60))[0.81],  [@prc],                                       table.cell(fill: rgb(0, 0, 0, 60))[0.22],   table.cell(fill: rgb(0, 130, 0, 60))[0.35],
-  table.cell(fill: rgb(0, 110, 0, 60))[0.33], table.cell(fill: rgb(0, 0, 0, 60))[0.49],           table.cell(fill: rgb(0, 110, 0, 60))[0.60],  table.cell(fill: rgb(250, 0, 0, 120))[0.18],          table.hline(),                              table.cell(rowspan: 2, "RNAgranuleDB Tier1"), [@roc],                                     table.hline(stroke: 0.5pt),
-  table.cell(fill: rgb(0, 0, 0, 60))[0.77],   table.cell(fill: rgb(0, 70, 0, 60))[0.84],          table.cell(fill: rgb(0, 50, 0, 60))[0.82],   table.cell(fill: rgb(0, 0, 0, 60))[0.88],             table.cell(fill: rgb(0, 20, 0, 60))[0.90],                                                table.cell(fill: rgb(200, 0, 0, 60))[0.68], [@prc],
-  table.cell(fill: rgb(0, 0, 0, 60))[0.42],   table.cell(fill: rgb(0, 60, 0, 60))[0.48],          table.hline(),                               table.cell(fill: rgb(0, 0, 0, 60))[0.42],             table.cell(fill: rgb(0, 0, 0, 60))[0.18],   table.cell(fill: rgb(0, 100, 0, 60))[0.28],   table.cell(fill: rgb(100, 0, 0, 60))[0.08], table.cell(rowspan: 2, "PhaSepDB low and high throughput MLO"),
-  table.hline(stroke: 0.5pt),                 [@roc],                                             table.cell(fill: rgb(0, 0, 0, 60))[0.70],    table.cell(fill: rgb(0, 20, 0, 60))[0.72],            table.cell(fill: rgb(0, 40, 0, 60))[0.74],  table.cell(fill: rgb(0, 0, 0, 60))[0.85],     table.cell(fill: rgb(50, 0, 0, 60))[0.80],                                                                  table.cell(fill: rgb(200, 0, 0, 60))[0.65], [@prc],                                             table.hline(),                               table.cell(fill: rgb(0, 0, 0, 60))[0.70],             table.cell(fill: rgb(0, 90, 0, 60))[0.79],  table.cell(fill: rgb(0, 100, 0, 60))[0.80],   table.cell(fill: rgb(0, 0, 0, 60))[0.73],   table.cell(fill: rgb(20, 0, 0, 60))[0.71],
-  table.cell(fill: rgb(250, 0, 0, 70))[0.47], table.cell(rowspan: 2, "DrLLPS MLO"),               table.vline(stroke: 0.5pt),                  table.hline(stroke: 0.5pt),                           [@roc],                                     table.cell(fill: rgb(0, 0, 0, 60))[0.68],     table.cell(fill: rgb(0, 70, 0, 60))[0.75],  table.cell(fill: rgb(0, 80, 0, 60))[0.76],
-  table.cell(fill: rgb(0, 0, 0, 60))[0.80],                                                       table.cell(fill: rgb(0, 50, 0, 60))[0.85],   table.cell(fill: rgb(120, 0, 0, 60))[0.68],           [@prc],                                     table.vline(stroke: 0.5pt),                   table.cell(fill: rgb(0, 0, 0, 60))[0.72],   table.cell(fill: rgb(0, 60, 0, 60))[0.78],
-  table.cell(fill: rgb(0, 50, 0, 60))[0.77],  table.vline(stroke: 0.5pt),                         table.cell(fill: rgb(0, 0, 0, 60))[0.72],    table.cell(fill: rgb(0, 20, 0, 60))[0.74],            table.cell(fill: rgb(250, 0, 0, 80))[0.45], table.hline()
-), caption: [Evaluation Summary of the final model on the @mlo datasets. The values for PSPire and PdPS are taken from the PSPire article @hou_machine_2024. The final models of this work are
+  table.hline(stroke: 0.5pt),                 table.cell(rowspan: 2, "G3BP1 proximity labeling"), [@roc],                                      table.cell(fill: rgb(0, 0, 0, 30))[0.78],             table.cell(fill: rgb(0, 130, 0, 30))[0.91], table.cell(fill: rgb(0, 80, 0, 30))[0.86],    table.cell(fill: rgb(0, 0, 0, 30))[0.96],   table.cell(fill: rgb(30, 0, 0, 30))[0.93],
+  table.cell(fill: rgb(150, 0, 0, 30))[0.81],                                                     table.hline(stroke: 0.5pt),                  [@prc],                                               table.cell(fill: rgb(0, 0, 0, 30))[0.34],   table.cell(fill: rgb(0, 240, 0, 30))[0.58],   table.cell(fill: rgb(0, 70, 0, 30))[0.41],  table.cell(fill: rgb(0, 0, 0, 30))[0.51],
+  table.hline(),                              table.cell(fill: rgb(0, 150, 0, 30))[0.66],         table.cell(fill: rgb(250, 0, 0, 230))[0.18], table.cell(rowspan: 2, "DACT1-particulate proteome"), [@roc],                                     table.hline(stroke: 0.5pt),                   table.cell(fill: rgb(0, 0, 0, 30))[0.72],   table.cell(fill: rgb(0, 160, 0, 30))[0.88],
+  table.cell(fill: rgb(0, 130, 0, 30))[0.85], table.cell(fill: rgb(0, 0, 0, 30))[0.90],           table.cell(fill: rgb(0, 30, 0, 30))[0.93],                                                         table.cell(fill: rgb(90, 0, 0, 30))[0.81],  [@prc],                                       table.cell(fill: rgb(0, 0, 0, 30))[0.22],   table.cell(fill: rgb(0, 130, 0, 30))[0.35],
+  table.cell(fill: rgb(0, 110, 0, 30))[0.33], table.cell(fill: rgb(0, 0, 0, 30))[0.49],           table.cell(fill: rgb(0, 110, 0, 30))[0.60],  table.cell(fill: rgb(250, 0, 0, 120))[0.18],          table.hline(),                              table.cell(rowspan: 2, "RNAgranuleDB Tier1"), [@roc],                                     table.hline(stroke: 0.5pt),
+  table.cell(fill: rgb(0, 0, 0, 30))[0.77],   table.cell(fill: rgb(0, 70, 0, 30))[0.84],          table.cell(fill: rgb(0, 50, 0, 30))[0.82],   table.cell(fill: rgb(0, 0, 0, 30))[0.88],             table.cell(fill: rgb(0, 20, 0, 30))[0.90],                                                table.cell(fill: rgb(200, 0, 0, 30))[0.68], [@prc],
+  table.cell(fill: rgb(0, 0, 0, 30))[0.42],   table.cell(fill: rgb(0, 60, 0, 30))[0.48],          table.hline(),                               table.cell(fill: rgb(0, 0, 0, 30))[0.42],             table.cell(fill: rgb(0, 0, 0, 30))[0.18],   table.cell(fill: rgb(0, 100, 0, 30))[0.28],   table.cell(fill: rgb(100, 0, 0, 30))[0.08], table.cell(rowspan: 2, "PhaSepDB low and high throughput MLO"),
+  table.hline(stroke: 0.5pt),                 [@roc],                                             table.cell(fill: rgb(0, 0, 0, 30))[0.70],    table.cell(fill: rgb(0, 20, 0, 30))[0.72],            table.cell(fill: rgb(0, 40, 0, 30))[0.74],  table.cell(fill: rgb(0, 0, 0, 30))[0.85],     table.cell(fill: rgb(50, 0, 0, 30))[0.80],                                                                  table.cell(fill: rgb(200, 0, 0, 30))[0.65], [@prc],                                             table.hline(),                               table.cell(fill: rgb(0, 0, 0, 30))[0.70],             table.cell(fill: rgb(0, 90, 0, 30))[0.79],  table.cell(fill: rgb(0, 100, 0, 30))[0.80],   table.cell(fill: rgb(0, 0, 0, 30))[0.73],   table.cell(fill: rgb(20, 0, 0, 30))[0.71],
+  table.cell(fill: rgb(250, 0, 0, 70))[0.47], table.cell(rowspan: 2, "DrLLPS MLO"),               table.vline(stroke: 0.5pt),                  table.hline(stroke: 0.5pt),                           [@roc],                                     table.cell(fill: rgb(0, 0, 0, 30))[0.68],     table.cell(fill: rgb(0, 70, 0, 30))[0.75],  table.cell(fill: rgb(0, 80, 0, 30))[0.76],
+  table.cell(fill: rgb(0, 0, 0, 30))[0.80],                                                       table.cell(fill: rgb(0, 50, 0, 30))[0.85],   table.cell(fill: rgb(120, 0, 0, 30))[0.68],           [@prc],                                     table.vline(stroke: 0.5pt),                   table.cell(fill: rgb(0, 0, 0, 30))[0.72],   table.cell(fill: rgb(0, 60, 0, 30))[0.78],
+  table.cell(fill: rgb(0, 50, 0, 30))[0.77],  table.vline(stroke: 0.5pt),                         table.cell(fill: rgb(0, 0, 0, 30))[0.72],    table.cell(fill: rgb(0, 20, 0, 30))[0.74],            table.cell(fill: rgb(250, 0, 0, 80))[0.45], table.hline()
+), caption: [Evaluation Summary of the final model on the MLO datasets. The values for PSPire and PdPS are taken from the PSPire article. The final models of this work are
 used as base line. Better performance
 is visualized with green, worse with red filling.]) <evaluation_mlo>
 
@@ -281,46 +281,64 @@ was used for this. The results of this are shown in @self.
   [@prc],        [0.29], [0.30],
   table.hline()
 ), caption: [Results of evaluating the models trained on the PPMC-lab dataset
-on the DACT1-particulate @mlo dataset while using the PPMC-lab negative test set. ]) <self>
+on the DACT1-particulate MLO dataset while using the PPMC-lab negative test set. ]) <self>
 
-=== catGranule 2.0 Dataset
+=== Evaluation on the catGranule 2.0 Dataset
 
 @final_cat compares the results of the final models trained on the catGranule
 2.0 training dataset to the results of the other predictors that were evaluated
 in the catGranule
-2.0 paper @monti_catgranule_2025. The non-@idr model of this work is able to slightly outperform the
-other models. This model achieved a @prc@auc value of 0.81 for the non-@idr
-and 0.71 for the @idr model.
+2.0 paper @monti_catgranule_2025. The non-@idr model of this work is able to
+slightly outperform the other models. This model achieved a @prc@auc value of
+0.81 for the non-@idr and 0.71 for the @idr model.
 
 #figure(table(
   columns: 9,
   [@auc],                                    [catGranule 1.0],           [MaGS],                                     [PSPHunter],                               [PICNIC],                                  [PICNIC-GO],                               [catGranule 2.0],                          [non-@idr model],                          [@idr model],
   [@roc],                                    table.vline(stroke: 0.5pt), table.cell(fill: rgb(140, 0, 0, 60))[0.66], table.cell(fill: rgb(60, 0, 0, 60))[0.74], table.cell(fill: rgb(60, 0, 0, 60))[0.74], table.cell(fill: rgb(70, 0, 0, 60))[0.73], table.cell(fill: rgb(50, 0, 0, 60))[0.75], table.cell(fill: rgb(40, 0, 0, 60))[0.76], table.cell(fill: rgb(0, 0, 0, 60))[0.80],
   table.cell(fill: rgb(60, 0, 0, 60))[0.74], table.hline()
-), caption: [Comparison of the @roc@auc of several @llps predictors on the catGranule 2.0 test data set.
-The values for all predictors but my own are taken from the catGranule 2.0 article. @monti_catgranule_2025]) <final_cat>
+), caption: [Comparison of the ROCAUC of several LLPS predictors on the catGranule 2.0 test data set.
+The values for all predictors but my own are taken from the catGranule 2.0 article.]) <final_cat>
 
 === Visualization of Input Features
 
 @salinity_idr shows the saliency scores visualized along the amino acid
-sequence of P04264, which is a @llps protein. This protein was labeled as an
-@idr protein and was therefore predicted with the @idr model. The predicted
-probability for it to be a @llps protein was 98 %. There are two bright colored
-bands visible at around the residues 190 to 200 and 555 to 570. Many more less
-bright bands are visible as well. The left bright band lies within a intermediate
-filament rod domain. The right bright band is near an @idr of the protein.
+sequence of P04264, which is labeled as a @llps protein @hou_machine_2024. This
+protein was labeled as an @idr protein @hou_machine_2024 and was therefore
+predicted with the @idr model. The predicted probability for it to be a @llps
+protein was 98 % with this works model. There are two bright colored bands
+visible at around the residues 190 to 200 and 555 to 570. Many more less bright
+bands are visible as well. The left bright band lies within a intermediate
+filament rod domain @noauthor_prorule_nodate. The right bright band is near an
+@idr of the protein @noauthor_mobidb_nodate.
 
-#figure(image("figures/captum_idr_P04264_1.0_0.9834264516830444_ID-PSP.png"), caption: [Visualization of the Input Features using the @idr model on the protein P04264.]) <salinity_idr>
+#figure(image("figures/captum_idr_P04264_1.0_0.9834264516830444_ID-PSP.png"), caption: [Visualization of the Input Features using the IDR model on the protein P04264.]) <salinity_idr>
+
+For comparison using the catGranule 2.0 web app yielded a score of 0.845 and
+the LLPS propensity profile seen in @llpsprofile @monti_catgranule_2025. While
+they both show some similar regions to be important for @llps, the left bright
+band in the saliency map is missing in the plot of catGranule 2.0.
+
+#figure(image("figures/sp|P04264|K2C1_HUMAN_Profile.png", width: 70%), caption: [LLPS Propensity profile of the protein P04264 predicted by catGranule 2.0.]) <llpsprofile>
 
 @cmpms shows the same graph for a different protein. In this case the protein
-P42766, which is a non-@idr labeled protein. It is also a @llps protein. The
+P42766, which is a non-@idr labeled @llps protein @hou_machine_2024. The
 figure shows the saliency score visualizations for both models. It is important
 to mention that saliency scores are neither comparable between samples nor
 between models. The non-@idr model scored a probability of 44 % while the @idr
 model scored a probability of
 21 %. Viewing this protein with the UniProt feature viewer revealed only one
-entry under domains. An @idr from residue 86 to the end.
-#subpar.grid(columns: (1fr), figure(image("figures/captum_nidr_P42766_1.0_0.44323086738586426_noID-PSP.png"), caption: []), figure(image("figures/captum_idr_P42766_1.0_0.20686744153499603_noID-PSP.png"), caption: []), caption: [Comparison of the feature relevance for both the non-@idr model (a)
-and the @idr model (b) on the protein P42766.], label: <cmpms>)
+entry under domains. An @idr from residue 86 to the end @noauthor_mobidb_nodate-1.
+#subpar.grid(columns: (1fr), figure(image("figures/captum_nidr_P42766_1.0_0.44323086738586426_noID-PSP.png"), caption: []), figure(image("figures/captum_idr_P42766_1.0_0.20686744153499603_noID-PSP.png"), caption: []), caption: [Comparison of the feature relevance for both the non-IDR model (a)
+and the IDR model (b) on the protein P42766.], label: <cmpms>)
+
+The protein was also tested with catGranule 2.0s web app and yielded a score of
+0.835 as well as the @llps propensity profile seen in @llpsproile
+@monti_catgranule_2025. There are again similarities as well as differences
+between these representations.
+
+#figure(image("figures/sp|P42766|RL35_HUMAN_Profile.png", width: 70%), caption: [
+  LLPS Propensity profile of the protein P42766 predicted by catGranule 2.0.
+]) <llpsproile>
 
 #pagebreak()

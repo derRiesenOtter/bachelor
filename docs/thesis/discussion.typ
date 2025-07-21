@@ -45,9 +45,10 @@ exhaustive evaluation was not conducted in this study.
 
 The two-layer model was selected based on its strong performance. Several
 experiments were conducted to further enhance it. As the models exhibited a
-tendency to overfit, the dropout rate was increased. A higher dropout rate
-reduces the model’s reliance on individual neurons, encouraging it to learn
-more generalizable features and thereby mitigating overfitting.
+tendency to overfit, seen by the train loss, the dropout rate was increased. A
+higher dropout rate reduces the model’s reliance on individual neurons,
+encouraging it to learn more generalizable features and thereby mitigating
+overfitting.
 
 Since the features contributing to @llps in proteins often differ between
 proteins with and without @idr::pl, the positive dataset was split accordingly
@@ -71,8 +72,8 @@ the performance of the non-@idr model, but led to performance declines when
 applied to the @idr model or on the PPMC-lab dataset. A likely explanation for
 this inconsistency lies in the use of sequence padding. Since protein sequences
 vary in length, all sequences were padded to a uniform length of 2700. As seen
-in the distribution o sequence length, most proteins in this study were smaller
-than 1000 residues, which leads many sequences consisting mostly of padded values.
+in the distribution of sequence length, most proteins in this study were smaller
+than 1000 residues, which leads to many sequences consisting mostly of padded values.
 @bn calculates the mean and standard deviation per channel across the
 batch, including the padded values. When batches include many short sequences,
 these padding values disproportionately affect the normalization statistics,
@@ -145,17 +146,19 @@ the dataset was not split into @idp::pl and non-@idp::pl. This split
 could lead to further improvements as it did on the PSPire dataset.
 
 The visualization of the saliency scores provided a preliminary look at which
-features of a sequence might influence classification. While no concrete
-insights were drawn from this small-scale exploration, the goal was primarily
-to test the approach and develop an intuition for what the model may have
-learned. Nonetheless, scaling up this analysis may holds potential for
-uncovering meaningful patterns or sequence features associated with @llps.
-Another interesting insight was to compare the saliency between the @idr model
-and the non-@idr model. It revealed, that both models relied on very different
-areas of the proteins to form their prediction. This could be seen as
+features of a sequence might influence classification. Comparing these plots
+with the @llps propensity profiles from catGranule 2.0 showed that the regions
+with high saliency are similar to the regions catGranule 2.0 identified to have
+high @llps propensity. Scaling up the analysis of the saliency scores may holds
+potential for uncovering meaningful patterns or sequence features associated
+with @llps. Another interesting insight was to compare the saliency between the
+@idr model and the non-@idr model. It revealed, that both models relied on very
+different areas of the proteins to form their prediction. This could be seen as
 supportive to create different models for the different @llps proteins.
-Comparing the results from the saliency scores with experimental data
-could confirm if the learned features actually play important roles in @llps.
+Comparing the results from the saliency scores with experimental data could
+further confirm if the learned features actually play important roles in @llps.
+Having the ability to visualize the important areas of the sequences also is an
+advantage over the PSPire predictor.
 
 Due to time constraints, several promising ideas could not be explored in this
 study. One such those is the optimization of hyperparameters, for example
