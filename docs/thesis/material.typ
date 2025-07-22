@@ -65,7 +65,7 @@ again used to reduce redundancy. 60,251 proteins remained. 20 % were used in
 the testing set, while the other 80 % were used in the training set.
 @chen_screening_2022
 
-This data set was used to test the influence of grouping @llps
+This data set was planned to be used for testing the influence of grouping @llps
 proteins into the two categories of self-assembling and partner-dependent
 @llps proteins.
 
@@ -102,8 +102,7 @@ LLPSDB @wang_llpsdb_2022, PhaSepDB @hou_phasepdb_2023, PhaSePro
 @aspromonte_disprot_2024 and PDB @berman_protein_2000.
 
 The PPMC-lab data set was chosen because it provides a curated negative data
-set and to compare models trained on this dataset with models trained on the
-PSPire dataset.
+set and to test it against the PSPire dataset.
 
 == CatGranule 2.0 Data set
 

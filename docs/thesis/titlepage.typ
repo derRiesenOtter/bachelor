@@ -22,7 +22,9 @@
       Bachelor Thesis \
       Submitted on: 24.07.2025 \
       Name: Robin Ender \
-      Student Number: 2184737
+      \
+      Advisor: Prof. Dr. Asis Hallab \
+      2nd Advisor: Eric Schumbera
     ]
   ]
 ]

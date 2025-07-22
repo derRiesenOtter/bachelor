@@ -36,7 +36,7 @@
 #outline(title: "List of Tables", target: figure.where(kind: table))
 #pagebreak()
 #glossary()
-#set heading(numbering: "1.")
+#set heading(numbering: "1.1")
 #pagebreak() <page-anchor>
 
 #set page(numbering: "1")

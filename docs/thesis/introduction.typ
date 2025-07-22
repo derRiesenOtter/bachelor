@@ -4,7 +4,7 @@
 #import "state.typ": bib_state
 #context bib_state.get()
 #show: init-glossary.with(yaml("glossary.yaml"))
-#set heading(numbering: "1.")
+#set heading(numbering: "1.1")
 
 = Introduction
 
@@ -20,12 +20,12 @@ been developed. These tools have improved over time, incorporating new features
 and knowledge as well @ml techniques @hou_machine_2024. However, their
 predictive power still leaves room for improvement.
 
-Using @nn could simplify the development of @llps predictors, as they require
+Using @nn::pl could simplify the development of @llps predictors, as they require
 less feature engineering and offer potentially greater predictive power
 especially as more curated data becomes available @li_deep_2019. Their ability
 to use the whole sequence as input should enable them to capture patterns and
 relationships between amino acids that relate to @llps. This is something more
-traditional @ml models can not do. This work will therefore test if @nn are
+traditional @ml models can not do. This work will therefore test if @nn::pl are
 suitable for @llps prediction and how they compare to current state-of-the-art
 predictors. For the main input two different approaches will be explored. One
 will use the raw amino acid sequence, while the other will use multiple block
@@ -39,13 +39,13 @@ into two liquid phases, one with a depleted and one with an increased
 concentration of components, see @phase_separation @xu_liquid-liquid_2023. @llps can form colloids
 like milk or layers like a mixture of oil and water. It is a widespread
 phenomena that is dependent on many factors like temperature, pressure,
-differences in polarity, hydrophobicity and hydrophobicity. Studying @llps in
+differences in polarity and hydrophobicity. Studying @llps in
 polymer systems started in the mid of the 20th century. In the late 20th
 century the phenomena was recognized as an important process in organisms and
 studies began to understand the implications of @llps in an biological context.
 @xu_liquid-liquid_2023
 
-#figure(image("figures/phase_separation.png", width: 50%), caption: [Visualization of LLPS.]) <phase_separation>
+#figure(image("figures/phase_separation.png", width: 70%), caption: [Visualization of LLPS.]) <phase_separation>
 
 Cells are capable of conducting various different tasks that involve many
 biochemical reactions. As these reactions often need different educts, enzymes
@@ -55,9 +55,7 @@ that separates them from the rest of the cell and the components inside the
 compartment have to be able to move freely. Compartments that are confined by a
 membrane, like the nucleus or mitochondria, have been well known for a long time. A
 more recent discovery was the existence of @mlo:pl. They often form via
-@llps. An example of one such @mlo is the nucleoli, but there are many other
-@mlo::pl that play important roles in cells. They contribute to cells being
-able to do many diverse reactions efficiently. @xu_liquid-liquid_2023
+@llps. A well known example of one such @mlo is the nucleoli. @xu_liquid-liquid_2023
 
 The macro molecules responsible for @llps in cells are proteins and nucleic acids.
 A combination of simultaneous weak and strong interactions between proteins and
@@ -70,24 +68,20 @@ do not posses a fixed conformation and they only use a small subset of the avail
 amino acids. Their function is generally less dependent on their exact sequence than
 on more general characteristics like charge patterns. @alberti_phase_2017
 
-As proteins that take part in @llps can serve different roles, groupings were
-created. One way to organize them is to put them into the two groups driver (or
-scaffolds) and clients. The driver proteins either induce the formation
-of a condensate or are essential for the integrity of a condensate while the
-clients require a driver protein to form a condensate. @rostam_cd-code_2023
-There is also another categorization that slightly differs. This categorization
-divides @llps proteins into PS-Self and PS-Part. PS-Self
-(self-assembling phase-separating) are proteins that are able to form
-condensates on their own, while PS-Part (partner-dependent phase-separating)
-needs a partner protein. @noauthor_about-phasepred_nodate
+As proteins that take part in @llps can serve different roles, they were
+divided into two groups. One group that is able to undergo @llps on its own and
+one group that can only join existing condensates. The proteins of the first
+group are called drivers, scaffolds or self-assembling proteins, while the
+proteins in the second group are called clients or partner-dependent proteins.
+@chen_screening_2022 @pintado-grima_confident_2024
 
 As @llps is extremely sensitive to changes in physico-chemical conditions, it
 is possible that it also plays an important role in stress adaptation
 @alberti_phase_2017. However, @llps is not always wanted. In some cases
 proteins undergo @llps that normally would not. This can be due to several
-reasons like mutations or @ptm. These unwanted
-aggregates are suspected to lead to diseases like cancer or neurodegenerative
-diseases. @xu_liquid-liquid_2023
+reasons like mutations or @ptm::pl. These unwanted aggregates are suspected to
+lead to diseases like cancer or neurodegenerative diseases.
+@xu_liquid-liquid_2023
 
 == Phase Separation Predictors
 
@@ -109,7 +103,7 @@ started to use @ml models as they were better suited for the complex task of
 driving forces of @llps and the incorporation of according features the
 predictors steadily improved. A short summary of some of the current @llps
 predictors including a short description is given in @pspredictors. Two
-predictors, PsPS / SaPs (@phasepred) and PSPire (@pspire) will be covered in
+predictors, PdPS / SaPs (@phasepred) and PSPire (@pspire) will be covered in
 more detail due to their relevance and performance.
 
 #figure(table(
@@ -145,8 +139,8 @@ droplet-forming propensity predictor DeepPhase @noauthor_learning_nodate, and
 phosphorylation data from PhosphoSitePlus @hornbeck_phosphositeplus_2015.
 
 PhaSePred has two specialized submodels: PdPS and SaPS, tailored for different
-LLPS mechanisms. PdPS is trained and evaluated on partner-dependent
-phase-separating proteins, while SaPS is trained and tested on self-assembling
+@llps mechanisms. PdPS is trained and evaluated on partner-dependent
+@llps proteins, while SaPS is trained and tested on self-assembling
 proteins. Each of these has two versions: one for human proteins, which
 utilizes the full feature set including phosphorylation frequency and
 Immunofluorescence-image-based droplet propensity and one for non-human
@@ -196,7 +190,7 @@ structural domains @yoon_hidden_2009. However, their applicability to predict
 sequence motifs or local features @xu_liquid-liquid_2023.
 
 Another major challenge is the limited availability of experimental data,
-particularly for negative examples @pintado-grima_confident_2024. This scarcity
+particularly for negative samples @pintado-grima_confident_2024. This scarcity
 restricts the ability of @ml models to generalize and hinders the development
 of balanced training datasets. Since @ml models require a lot of data,
 especially deep learning approaches, the lack of it slows down progress.
@@ -205,7 +199,7 @@ Furthermore, many existing tools perform poorly in predicting partner-dependent
 and non-@idr proteins @hou_machine_2024@chen_screening_2022. As
 partner-dependent proteins usually have smaller @idr contents
 @zhou_two-task_2024 these problems correlate. Predictors like PhasePred and
-PSPire have tried to address this issue, yet there performance on said @llps
+PSPire have tried to address this issue, yet their performance on said @llps
 proteins is still lacking.
 
 == Artificial Intelligence in Bioinformatics
@@ -219,10 +213,10 @@ signal processing and text mining. Support Vector machines, random forests and
 @jamialahmadi_artificial_2024
 
 As the techniques of @ai models differ they are often categorized into @ml, @dl
-and @nn as shown in @ai_cat. Although @nn and @dl are
-technically subfields of @ml, we distinguish between them in this work for
-clarity. Therefore, when we refer to @ml in this text, it explicitly excludes
-@nn::pl. @dl models are @nn::pl that consist of three or more layers. @noauthor_ai_2023
+and @nn as shown in @ai_cat. Although @nn and @dl are technically subfields of
+@ml, we distinguish between them in this work for clarity. Therefore, when we
+refer to @ml in this text, it explicitly excludes @nn::pl. @dl models are a
+subcategory of @nn::pl that consist of three or more layers. @noauthor_ai_2023
 
 #figure(cetz.canvas({
   import cetz.draw: *
@@ -236,16 +230,17 @@ clarity. Therefore, when we refer to @ml in this text, it explicitly excludes
   content((), [@dl])
 }), caption: [Categorization of AI models]) <ai_cat>
 
-Comparing @ml models to @dl models, there are some important differences. @ml
-models usually perform better on small data sets ($< 10000$). @dl models tend
-to over fit if the sample size is not large enough. @ml models also need less
+Comparing @ml models to @nn::pl, there are some important differences. @ml
+models usually perform better on small data sets ($< 10000$). @nn::pl tend to
+overfit if the sample size is not large enough. @ml models also need less
 computational resources and can therefore be trained faster and on lower end
-devices. They are also easier to interpret. @dl models on the other hand are
-able to learn more complex associations than @ml models and are therefore able
-to outperform @ml models in complex scenarios were there is enough training
-data. @elmobark_evaluating_2025 \
-The input data for these models also differs. While @ml models usually
-require tabular unstructured data, @dl are able to handle structured data.
+devices. They are also easier to interpret. @nn::pl on the other hand are able
+to learn more complex interactions than @ml models and are therefore able to
+outperform @ml models in complex scenarios were there is enough training data.
+@elmobark_evaluating_2025 \
+The input data for these models also differs. While
+@ml models usually require tabular unstructured data, @nn::pl are able to handle
+structured data.
 
 One well known tool in bioinformatics that was created using @ai was AlphaFold.
 It is a @dl model developed by google that is able to predict the structure of
@@ -256,7 +251,7 @@ Bidirectional Encoder Representations from Transformers.
 In the following sections @ai models used during this work will be covered briefly.
 
 === Neural Networks <sec_nn>
-@nn are inspired by nature. They imitate the complex connected networks of
+@nn::pl are inspired by nature. They imitate the complex connected networks of
 neurons in a living organism. Both biological and artificial neurons receive
 signals from multiple neurons and transmit signals to multiple neurons. An
 artificial neuron computes a weighted sum of its inputs, adds a bias term and
@@ -307,16 +302,16 @@ $ f(x) = frac(2, 1+e^(-2x)) -1 $ <tanh>
 Today the @relu function is commonly used, as it is computational less complex, see @relu_eq.
 $ "ReLU"(x) = cases(x ", if" x gt.eq 0, 0 ", otherwise") $ <relu_eq>
 
-There are also other more advanced @af::pl today, that do have some advantages
+There are also other more advanced @af::pl, that do have some advantages
 over the here mentioned ones, but they are not in focus of this work. @dubey_activation_2022
 
-Today there are several types of @nn, each designed to handle different tasks.
+There are several types of @nn::pl, each designed to handle different tasks.
 Some of these used during this work will be introduced in the following sections.
 
 ==== Convolutional Neural Networks
 
-@cnn::pl are a popular class of @nn::pl that is often used for image
-classification, speech recognition and many more. It typically consists of four
+@cnn::pl are a popular class of @nn::pl that are often used for image
+classification, speech recognition and many more tasks. They typically consist of four
 components. A convolutional layer, a pooling layer, an activation function and
 a fully connected layer. In a convolutional layer neurons of one layer are only
 connected to some neurons of the previous layer. These neurons of the previous
@@ -343,7 +338,7 @@ Both activation function and fully connected layer were already described in
 reduces the number of trainable parameters, lowering computational costs and
 enhancing generalization. Additionally, their convolutional layers enable them
 to automatically learn hierarchical feature representations from the input
-data.
+data. @indolia_conceptual_2018
 
 ==== Long short-term memory
 @lstm networks are part of the @rnn family. Unlike standard neural networks, @rnn::pl
@@ -355,17 +350,17 @@ state, which enables the model to retain relevant information over longer
 sequences. @hochreiter_long_1997
 
 A @lstm unit consists of three sections called gates, the forget gate,
-the input gate and the output gate. It also carries two "memories", the "short-term memory"
+the input gate and the output gate. It also carries two memories, the short-term memory
 and the long term memory. The forget gate determines what percentage of the
-"long-term memory" will be remembered. The input gate updates the "long-term memory" and
-the output gate updates the "short-term memory". The "short-term memory" of the last unit
-is the output of the @lstm. Each step takes the "short-term memory", the "long-term memory"
+long-term memory will be remembered. The input gate updates the long-term memory and
+the output gate updates the short-term memory. The short-term memory of the last unit
+is the output of the @lstm. Each step takes the short-term memory, the long-term memory
 and the current input into consideration. Two activation functions are used. The sigmoid and the
 tanh function, see @lstm @noauthor_deep_nodate. @noauthor_deep_nodate
 
 #figure(image("figures/lstm.jpeg", width: 60%), caption: [Visualization of a Long Short Term Memory unit.]) <lstm>
 
-@bilstm are an extension of @lstm that process sequential data in forward and backward
+@bilstm::pl are an extension of @lstm::pl that process sequential data in forward and backward
 directions. This allows the model to capture context from past and future states
 simultaneously. This ability is important for tasks like natural language processing,
 where understanding both past and future context is crucial. @noauthor_bidirectional_nodate
@@ -375,8 +370,9 @@ where understanding both past and future context is crucial. @noauthor_bidirecti
 The introduction of the Transformer architecture has had a big impact that is
 not limited to scientific research. Large Language Models like Open AIs ChatGPT
 used this technology to revolutionize chat bots @ray_chatgpt_2023. It could be
-seen as an advanced version of @rnn::pl. It does enable parallel processing and
-has improved long-range dependence @vaswani_attention_2017.
+seen as an advanced version of @rnn::pl. Compared to these, it does enable
+parallel processing and has improved long-range dependence
+@vaswani_attention_2017.
 
 The original Transformer consisted of an encoder and a decoder and was created
 for the purpose of machine translation @vaswani_attention_2017. Today there are
@@ -385,7 +381,7 @@ the decoder as it only needs to generate text, while BERT uses only the encoder
 as it only needs to process the input sequence @vaswani_attention_2017. Here we
 will cover the original transcoder architecture used for machine translation.
 
-As for most @ai models the input needs to be converted into a numerical
+As for most @ai models, the input needs to be converted into a numerical
 representation. Every token, which corresponds to a word or subword, is mapped to
 a dense vector using a learned embedding matrix. To help the model understand the
 position of each token in the sequence, positional encoding is added to the
@@ -393,18 +389,16 @@ embeddings. This encoding uses sine and cosine functions at different
 frequencies to generate a unique pattern for each position. The result is added
 to the embedded input. @vaswani_attention_2017
 
-Next comes the self-attention mechanism, which is
-applied to every token. For each token, three vectors are computed: a query, a
-key, and a value. These are obtained by multiplying the input (embedding +
-positional encoding) with learned weight matrices. Then, the attention score
-for each token is calculated by taking the dot product between the query of the
-current token and the keys of all tokens. These scores are passed through a
-SoftMax function to normalize them into probabilities, determining how much
-each token should contribute to the current one. This process is done multiple
-times in parallel with different sets of weights, a technique known as
-Multi-Head Attention. The outputs from all heads are concatenated and projected
-back into the model's dimension. The result is then added back to the original
-input. @vaswani_attention_2017
+Next comes the self-attention mechanism. For each token, three vectors are
+computed: a query, a key, and a value. These are obtained by multiplying the
+input (embedding + positional encoding) with learned weight matrices. Then, the
+attention score for each token is calculated by taking the dot product between
+the query of the current token and the keys of all tokens. These scores are
+passed through a SoftMax function to normalize them into probabilities,
+determining how much of the value of each token should contribute to the
+current one. This process is done multiple times in parallel with different
+sets of weights, a technique known as Multi-Head Attention. The
+result is then added back to the original input. @vaswani_attention_2017
 
 After attention, the output passes through a feed-forward neural network, which
 consists of two linear layers with a non-linearity in between. This step is
@@ -420,7 +414,7 @@ attention, which allows the decoder to focus on relevant parts of the encoded
 input. It works similarly to self-attention: a query is computed for the
 current token being generated, and dot products are taken with the keys from
 the encoder’s output. After applying SoftMax, the decoder learns which encoded
-tokens are most important for generating the next word.Like other attention
+tokens are most important for generating the next word. Like other attention
 mechanisms, this can also be stacked. @vaswani_attention_2017
 
 Finally, the output from the decoder is passed through a linear projection
@@ -460,13 +454,13 @@ representation.
 Words are, in a way, categorical data. Representing them as numerical values
 could be accomplished by using something like a one-hot encoding. In a one-hot
 encoding a vector of the size of the number of categories is created for each
-element. The position that corresponds to the category of this element is filled
-with a one, while all other positions contain a zero. However, this
-approach does have two drawbacks. First, these vectors are huge and second, all
-words are treated the same. This means there is no way similarities between words
-can be expressed. @noauthor_word_nodate
+element. The position that corresponds to the category of this element is
+filled with a one, while all other positions contain a zero. However, this
+approach does have two drawbacks. First, these vectors can become very large
+and second, all words are treated the same. This means there is no way
+similarities between words can be expressed. @noauthor_word_nodate
 
-A better representation for words is to use dense vector of real numbers. Such
+A better representation for words is to use dense vectors of real numbers. Such
 a vector can be significantly shorter than a one-hot encoded vector and is
 filled with real numbers that each represent a property of the element. In
 a biological context, if we assume that the elements are for example amino acids,
@@ -484,13 +478,13 @@ one while dissimilar words will result in a value close to zero. @noauthor_word_
 $ "Similarity"("valine", "threonine") = frac(q_"valine" dot q_"threonine", ||q_"valine"|| ||q_"threonine"||) = cos(Phi) $ <similarities>
 
 In an actual word embedding these vectors do not contain real world properties like in
-this example. Instead a model trains these values for every word so it minimizes the loss.
-The resulting values do not correspond to any real world properties. @noauthor_word_nodate
+this example. Instead a model learns the values that result in the smallest loss.
+@noauthor_word_nodate
 
 === Block Decomposition of Protein Sequences
 
-The block decomposition algorithm by Martin Girard, who works at the Max Planck
-Institute for Polymer Research was used. This algorithm stems from an
+The block decomposition algorithm by Martin Girard, a researcher at the Max Planck
+Institute for Polymer Research, was used. This algorithm stems from an
 unpublished article where a surrogate model for low complexity protein
 sequences was created. The model itself is based on combinatorics on words,
 particular sturmian words and their generalizations. It was able to show that

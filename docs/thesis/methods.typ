@@ -5,7 +5,7 @@
 #context bib_state.get()
 #show: init-glossary.with(yaml("glossary.yaml"))
 #let grey = luma(90%)
-#set heading(numbering: "1.")
+#set heading(numbering: "1.1")
 #set math.equation(numbering: "(1)")
 
 = Methods
@@ -69,7 +69,7 @@ that had a disorder fraction of zero were labeled as non-@idr proteins.
 
 The block decomposition algorithm by Martin Girard @noauthor_files_2024 was
 used to factorize the protein sequences into blocks of a certain uniformity.
-To be able to use the block decomposition as a feature for @nn
+To be able to use the block decomposition as a feature for @nn::pl
 the output was transformed from a list of tuples containing the start and
 end of a block to a sequence, where each position represents the block that
 it is in. As the original algorithm did not provide information about the
@@ -147,12 +147,12 @@ probability level above a value gets the positive label, there are also two
 important metrics that do not depend on it. They are both curves that can be
 evaluated by visual inspection as well as the @auc value. The @roc plots the
 recall against the false positive rate, which is equal to one minus
-specificity. The @prc plots the precision against the recall. The @auc value
-lies between zero and one. The higher the @auc values are for a model, the better.
+specificity. The @prc plots the precision against the recall. @auc values
+lie between zero and one. A higher @auc value is better.
 While a @auc of 0.5 for the @roc means that the predictions of the model are
-not better than random guessing, the interpretation of the @prc @auc depends on
-the positive class frequency. A @prc @auc value of the positive class frequency
-would equal random guessing. The usage of @prc @auc values is especially important
+not better than random guessing, the interpretation of the @prc@auc depends on
+the positive class frequency. A @prc@auc value of the positive class frequency
+would equal random guessing. The usage of @prc@auc values is especially important
 if imbalanced datasets are used, where there are more negative samples than positives.
 Both metrics combined are a sufficient and threshold independent way to compare
 model performance. @saito_precision-recall_2015
@@ -162,7 +162,7 @@ model performance. @saito_precision-recall_2015
 The process of selecting and testing different models during this work can be
 divided into three phases. The first phase was about testing if @nn::pl,
 especially @cnn::pl are capable of predicting @llps and comparing the block
-decomposition to the raw sequence as input. The second phase revolved about
+decomposition to the raw sequence as input. The second phase revolved around
 testing other @nn architectures that are more complex than the models from the
 previous phase and testing the block decomposition as input for a @ml model.
 The third phase focused on enhancing the best model with additional features
@@ -174,23 +174,23 @@ all models were run on all datasets. While the PhasePred dataset was tested in
 the beginning of this work, it was abandoned due to the similarity to the
 PSPire dataset and lack of time. Therefore, no results of this dataset are part
 of this work. \
-During all runs a random seed of 13 was set to achieve
-reproducibility. The training data loaders were set to shuffle, while the
-validation data loaders were not. The batch size was set depending on the
-complexity of the model and the size of the data set, these values can be found
-in the appendix. All models, excluding the XGBoost model, used cross entropy
-loss for the loss function and considered the distribution of positive and
-negative values using class weights. The ADAM optimizer @kingma_adam_2017 was
-used in all models except the XGBoost, as it requires less manual optimization
-than stochastic gradient descent. The learning rate and decay was adjusted per
-model and can be found in the appendix. The models will be evaluated with the
-@auc values from the @roc and @prc. \
-The evaluation will mostly be split into
-proteins that contain @idr::pl and proteins that do not contain @idr::pl for
-comparability with the PSPire dataset. Testing other splits like the driver and
-client split from the PPMC-lab dataset as well as the split into
-partner-dependent and self-assembling proteins was only touched briefly and
-would require more time.
+During all runs a random seed of 13 was set to achieve reproducibility. The
+training data loaders were set to shuffle, while the validation data loaders
+were not. The batch size was set depending on the complexity of the model and
+the size of the data set, these values can be found in the raw data, see
+appendix. All models, excluding the XGBoost model, used cross entropy loss for
+the loss function and considered the distribution of positive and negative
+values using class weights. The ADAM optimizer @kingma_adam_2017 was used in
+all models except the XGBoost, as it requires less manual optimization than
+stochastic gradient descent. The learning rate and decay was adjusted per model
+and can be found in the raw data as well, see appendix. The models will be
+evaluated with the @auc values from the @roc and @prc. \
+The evaluation will
+mostly be split into proteins that contain @idr::pl and proteins that do not
+contain @idr::pl for comparability with the results of the PSPire. Testing other
+splits like the driver and client split from the PPMC-lab dataset as well as
+the split into partner-dependent and self-assembling proteins was only touched
+briefly and was not included in this work.
 
 During this development @bn was used @noauthor_batchnorm1d_nodate for
 smoother training as well as @do for reducing overfitting. An overview
@@ -210,8 +210,8 @@ The phases are represented by the fill of the nodes. Phase one is colored blue, 
 
 === Phase One
 
-As there have been no previous @llps predictors that relied on @nn, the first
-step was to create simple models to see if @cnn::pl are capable for this task.
+As there have been no previous @llps predictors that relied on @nn::pl, the first
+step was to create simple models to see if @cnn::pl are capable of this task.
 Throughout this work the 1-dimensional versions of @cl::pl, @mpl::pl and
 @ampl::pl were used. Another goal of these simple models was to test if the
 block decomposition proves to be beneficial for the prediction over using only
@@ -472,9 +472,9 @@ It only added one additional @cl to see if it benefits the model, see the visual
 === The second set of Models
 
 After the first set of models was tested, it was decided to discard the idea to
-use the block decomposition with @nn as they were outperformed by the models
+use the block decomposition with @nn::pl as they were outperformed by the models
 that used the raw sequence as input, see @first_set. Instead the block
-decomposition was used to create a model based on the XGBoost algorithm and the
+decomposition was used to create a model based on the XGBoost algorithm while the
 @nn models based on the raw sequence were focused.
 
 ==== XGBoost
@@ -507,6 +507,7 @@ The parameters are shown in @par_3lcnn.
 ), caption: [Parameters for 3 Layer CNNs.]) <par_3lcnn>
 
 ==== Bidirectional Long Short Term Memory Model
+
 A very basic @bilstm model was created with the parameters shown in @par_bilstm.
 The input was embedded and subjected to the @lstm layer. @do and a @fcl followed.
 
@@ -519,6 +520,7 @@ The input was embedded and subjected to the @lstm layer. @do and a @fcl followed
 ), caption: [Parameters of the BILSTM model. ]) <par_bilstm>
 
 ==== Transformer
+
 A basic transformer model was created with the parameters shown in @par_transformer.
 The model did integrate a positional encoding.
 
@@ -531,6 +533,7 @@ The model did integrate a positional encoding.
 ), caption: [Parameters of the transformer model.]) <par_transformer>
 
 === Optimizing the Two Layer Convolutional Neural Network <optimize>
+
 As the second set of models did not provide a better model than the two layer
 @cnn, see @secon_set, they were discarded. The work was then focused on
 improving the two layer @cnn. The first step was to double the dropout rate and
@@ -541,7 +544,7 @@ towards @idr proteins and enable the model to learn important features for predi
 non-@idr proteins. \
 In the second step different optimizations were tested independently. @bn was
 added to smoothen the training process. @rsa values were added as additional
-information for the model, both as additional feature sequence and as weight
+information for the model, both as an additional feature sequence and as a weight
 vector for the embedded sequence. To obtain the @rsa values the structure files
 of all proteins were downloaded from AlphaFold. Using the tool DSSP
 @noauthor_pdb-redodssp_nodate the @rsa per amino acid was calculated. \
@@ -776,10 +779,10 @@ version without @ptm::pl and @bn for @idr proteins.
 The evaluation of the models was conducted on the PSPire dataset, the PPMC-lab
 dataset as well as the catGranule 2.0 dataset. For the PSPire dataset and the
 catGranule 2.0 dataset the models were trained and tested on the same data splits
-as the models in the paper. This way the results are as comparable as possible.
+as the models in the respective paper. This way the results are as comparable as possible.
 As there are no other models that were trained on the PPMC-lab dataset and
 no other @llps predictors were run on the test set used here, the evaluation
-only shows the results of the final model. Only the two best scoring @llps
+will only show the @auc values obtained by the final model. Only the two best scoring @llps
 predictors from the PSPire paper were shown in the evaluation on the PSPire dataset.
 For the catGranule 2.0 dataset all @llps predictors compared in its paper were
 used.
@@ -792,10 +795,10 @@ and PPMC-lab dataset were evaluated on the @mlo testing sets. One @mlo dataset
 was also evaluated with the models trained on the PPMC-lab dataset and The negative
 PPMC-lab test data set, to see if the results differ.
 
-As the catGranule 2.0 dataset does not differ between @idr proteins and non-@idr
-proteins both in training and testing, a modified version of the final non-@idr model
-was used for its evaluation. In this modified version the split of @idr and non-@idr
-proteins was skipped.
+As the catGranule 2.0 dataset as well as the results in its paper do not differ
+between @idr proteins and non-@idr proteins both in training and testing, a
+modified version of the final non-@idr model was used for its evaluation. In
+this modified version the split of @idr and non-@idr proteins was removed.
 
 ==== Visualization of Input Features
 
@@ -804,7 +807,7 @@ the model's predictions, the Python package Captum @kokhlikyan_captum_2020 was
 used. Captum is a model interpretability library developed for PyTorch,
 providing a variety of attribution methods that help identify which features
 contribute most significantly to a prediction. For this work, selected proteins
-were analyzed using Saliency Maps, which highlight important
+were analyzed using saliency maps, which highlight important
 positions or patterns in the input sequence that influenced the model's output.
 These analyses were conducted to gain insights into the model's
 decision-making process and to assess the biological plausibility of the
@@ -812,8 +815,14 @@ learned representations.
 
 From the Dr.LLPS @mlo dataset twenty random relatively high scoring @llps
 proteins were chosen. Ten @idr proteins and ten non-@idr proteins. The salinity
-map was created for all using both final models trained on the PSPire dataset.
-These results were compared between each other. For some the catGranule 2.0 @llps
-propensity profile was created and compared to the saliency map.
+map was created for them using both final models trained on the PSPire dataset.
+One of the @idr proteins and one of the non-@idr proteins was chosen for
+further comparison. Their saliency maps were compared to their protein features
+using the UniProt feature viewer. The two proteins were also submitted to the
+catGranule 2.0 web tool, as it provides a @llps propensity score over the
+sequence. These visualizations were also compared to the saliency maps. At last
+the saliency maps from both the final @idr model and the final non-@idr model
+of the chosen non-@idr protein were compared to each other, to see how the
+regions that were most important for their predictions differed.
 
 #pagebreak()

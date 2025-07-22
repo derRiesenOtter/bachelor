@@ -28,7 +28,8 @@ lstm:
 
 mlo:
   short: MLO
-  long: Membraneless Organells
+  plural: MLOs
+  long: Membraneless Organell
 
 ptm: 
   short: PTM
