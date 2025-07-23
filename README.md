@@ -5,28 +5,28 @@ my bachelor thesis.
 
 The structure of this repository is shown below:
 
-├── data
-│   ├── intermediate_data
-│   ├── processed_data
-│   └── raw_data
-├── docs
-│   ├── bachelor.bib
-│   ├── labbook.md
-│   ├── presentation_colloquium
-│   ├── presentation_kickoff
-│   ├── presentation_midterm
-│   └── thesis
-├── dvc_adder.sh
-├── README.md
-├── requirements.txt
-├── results
-│   ├── plots
-│   ├── stdout
-│   └── visual_summary_auc_pspire_first_models.png
-└── src
-    ├── modules
-    └── scripts
-
+├── data  
+│   ├── intermediate_data  
+│   ├── processed_data  
+│   └── raw_data  
+├── docs  
+│   ├── bachelor.bib  
+│   ├── labbook.md  
+│   ├── presentation_colloquium  
+│   ├── presentation_kickoff  
+│   ├── presentation_midterm  
+│   └── thesis  
+├── dvc_adder.sh  
+├── README.md  
+├── requirements.txt  
+├── results  
+│   ├── plots  
+│   ├── stdout  
+│   └── visual_summary_auc_pspire_first_models.png  
+└── src  
+    ├── modules  
+    └── scripts  
+  
 The lab book houses all information about which script was run at what time 
 as well as the goal of the run. 
 
