@@ -28,8 +28,8 @@ The structure of this repository is shown below:
 
 ```
   
-The lab book houses all information about which script was run at what time 
-as well as the goal of the run. 
+The [lab book](./docs/labbook.md) houses all information about which script was
+run at what time as well as the goal of the run. 
 
 The plots folder is empty as there where too many images to upload them all to 
 github. If one wishes to recreate the plots (they contain the evaluation metrics 
