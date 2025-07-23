@@ -1,45 +1,141 @@
 # Lab book 
 
-<!--toc:start-->
-- [Lab book](#lab-book)
-  - [Before](#before)
-  - [2025-05-11](#2025-05-11)
-  - [2025-05-12](#2025-05-12)
-  - [2025-05-13](#2025-05-13)
-  - [2025-05-15](#2025-05-15)
-  - [2025-05-19](#2025-05-19)
-  - [2025-05-20](#2025-05-20)
-  - [2025-05-21](#2025-05-21)
-  - [2025-05-22](#2025-05-22)
-  - [2025-05-23](#2025-05-23)
-  - [2025-05-26 to 2025-05-28](#2025-05-26-to-2025-05-28)
-  - [2025-06-02](#2025-06-02)
-<!--toc:end-->
+## How to Reproduce 
 
+This section is supposed to help reproducing the results that are found 
+in the thesis that resulted from this work. To reproduce follow the 
+instructions below:
 
-## Before
+1. Install the [Words](https://gitlab.mpcdf.mpg.de/mgirard/Words) module of
+   Martin Girard if you want to reproduce the block decomopsition experiments. 
+   **Important**: The dev branch needs to be installed.
+1. Clone this repository and `cd` into it: 
+    ```sh 
+    git clone https://github.com/derRiesenOtter/bachelor.git
+    cd bachelor
+    ```
+1. Create a virtual python environment and install the packages from the 
+    `./requirements.txt` file. 
+1. Acquire the datasets from the following sources: 
+    - [PPMC-lab](https://llpsdatasets.ppmclab.com) (datasets.tsv)
+    - [PSPire](https://www.nature.com/articles/s41467-024-46445-y) (Supplementary Data 4, Supplementary Data 5)
+    - [catGranule 2.0](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-025-03497-7) (13059_2025_3497_MOESM4_ESM.xlsx)
+1. Rename these datasets to:
+    - `ppmclab.tsv`
+    - `pspire.csv` and `pspire_mlo.csv`
+    - `catgranule2.csv`
 
-To be able to replicate this project, one would need to install the block
-decomposition module written by Martin Girard.
+    and place them into the `./data/raw_data/` folder
+1. Run the preparation scripts:  
+    ```sh 
+    python ./src/scripts/prepare_ppmclab.py
+    python ./src/scripts/prepare_pspire.py
+    python ./src/scripts/prepare_pspire_mlo.py
+    python ./src/scripts/prepare_catrgranule2.py
+    ```
+1. Run the scripts that download the RSA data: 
+    ```sh 
+    python ./src/scripts/prepare_ppmclab_alpha.py
+    python ./src/scripts/prepare_pspire_alpha.py
+    python ./src/scripts/prepare_pspire_mlo_alpha.py
+    python ./src/scripts/prepare_catgranule2_alpha.py
+    ```
+1. Run the scripts that download the PTM data: 
+    ```sh 
+    python ./src/scripts/get_ptms_ppmclab.py
+    python ./src/scripts/get_ptms_pspire.py
+    python ./src/scripts/get_ptms_catgranule2.py
+    ```
+1. Run the block decomposition on the PPMC-lab and PSPire dataset: 
+    ```sh 
+    python ./src/scripts/run_bd_ppmclab.py
+    python ./src/scripts/run_bd_pspire.py
+    ```
+1. Run the models you would like to rerun (only the scripts used to produce data that was used in the thesis are listed below): 
+    - The models that used the block decompositon:
+        ```sh 
+        python ./src/scripts/run_cnn1l_bd_ppmclab.py
+        python ./src/scripts/run_cnn1l_bd_pspire.py
+        python ./src/scripts/run_cnn2l_bd_ppmclab.py
+        python ./src/scripts/run_cnn2l_bd_pspire.py
+        python ./src/scripts/run_xgb_pspire.py
+        ```
+    - The models that used the raw protein sequence: 
+        ```sh 
+        python ./src/scripts/run_cnn1l_ppmclab.py
+        python ./src/scripts/run_cnn1l_pspire.py
+        python ./src/scripts/run_cnn2l_ppmclab.py
+        python ./src/scripts/run_cnn2l_pspire.py
+        python ./src/scripts/run_cnn2l_pspire_idr.py
+        python ./src/scripts/run_cnn2l_pspire_nidr.py
+        python ./src/scripts/run_cnn2l_pspire_bn_idr.py
+        python ./src/scripts/run_cnn2l_pspire_bn_nidr.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_idr.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_nidr.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_weight_idr.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_weight_nidr.py
+        python ./src/scripts/run_cnn2l_pspire_idr_ptm.py
+        python ./src/scripts/run_cnn2l_pspire_nidr_ptm.py
+        python ./src/scripts/run_cnn2l_ppmclab_bn_idr.py
+        python ./src/scripts/run_cnn2l_ppmclab_bn_nidr.py
+        python ./src/scripts/run_cnn2l_ppmclab_rsa_idr.py
+        python ./src/scripts/run_cnn2l_ppmclab_rsa_nidr.py
+        python ./src/scripts/run_cnn2l_ppmclab_rsa_weight_idr.py
+        python ./src/scripts/run_cnn2l_ppmclab_rsa_weight_nidr.py
+        python ./src/scripts/run_cnn2l_ppmclab_ptm_idr.py
+        python ./src/scripts/run_cnn2l_ppmclab_ptm_nidr.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_idr.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_nidr.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_weight_ptm_idr.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_weight_ptm_nidr.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_idr_ptm.py
+        python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_nidr_ptm.py
+        python ./src/scripts/run_cnn2l_catgranule2_rsa_weight.py
+        python ./src/scripts/run_cnn2l_catgranule2_rsa_weight_bn_ptm.py
+        ```
+    - The evaluation scripts for the MLO datasets:
+        ```sh 
+        python ./src/scripts/eval_ppmclab_dact1_idr.py
+        python ./src/scripts/eval_ppmclab_dact1_idr_self.py
+        python ./src/scripts/eval_ppmclab_dact1_nidr.py
+        python ./src/scripts/eval_ppmclab_dact1_nidr_self.py
+        python ./src/scripts/eval_ppmclab_drllps_idr.py
+        python ./src/scripts/eval_ppmclab_drllps_nidr.py
+        python ./src/scripts/eval_ppmclab_g3bp1_idr.py
+        python ./src/scripts/eval_ppmclab_g3bp1_nidr.py
+        python ./src/scripts/eval_ppmclab_phasep_idr.py
+        python ./src/scripts/eval_ppmclab_phasep_nidr.py
+        python ./src/scripts/eval_ppmclab_rnagranule_idr.py
+        python ./src/scripts/eval_ppmclab_rnagranule_nidr.py
+        python ./src/scripts/eval_pspire_dact1_w_idr.py
+        python ./src/scripts/eval_pspire_dact1_wn_nidr_ptm.py
+        python ./src/scripts/eval_pspire_drllps_w_idr.py
+        python ./src/scripts/eval_pspire_drllps_wn_nidr_ptm.py
+        python ./src/scripts/eval_pspire_g3bp1_w_idr.py
+        python ./src/scripts/eval_pspire_g3bp1_wn_nidr_ptm.py
+        python ./src/scripts/eval_pspire_phasep_w_idr.py
+        python ./src/scripts/eval_pspire_phasep_wn_nidr_ptm.py
+        python ./src/scripts/eval_pspire_rnagranule_w_idr.py
+        python ./src/scripts/eval_pspire_rnagranule_wn_nidr_ptm.py
+        ```
+    - The Captum Evaluation: 
+        ```sh 
+        python ./src/scripts/eval_test_captum_idr.py
+        python ./src/scripts/eval_test_captum_nidr.py
+        ```
+1. The evaluation metrics are all visible inside the plots 
+   that were created by running the scripts at `./results/plots/`.
 
-The project can be found here: [Words](https://gitlab.mpcdf.mpg.de/mgirard/Words)
-**Important**: The dev branch needs to be installed.
+## Timeline 
 
+In the following section, the actions conducted in this work are 
+chronologically listed.
 
-## 2025-05-11
+### 2025-05-12
 
-A python module was written. It is responsible for converting the original
-output of the block decomposition algorithm from `list[tuple[int, int]]` to a
-`np.ndarry` that also labels the blocks based on their main component.
+*git-tag 0.1.1*
 
-The module can be found here:
-`./src/modules/block_decomposition_modifier.py`
-
-## 2025-05-12
-
-A data set of proteins was downloaded.
-It contains over 600 sequences of phase separating proteins and over 2000 
-proteins of non phase separating proteins.
+The PPMC-lab dataset was downloaded.
 Source: [llpsdatasets](https://llpsdatasets.ppmclab.com)
 
 The file `datasets.tsv` was downloaded and moved to
@@ -47,52 +143,32 @@ The file `datasets.tsv` was downloaded and moved to
 
 ---
 
-The Words module (containing the block decomposition algorithm) was copied into
-the folder `./src/modules/` folder: `./src/modules/Words/`.
+The data of the PPMC-lab dataset was prepared for further usage using  
+the script `./src/scripts/prepare_raw_data.py` and the command:
 
-Additional mappings (beside the APNAMApping - Aliphatic, Positive, Negative,
-Aromatic) were added to the file `./src/modules/Words/Mappings.py`:
-- Amino Acids associated with IDRs (IDRMapping) [article](https://pmc.ncbi.nlm.nih.gov/articles/PMC2676888/)
-- Most meaningful grouping with five groups (MM5Mapping) [article](https://www.academia.edu/14913388/Simplifying_amino_acid_alphabets_by_means_of_a_branch_and_bound_algorithm_and_substitution_matrices)
-- PiPi interactions per group (PIPIGMapping) and per frequency (PIPIFMapping) [article](https://elifesciences.org/articles/31486)
-- RG Motifs (RGMapping)
-
----
-
-The script `./src/scripts/prepare_raw_data.py` was created and run with: 
 ```sh 
 python src/scripts/prepare_raw_data.py
 ```
 Creating:
 `./data/intermediate_data/llps_data_ppmclab.pkl`
 
-This script read the `.csv` file and filtered out sequences containing letters
-that are not in the mapped amino acid alphabet (X and U). It also added one
-column named `PS` that contains a `0` as negative label and a `1` as positive
-label. It saved the data as a pickle.
-
 ---
 
-The script `./src/scripts/run_block_decomposition.py` was created and run using:
+The block decomposition algorithm was run on the PPMC-lab dataset using 
+the script `./src/scripts/run_block_decomposition.py` and the command:
 ```sh 
 python src/scripts/run_block_decomposition.py
 ```
 Creating:
 `./data/intermediate_data/llps_data_ppmclab_bd.pkl`
 
-This script ran the block decomposition algorithm with all mappings a
+### 2025-05-13 
 
-## 2025-05-13 
+*git-tag 0.1.2*
 
-Added another Mapping to `./src/modules/Words/Mappings.py`:
+As new mappings were added to the block decomposition the
+script `./src/scripts/run_block_decomposition.py` was run again:
 
-- Mapping that shows enriched amino acids in proteins containing the RG-Motif
-and take part in PS
-
----
-
-The script `./src/scripts/run_block_decomposition.py` was run again with the new
-mapping:
 ```sh 
 python src/scripts/run_block_decomposition.py
 ```
@@ -101,24 +177,25 @@ Creating:
 
 ---
 
-Created a file `./src/scripts/prepare_training_data.py` and started to implement
-a model. The max length of a sequence was limited to 2700, as this is the length
-of the largest possible sequence that can be analyzed with PSPire. This improved
-the performance of the model slightly.
-The model was run several times with varying parameters, just to get a feeling
-if any of them change the result a lot. 
+A simple neural network was created and run with the command:
 
 ```sh
 python ./src/scripts/prepare_training_data.py
 ```
 
-The performance of the model was okay. It plateaued after just a few epochs.
-AUROC was around 0.84 and PRAUC around 0.7. Only using the balance threshold of
-4 instead of 3 and 4 did not impact the balance.
+### 2025-05-14 
 
-## 2025-05-15
+The PSPire dataset was downloaded from the article ([source](https://www.nature.com/articles/s41467-024-46445-y)). 
 
-Renamed the following files to keep things clean:
+It was then moved to `data/raw_data/ps_pire_data.csv`.
+
+### 2025-05-15
+
+*git-tag 0.1.3*
+
+As the file names were not ideal, many files were renamed using the 
+commands below:
+
 ```sh 
 mv data/raw_data/llps_data_ppmclab.tsv data/raw_data/ppmclab.tsv
 mv data/raw_data/ps_pire_data.csv data/raw_data/pspire.csv
@@ -131,24 +208,28 @@ mv src/scripts/prepare_training_data.py src/scripts/run_cnn_ppmclab.py
 
 ```
 
-## 2025-05-19
+### 2025-05-19
 
-The data of the PS-Pire article was downloaded and saved as
-`./data/raw_data/pspire.csv`. A script was written to download the sequences
-for the proteins from UniProt and filter them as well as create some
-visualizations and also map the sequences. (`./src/scripts/prepare_pspire.py`)
-This script was run with: 
+_git-tag 0.1.4_
+
+To download the protein sequences of PSPire and prepare the 
+data for further analysis the script `./src/scripts/prepare_pspire.py` 
+was run with the command: 
 
 ```sh 
 python ./src/scripts/prepare_pspire.py
 ```
 
-The script for preparing the ppmclab data set was also modified to yield some
-graphics (`./src/scripts/prepare_ppmclab.py`).
+---
+
+The script for preparing the PPMC-lab dataset was modified to yield some
+graphics and rerun: 
 
 ```sh 
 python ./src/scripts/prepare_ppmclab.py
 ```
+
+---
 
 Started to modularize code. Datasets and models will now get a script each that
 resides in `./src/modules/`.
@@ -159,27 +240,31 @@ Following files have been created there:
 `./src/modules/mappings.py`
 
 The module `./src/modules/block_decomposition_modifier.py` was renamed to
-`./src/modules/bd_tools.py`.
+`./src/modules/bd_tools.py` using `mv`.
 
-## 2025-05-20
+### 2025-05-20
 
-Created the block decomposition for the pspire data set with:
+*git-tag 0.1.4*
+
+The block decomposition algorithm was run on the PSPire dataset with 
+the following command:
 ```sh 
 python ./src/scripts/run_bd_pspire.py
 ```
+---
 
-Continued to modularize and rewrite the model. Today the focus was on improving
-the training loop and creating additional graphics.
-
-The following was run:
+The parameters in the one layer block decomposition cnn were modified 
+as well as the name of the script: 
 ```sh 
+mv .src/scripts/run_cnn_ppmclab.py ./src/scripts/run_cnn1l_bd_ppmclab.py
 python ./src/scripts/run_cnn1l_bd_ppmclab.py
 ```
 
-## 2025-05-21 
+### 2025-05-21 
 
-Ran and adjusted multiple models. Changed the optimizer to Adam as it is faster
-and tunes itself.
+*git-tag 0.1.5*
+
+Ran and adjusted multiple models. Changed the optimizer to Adam as it is faster.
 All models were run today: 
 ```sh 
 python ./src/scripts/run_cnn1l_ppmclab.py
@@ -191,28 +276,30 @@ python ./src/scripts/run_cnn2l_bd_ppmclab.py
 python ./src/scripts/run_cnn2l_pspire.py
 python ./src/scripts/run_cnn2l_bd_pspire.py
 ```
-The pspire data set seems to be a challange. For now the best model was the `cnn2l_pspire` model. 
 
-## 2025-05-22 
-Build models that train on ppmclab and pspire data to test the pspire data set: 
+### 2025-05-22 
+
+*git-tag 0.1.6*
+
+Experimented with models that use both the PSPire and PPMC-lab 
+dataset and different architectures: 
 ```sh 
 python ./src/scripts/run_cnn2l_ppmclab_pspire.py
 python ./src/scripts/run_cnn2l_att_ppmclab_pspire.py
 python ./src/scripts/run_transformer_ppmclab_pspire.py
 ```
-To see if it helps to train the model on an extra label for ps proteins with idr
-content a model was trained with this label:
+---
+
+Tested a model that used three labels. One for negatives, 
+one for positives with idr and one for positives without idr.
+
 ```sh
 python ./src/scripts/run_cnn2l_ppmclab_pspire_multi.py 
 ```
 
-To analyze the results a train test loop was created for multiclass cases:
-`./src/modules/train_eval_multi.py`
+### 2025-05-23
 
-
-## 2025-05-23
-
-Downloaded Dataset S01 and S06 from the [PhaSepDB article](https://www.pnas.org/doi/10.1073/pnas.2115369119#supplementary-materials)
+Downloaded the PhasePred data from the [PhaSePred article](https://www.pnas.org/doi/10.1073/pnas.2115369119#supplementary-materials)
 and placed them as follows:
 S02 saps: `./data/raw_data/phasepdb_saps.csv`
 S02 pdps: `./data/raw_data/phasepdb_pdps.csv`
@@ -223,30 +310,37 @@ S03 nops test: `./data/raw_data/phasepdb_nops_test.csv`
 S03 ps test: `./data/raw_data/phasepdb_ps_test.csv`
 S06: `./data/raw_data/phasepdb_mlo.csv`
 
-Downloaded the supplementary data 5 from the [PSPire article](https://www.nature.com/articles/s41467-024-46445-y#MOESM9) 
+---
+
+Downloaded the mlo data from the [PSPire article](https://www.nature.com/articles/s41467-024-46445-y#MOESM9) 
 and placed it as follows: `./data/raw_data/pspire_mlo.csv`
 
-Wrote a script to prepare the data from phasepbd and ran it:
+---
+
+Prepared the data from the PhasPred article using:
 ```sh
 python ./src/scripts/prepare_phasepdb.py
 
 ```
-## 2025-05-26 to 2025-05-28
+### 2025-05-26 to 2025-05-28
 
-Created scripts to prepare the data from the mlo data sets (phasepdb and pspire)
+Created scripts to prepare the data from the mlo data sets (phasepred and pspire)
 and ran them: 
 
 ```sh 
 python prepare_phasepdb_mlo.py 
 python prepare_pspire_mlo.py 
 ```
-Created a script to test a simpler model (xgb) on the data of the block
+
+---
+Created a script to test a xgb model on the data of the block
 decomposition and ran it on the phasepdb data: 
 
 ```sh 
 python run_xgb_phasepdb.py
 ```
 
+---
 Started to evaluate the currently best model (one trained on the phasepdb data,
 the other on the union of pspire and ppmclab) on the MLO data:
 ```sh
@@ -259,6 +353,7 @@ python eval_pspire_drllps.py
 python eval_pspire_g3bp1.py
 python eval_pspire_psdbht.py
 ```
+---
 
 Created a script that downloads the data of alphafold and calculates the surface
 availability for the pspire data:
@@ -266,10 +361,13 @@ availability for the pspire data:
 python prepare_pspire_alpha.py
 ```
 
-## 2025-06-02
+### 2025-06-02
 
-Created scripts to download the alphafold data for all datasets and maybe run
-them, if the internet service guy comes around.
+*git-tag 0.1.7*
+*git-tag 0.1.8*
+
+Created scripts to download the alphafold data for all datasets and 
+ran them over the next days:
 ```sh 
 python prepare_pspire_alpha.py
 python prepare_pspire_mlo_alpha.py
@@ -278,49 +376,43 @@ python prepare_phasepdb_alpha.py
 python prepare_phasepdb_mlo_alpha.py
 ```
 
-## 2025-06-03 - 2025-06-14
+### 2025-06-03 
 
 Created models that take the rsa values into consideration. 
 One that uses it as separate feature. 
 ```sh 
 python ./src/modules/cnn_2l_rsa.py
-```
-One that uses a linear layer for the rsa values. 
-```sh 
 python ./src/modules/cnn_2l_rsa_linear.py
-```
-One that uses the rsa values as weights for the amino acids. 
-```sh 
 python ./src/modules/cnn_2l_rsa_weight.py
 ```
+---
 
-Other optimizations were tried: 
-Again, using a third convolutional layer. 
+More modifications to the architecture were tested.
+
 ```sh
 python ./src/modules/cnn_3l_rsa.py
-```
-
-Adding batch normalization: 
-```sh
 python ./src/scripts/run_cnn2l_pspire_bn.py
-```
-
-Adding layers with multiple kernel sizes: 
-```sh 
 python ./src/scripts/run_cnn2l_msf.py
-```
-
-Adding layers with an attention like mechanism: 
-```sh 
 python ./src/scripts/run_cnn2l_att_pspire.py
 ```
 
-The batch normalization and the rsa as weights was combined, as they were the
+---
+
+The batch normalization and the RSA as weights was combined, as they were the
 most affective. 
 
 ```sh
 python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn.py
 ```
+
+### 2025-06-12
+
+PTMs were downloaded from uniprot for the PSPire dataset: 
+
+```sh 
+python get_ptms_pspire.py
+```
+---
 
 Posttranslational Modification Sites were added as they do affect the ability of
 proteins to undergo phase separation.
@@ -328,6 +420,8 @@ proteins to undergo phase separation.
 ```sh 
 python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_idr_ptm.py
 ```
+
+---
 
 To see if it helps the model if it learns idrs and non idrs separately, two
 separate models were created and run: 
@@ -337,11 +431,61 @@ python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_idr_ptm.py
 python ./src/scripts/run_cnn2l_pspire_rsa_weight_bn_nidr_ptm.py
 ```
 
-## 2025-06-16
+### 2025-06-16
 
-Created a model that integrates a transformer into the already strong two layer
-cnn. 
+PTMs were downloaded from UniProt for the PPMC-lab dataset and the PhasPred dataset:
+
+```sh 
+python get_ptms_ppmclab.py
+python get_ptms_phasepdb.py
+```
+
+---
+
+Tested combining cnn and transformer:
 
 ```sh 
 python src/scripts/run_cnn2l_trans_pspire_rsa_weight_bn_idr_ptm.py
 ```
+
+### 2025-06-17
+
+*git-tag 0.1.9*
+
+Tested around with three layer cnns. All scripts starting with `run_cnn3l_pspire`
+were run with the python command.
+
+### 2025-06-24 
+
+Downloaded the dataset from [catGranule 2.0](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-025-03497-7) and moved it to `./data/raw_data/catgranule2.csv`
+
+---
+
+Prepared the catGranule 2.0 dataset for further analysis: 
+
+```sh 
+python ./src/scripts/prepare_catrgranule2.py
+```
+
+### 2025-06-25
+
+Downloaded the RSA and PTM values for the catGranule 2.0 dataset: 
+
+```sh 
+python ./src/scripts/prepare_catgranule2_alpha.py
+python ./src/scripts/get_ptms_catgranule2.py
+```
+
+--- 
+
+Run some models on the catGranule 2.0 dataset: 
+
+```sh 
+python ./src/scripts/run_cnn2l_catgranule2_rsa_weight_bn_ptm.py
+```
+
+## 2025-07-07 
+
+After checking that all model values are comparable 
+all important scripts that run models or evaluations were 
+rerun. They are listed in the section "Reproducibility".

@@ -7,8 +7,22 @@ import numpy as np
 
 
 def get_scalar_values_rsa(
-    id: str, sequence: np.ndarray, mapping: dict, rsa: str
+    id: str, sequence: np.ndarray, mapping: dict, rsa: str = "rsa"
 ) -> dict:
+    """
+    Modifies the output of the blockdecomposition algorithm
+    to be used as tabular data. Includes rsa data.
+    :param sequence: Mapped protein sequence as np.ndarray
+    :type sequence: np.ndarray
+    :param mapping: One of the mappings used in the block
+    decomposition algorithm
+    :type mapping: dict
+    :param rsa: Name of the column that contains the rsa values
+    :type rsa: str
+    :return: Dictionary of all allowed combinations of groups as keys
+    and their fraction in the protein as values
+    :rtype: dict
+    """
     dic = {}
     for _, value in mapping.items():
         dic[value] = 0
@@ -20,7 +34,7 @@ def get_scalar_values_rsa(
     dic[-1] = 0
     with open("./data/intermediate_data/pspire_rsa.pkl", "rb") as f:
         rsa_df = pickle.load(f)
-    rsa_seq = rsa_df[rsa_df["UniprotEntry"] == id]["rsa"].iloc[0]
+    rsa_seq = rsa_df[rsa_df["UniprotEntry"] == id][rsa].iloc[0]
     rsa_gt_025 = 0
     for residue, rsa_residue in zip(sequence, rsa_seq):
         if rsa_residue > 0.25:
@@ -32,6 +46,18 @@ def get_scalar_values_rsa(
 
 
 def get_scalar_values(sequence: np.ndarray, mapping: dict) -> dict:
+    """
+    Modifies the output of the blockdecomposition algorithm
+    to be used as tabular data.
+    :param sequence: Mapped protein sequence as np.ndarray
+    :type sequence: np.ndarray
+    :param mapping: One of the mappings used in the block
+    decomposition algorithm
+    :type mapping: dict
+    :return: Dictionary of all allowed combinations of groups as keys
+    and their fraction in the protein as values
+    :rtype: dict
+    """
     dic = {}
     for _, value in mapping.items():
         dic[value] = 0
@@ -53,7 +79,7 @@ def get_block_seq(
 ) -> np.ndarray:
     """
     Modifies the output of the block decomposition algorithm to be more useful
-    for artificial intelligence model training.
+    for neural network model training.
 
     :param sequence: Protein Sequence as String
     :type sequence: str
